@@ -18,6 +18,116 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+
+            .card {
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+        }
+
+        .card-title {
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .pie-chart-container {
+            position: relative;
+            text-align: center;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .chart {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin: 0 auto;
+        }
+
+        .inner-circle {
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            width: 50%;
+            height: 50%;
+            background-color: #fff;
+            border-radius: 50%;
+        }
+
+        .slice {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            /* clip-path: polygon(50% 50%, 100% 0, 100% 100%); */
+            clip-path: polygon(50% 50%,
+                    /* Pusat lingkaran */
+                    50% 0%,
+                    /* Atas tengah */
+                    100% 0%,
+                    /* Sudut kanan atas */
+                    100% 100%,
+                    /* Sudut kanan bawah */
+                    50% 100%,
+                    /* Bawah tengah */
+                    50% 30%
+                    /* Titik yang menggambarkan 30% dari lingkaran */
+                );
+            transform-origin: 0 0;
+        }
+
+        .yellow {
+            background-color: yellow;
+        }
+
+        .green {
+            background-color: green;
+        }
+
+        .red {
+            background-color: red;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        .legend-label {
+            font-size: 14px;
+        }
         </style>
     </head>
     <body class="antialiased">
@@ -128,5 +238,31 @@
                 </div>
             </div>
         </div>
+        <div class="card-body">
+            <div class="pie-chart-container">
+                <div class="chart-title">Sentiment Result</div>
+                <div class="chart">
+                    <div class="inner-circle"></div>
+                    <div class="slice yellow"></div>
+                    <div class="slice green"></div>
+                    <div class="slice red"></div>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color yellow"></div>
+                        <div class="legend-label">Neutral</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color green"></div>
+                        <div class="legend-label">Positive</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color red"></div>
+                        <div class="legend-label">Negative</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </body>
 </html>

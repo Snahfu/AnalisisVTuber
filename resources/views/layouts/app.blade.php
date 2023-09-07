@@ -23,6 +23,7 @@
         rel="stylesheet">
 
     <!-- Vendor CSS Files -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
@@ -176,7 +177,7 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
-
+    <script src="assets/js/card-analytics.js"></script>
 </body>
 
 </html>
