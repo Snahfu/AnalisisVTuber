@@ -30,9 +30,24 @@
     <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-
+    
     <!-- Template Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/bootstrap-extended.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/colors.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/components.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/colors/palette-gradient.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/colors/palette-noui.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/colors/palette-variables.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/menu/menu-types/horizontal-menu.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/menu/menu-types/vertical-menu.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/menu/menu-types/vertical-overlay-menu.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/mixins/alert.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/mixins/hex2rgb.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/mixins/main-menu-mixin.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/mixins/transitions.css') }}">
+
     {{-- Additional CSS From Each Pages --}}
     @yield('style')
 </head>
