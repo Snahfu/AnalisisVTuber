@@ -30,31 +30,21 @@
     <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-    
-    <!-- Template Main CSS File -->
-    <link href="assets/css/main.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/bootstrap-extended.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/bootstrap.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/colors.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/components.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/colors/palette-gradient.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/colors/palette-noui.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/colors/palette-variables.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/menu/menu-types/horizontal-menu.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/menu/menu-types/vertical-menu.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/menu/menu-types/vertical-overlay-menu.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/mixins/alert.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/mixins/hex2rgb.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/mixins/main-menu-mixin.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vuexy/css-rtl/core/mixins/transitions.css') }}">
 
+    <!-- Template Main CSS File -->
+    <link rel="canonical" href="https://keenthemes.com/metronic" />
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+    <link href="assets/css/main.css" rel="stylesheet">
     {{-- Additional CSS From Each Pages --}}
     @yield('style')
 </head>
 
 <body>
     <!-- ======= Header ======= -->
-    <header id="header" class="header d-flex align-items-center fixed-top">
+    <header id="header" class="unique-header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
             <a href="index.html" class="logo d-flex align-items-center">
@@ -68,15 +58,16 @@
             <nav id="navbar" class="navbar">
                 <ul>
                     @yield('menu')
-                    
+
                     <!-- Start Profile Nav -->
                     <li class="nav-item dropdown pe-3">
                         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                             data-bs-toggle="dropdown">
-                            <img src="assets/img/profile-img.jpg" alt="Profile" width="40px" height="40px" class="rounded-circle">
+                            <img src="assets/img/profile-img.jpg" alt="Profile" width="40px" height="40px"
+                                class="rounded-circle">
                             <span class="d-none d-md-block dropdown-toggle ps-2">Reynard Blanc</span>
                         </a><!-- End Profile Iamge Icon -->
-    
+
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                             <li class="dropdown-header">
                                 <h6>Reynard Blanc</h6>
@@ -85,7 +76,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-    
+
                             <li>
                                 <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                                     <i class="bi bi-person"></i>
@@ -95,7 +86,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-    
+
                             <li>
                                 <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
                                     <i class="bi bi-question-circle"></i>
@@ -105,14 +96,14 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-    
+
                             <li>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <i class="bi bi-box-arrow-right"></i>
                                     <span>Sign Out</span>
                                 </a>
                             </li>
-    
+
                         </ul><!-- End Profile Dropdown Items -->
                     </li>
                     <!-- End Profile Nav -->
@@ -147,15 +138,15 @@
                 </div>
 
                 <div class="col-lg-2 col-6 footer-links">
-                    
+
                 </div>
 
                 <div class="col-lg-2 col-6 footer-links">
-                    
+
                 </div>
 
                 <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-                    
+
                 </div>
 
             </div>
