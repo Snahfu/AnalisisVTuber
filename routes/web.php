@@ -49,9 +49,6 @@ Route::get('/home', function () {
 Route::get('/home2', function () {
     return view('vtuber.index');
 });
-Route::get('/home3', function () {
-    return view('vtuber.coba');
-});
 
 Route::get('/home', [App\Http\Controllers\ManagerController::class, 'index'])->name('manager.home');
 Route::get('/crawling', [App\Http\Controllers\ManagerController::class, 'tocrawling'])->name('manager.crawl');

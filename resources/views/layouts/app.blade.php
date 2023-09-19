@@ -35,7 +35,7 @@
     <link rel="canonical" href="https://keenthemes.com/metronic" />
     <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
     <link href="assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    {{-- <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" /> --}}
     <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
     <link href="assets/css/main.css" rel="stylesheet">
     {{-- Additional CSS From Each Pages --}}
@@ -183,7 +183,12 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/card-analytics.js"></script>
+    <script src="assets/plugins/global/plugins.bundle.js"></script>
+    <script src="assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
+    <script src="assets/js/scripts.bundle.js"></script>
+
+    {{-- Additional JS From Each Pages --}}
+    @yield('scripts')
 </body>
 
 </html>

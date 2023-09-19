@@ -162,13 +162,13 @@
     </section>
     <!-- End Featured Services Section -->
 
-    <!-- ======= Services Section ======= -->
     <section id="service" class="services pt-0">
         <div class="container" data-aos="fade-up">
             <div class="section-header">
                 <span>Your Sentiment Analysis Summary</span>
                 <h2>Your Sentiment Analysis Summary</h2>
             </div>
+            {{-- ['50', '35', '75', '50', '45', '25']; --}}
             <div class="row gy-4 mb-4">
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="card">
@@ -188,11 +188,11 @@
                             <div class="row border-top text-center mx-0">
                                 <div class="col-6 bord er-end py-1">
                                     <p class="card-text text-muted mb-0">Positif Data</p>
-                                    <h3 class="fw-bolder mb-0">786,617</h3>
+                                    <h3 class="fw-bolder mb-0">200</h3>
                                 </div>
                                 <div class="col-6 py-1">
                                     <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">13,561</h3>
+                                    <h3 class="fw-bolder mb-0">400</h3>
                                 </div>
                             </div>
                         </div>
@@ -208,7 +208,7 @@
                                 <div class="circle-graph">
                                     <div class="circle circle-netral">
                                         <div class="circle-inner">
-                                            <span id="percentage">25%</span>
+                                            <span id="percentage">35%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -216,11 +216,11 @@
                             <div class="row border-top text-center mx-0">
                                 <div class="col-6 border-end py-1">
                                     <p class="card-text text-muted mb-0">Netral Data</p>
-                                    <h3 class="fw-bolder mb-0">786,617</h3>
+                                    <h3 class="fw-bolder mb-0">35</h3>
                                 </div>
                                 <div class="col-6 py-1">
                                     <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">13,561</h3>
+                                    <h3 class="fw-bolder mb-0">100</h3>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +236,7 @@
                                 <div class="circle-graph">
                                     <div class="circle circle-negative">
                                         <div class="circle-inner">
-                                            <span id="percentage">25%</span>
+                                            <span id="percentage">75%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -244,11 +244,11 @@
                             <div class="row border-top text-center mx-0">
                                 <div class="col-6 border-end py-1">
                                     <p class="card-text text-muted mb-0">Negative Data</p>
-                                    <h3 class="fw-bolder mb-0">786,617</h3>
+                                    <h3 class="fw-bolder mb-0">300</h3>
                                 </div>
                                 <div class="col-6 py-1">
                                     <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">13,561</h3>
+                                    <h3 class="fw-bolder mb-0">400</h3>
                                 </div>
                             </div>
                         </div>
@@ -275,11 +275,11 @@
                             <div class="row border-top text-center mx-0">
                                 <div class="col-6 bord er-end py-1">
                                     <p class="card-text text-muted mb-0">Feedback Comment</p>
-                                    <h3 class="fw-bolder mb-0">786,617</h3>
+                                    <h3 class="fw-bolder mb-0">50</h3>
                                 </div>
                                 <div class="col-6 py-1">
                                     <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">13,561</h3>
+                                    <h3 class="fw-bolder mb-0">100</h3>
                                 </div>
                             </div>
                         </div>
@@ -295,7 +295,7 @@
                                 <div class="circle-graph">
                                     <div class="circle circle-engagement">
                                         <div class="circle-inner">
-                                            <span id="percentage">25%</span>
+                                            <span id="percentage">45%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -303,11 +303,11 @@
                             <div class="row border-top text-center mx-0">
                                 <div class="col-6 border-end py-1">
                                     <p class="card-text text-muted mb-0">Engagement Comment</p>
-                                    <h3 class="fw-bolder mb-0">786,617</h3>
+                                    <h3 class="fw-bolder mb-0">450</h3>
                                 </div>
                                 <div class="col-6 py-1">
                                     <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">13,561</h3>
+                                    <h3 class="fw-bolder mb-0">1000</h3>
                                 </div>
                             </div>
                         </div>
@@ -331,11 +331,11 @@
                             <div class="row border-top text-center mx-0">
                                 <div class="col-6 border-end py-1">
                                     <p class="card-text text-muted mb-0">Other Data</p>
-                                    <h3 class="fw-bolder mb-0">786,617</h3>
+                                    <h3 class="fw-bolder mb-0">10</h3>
                                 </div>
                                 <div class="col-6 py-1">
                                     <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">13,561</h3>
+                                    <h3 class="fw-bolder mb-0">40</h3>
                                 </div>
                             </div>
                         </div>
@@ -343,29 +343,14 @@
                 </div>
             </div>
         </div>
-    </section><!-- End Services Section -->
+    </section>
 
     <script>
-        // const percentageElement = document.getElementById('percentage');
-        // const circle = document.querySelector('.circle-inner');
-
-        // const score = 80; // Your score here
-        // const totalScore = 100; // Total score here
-
-        // const percentage = (score / totalScore) * 100;
-        // percentageElement.textContent = `${Math.round(percentage)}%`;
-
-        // // circle.style.backgroundColor = '#fff'; // Customize the circle color here
-        // const filledCircle = document.querySelector('.circle');
-
-        // const angle = (percentage / 100) * 360;
-        // filledCircle.style.background = `conic-gradient(from -90deg, transparent ${360 - angle}deg, #00ff00 0)`;
-        // Get all circle elements
         const circles = document.querySelectorAll('.circle');
-        const percentages = ['50', '25', '25', '50', '25', '25'];
+        const percentages = ['50', '35', '75', '50', '45', '25'];
         // Loop through each circle element
         circles.forEach((circle, index) => {
-            const totalScore = 100; // Total score here
+            const totalScore = 100;
 
             const angle = (percentages[index] / 100) * 360;
             if (circle.classList.contains('circle-positive')) {
