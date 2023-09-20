@@ -23,7 +23,7 @@
         <nav>
             <div class="container">
                 <ol>
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html">Crawling</a></li>
                 </ol>
             </div>
         </nav>
