@@ -12,15 +12,17 @@
 @endsection
 
 @section('style')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <link href="assets/css/datatable.css" rel="stylesheet">
     <style>
-        .bg-instagram{
+        .bg-instagram {
             background-color: #C13584;
         }
-        .bg-custom{
+
+        .bg-custom {
             background-color: #cfe2ff;
         }
+
         .dropdown {
             position: relative;
             display: inline-block;
@@ -31,7 +33,7 @@
             position: absolute;
             background-color: #c8defe;
             min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
         }
 
@@ -146,7 +148,16 @@
                             <td>Krishnah Tosspell</td>
                             <td>Prosacco-Kessler</td>
                             <td class="text-center"><span class="badge rounded-pill bg-instagram">Instagram</span></td>
-                            <td nowrap="nowrap"></td>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <span class="settings-icon"><i class="fas fa-cog"></i></span>
+                                    <div class="dropdown-content">
+                                        <a href="https://www.youtube.com/watch?v=6n2kQjQTc5k">Link</a>
+                                        <a href="#">Detail</a>
+                                        <a href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td>5</td>
@@ -414,6 +425,7 @@
                 </table>
                 <!--end: Datatable-->
             </div>
+            <button type="button" class="btn btn-info">Train Model Baru</button>
         </div>
         <!--end::Card-->
     </div>

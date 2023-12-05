@@ -50,6 +50,10 @@ Route::get('/home2', function () {
     return view('vtuber.index');
 });
 
+Route::get('/detail', function () {
+    return view('detailcrawling');
+});
+
 Route::get('/home', [App\Http\Controllers\ManagerController::class, 'index'])->name('manager.home');
 Route::get('/crawling', [App\Http\Controllers\ManagerController::class, 'tocrawling'])->name('manager.crawl');
 Route::get('/analysis', [App\Http\Controllers\ManagerController::class, 'toanalysis'])->name('manager.analysis');
