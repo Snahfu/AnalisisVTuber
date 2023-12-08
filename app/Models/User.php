@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'group',
+        'role',
+        'url_gambar',
+        'instagram_link',
+        'youtube_link',
     ];
 
     /**
@@ -41,4 +46,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function histories()
+    {
+        return $this->hasMany(History::class, 'users_id');
+    }
 }

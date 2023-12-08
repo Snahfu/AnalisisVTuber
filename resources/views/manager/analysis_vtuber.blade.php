@@ -5,10 +5,10 @@
 @endsection
 
 @section('menu')
-    <li><a href="{{route('manager.home')}}">Home</a></li>
-    <li><a href="{{route('manager.crawl')}}">Crawling</a></li>
-    <li><a href="{{route('manager.analysis')}}" class="active">Analysis</a></li>
-    <li><a href="{{route('manager.history')}}">History</a></li>
+    <li><a href="{{ route('manager.home') }}">Home</a></li>
+    <li><a href="{{ route('manager.crawl') }}">Crawling</a></li>
+    <li><a href="{{ route('manager.analysis') }}" class="active">Analysis</a></li>
+    <li><a href="{{ route('manager.history') }}">History</a></li>
 @endsection
 
 @section('style')
@@ -23,8 +23,8 @@
         <nav>
             <div class="container">
                 <ol>
-                    <li><a href="index.html">Analysis</a></li>
-                    <li><a href="index.html">VTuber</a></li>
+                    <li><a href="#">Analysis</a></li>
+                    <li><a href="#">VTuber</a></li>
                 </ol>
             </div>
         </nav>
@@ -57,12 +57,12 @@
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Category Chart</h3>
+                                <h3 class="card-label">Like Analysis</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div id="overall_category" class="d-flex justify-content-center"></div>
+                            <div id="overall_like" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
                         </div>
                     </div>
@@ -91,12 +91,12 @@
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Like Analysis</h3>
+                                <h3 class="card-label">Category Chart</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div id="overall_like" class="d-flex justify-content-center"></div>
+                            <div id="overall_category" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
                         </div>
                     </div>
@@ -133,12 +133,12 @@
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Category Chart</h3>
+                                <h3 class="card-label">Like Analysis</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div id="youtube_category" class="d-flex justify-content-center"></div>
+                            <div id="youtube_like" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
                         </div>
                     </div>
@@ -163,16 +163,17 @@
                     <!--end::Card-->
                 </div>
                 <div class="col-xl-6 col-12 mb-4">
+
                     <!--begin::Card-->
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Like Analysis</h3>
+                                <h3 class="card-label">Category Chart</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div id="youtube_like" class="d-flex justify-content-center"></div>
+                            <div id="youtube_category" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
                         </div>
                     </div>
@@ -209,12 +210,12 @@
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Category Chart</h3>
+                                <h3 class="card-label">Like Analysis</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div id="ig_category" class="d-flex justify-content-center"></div>
+                            <div id="ig_like" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
                         </div>
                     </div>
@@ -239,16 +240,17 @@
                     <!--end::Card-->
                 </div>
                 <div class="col-xl-6 col-12 mb-4">
+
                     <!--begin::Card-->
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Like Analysis</h3>
+                                <h3 class="card-label">Category Chart</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div id="ig_like" class="d-flex justify-content-center"></div>
+                            <div id="ig_category" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
                         </div>
                     </div>
@@ -261,11 +263,34 @@
 
 @section('scripts')
     <script>
+        var jumlah_pertanyaan = @json($jumlah_pertanyaan);
+        var jumlah_feedback = @json($jumlah_feedback);
+        var jumlah_engagement = @json($jumlah_engagement);
+        var jumlah_positif = @json($jumlah_positif);
+        var jumlah_negatif = @json($jumlah_negatif);
+        var jumlah_netral = @json($jumlah_netral);
+        var jumlah_pertanyaan_y = @json($jumlah_pertanyaan_y);
+        var jumlah_feedback_y = @json($jumlah_feedback_y);
+        var jumlah_engagement_y = @json($jumlah_engagement_y);
+        var jumlah_positif_y = @json($jumlah_positif_y);
+        var jumlah_negatif_y = @json($jumlah_negatif_y);
+        var jumlah_netral_y = @json($jumlah_netral_y);
+        var jumlah_like_ig = @json($jumlah_like_ig);
+        var jumlah_like_y = @json($jumlah_like_y);
+        var jumlah_like_positif = @json($jumlah_like_positif);
+        var jumlah_like_positif_y = @json($jumlah_like_positif_y);
+        var jumlah_like_netral = @json($jumlah_like_netral);
+        var jumlah_like_netral_y = @json($jumlah_like_netral_y);
+        var jumlah_like_negatif = @json($jumlah_like_negatif);
+        var jumlah_like_negatif_y = @json($jumlah_like_negatif_y);
+
         // Sentiment
         var overallSentiment = function() {
             const sentimentChart = "#overall_sentiment";
             var options = {
-                series: [1000, 86, 70],
+                series: [jumlah_positif + jumlah_positif_y, jumlah_negatif + jumlah_negatif_y, jumlah_netral +
+                    jumlah_netral_y
+                ],
                 chart: {
                     width: 380,
                     type: 'pie',
@@ -290,7 +315,7 @@
         var youtubeSentimen = function() {
             const sentimentChart = "#youtube_sentiment";
             var options = {
-                series: [800, 23, 62],
+                series: [jumlah_positif_y, jumlah_negatif_y, jumlah_netral_y],
                 chart: {
                     width: 380,
                     type: 'pie',
@@ -315,7 +340,7 @@
         var instagramSentimen = function() {
             const sentimentChart = "#ig_sentiment";
             var options = {
-                series: [450, 73, 12],
+                series: [jumlah_positif, jumlah_negatif, jumlah_netral],
                 chart: {
                     width: 380,
                     type: 'pie',
@@ -342,12 +367,14 @@
         var overallCategory = function() {
             const categoryChart = "#overall_category";
             var options = {
-                series: [1000, 86, 70],
+                series: [jumlah_feedback + jumlah_feedback_y, jumlah_engagement + jumlah_engagement_y,
+                    jumlah_pertanyaan + jumlah_pertanyaan_y
+                ],
                 chart: {
                     width: 380,
                     type: 'pie',
                 },
-                labels: ['Feedback', 'Engagement', 'Other'],
+                labels: ['Feedback', 'Engagement', 'Pertanyaan'],
                 responsive: [{
                     breakpoint: 480,
                     options: {
@@ -367,12 +394,12 @@
         var youtubeCategory = function() {
             const categoryChart = "#youtube_category";
             var options = {
-                series: [1000, 86, 70],
+                series: [jumlah_feedback_y, jumlah_engagement_y, jumlah_pertanyaan_y],
                 chart: {
                     width: 380,
                     type: 'pie',
                 },
-                labels: ['Feedback', 'Engagement', 'Other'],
+                labels: ['Feedback', 'Engagement', 'Pertanyaan'],
                 responsive: [{
                     breakpoint: 480,
                     options: {
@@ -392,12 +419,12 @@
         var instagramCategory = function() {
             const categoryChart = "#ig_category";
             var options = {
-                series: [1000, 86, 70],
+                series: [jumlah_feedback, jumlah_engagement, jumlah_pertanyaan],
                 chart: {
                     width: 380,
                     type: 'pie',
                 },
-                labels: ['Feedback', 'Engagement', 'Other'],
+                labels: ['Feedback', 'Engagement', 'Pertanyaan'],
                 responsive: [{
                     breakpoint: 480,
                     options: {
@@ -419,7 +446,9 @@
         var overallTLike = function() {
             const totalLikeChart = "#overall_total_like";
             var options = {
-                series: [1000, 2000],
+                series: [jumlah_like_ig + jumlah_like_y, jumlah_like_negatif + jumlah_like_negatif_y +
+                    jumlah_like_netral + jumlah_like_netral_y + jumlah_like_positif + jumlah_like_positif_y
+                ],
                 chart: {
                     width: 380,
                     type: 'pie',
@@ -444,7 +473,7 @@
         var youtubeTLike = function() {
             const totalLikeChart = "#youtube_total_like";
             var options = {
-                series: [1000, 2000],
+                series: [jumlah_like_y, jumlah_like_negatif_y + jumlah_like_netral_y + jumlah_like_positif_y],
                 chart: {
                     width: 380,
                     type: 'pie',
@@ -469,7 +498,7 @@
         var instagramTLike = function() {
             const totalLikeChart = "#ig_total_like";
             var options = {
-                series: [1000, 2000],
+                series: [jumlah_like_ig, jumlah_like_negatif + jumlah_like_netral + jumlah_like_positif],
                 chart: {
                     width: 380,
                     type: 'pie',
@@ -496,7 +525,9 @@
         var overallLike = function() {
             const likeChart = "#overall_like";
             var options = {
-                series: [1000, 86, 70],
+                series: [jumlah_like_positif + jumlah_like_positif_y, jumlah_like_negatif_y + jumlah_like_negatif,
+                    jumlah_like_netral + jumlah_like_netral_y
+                ],
                 chart: {
                     width: 380,
                     type: 'pie',
@@ -521,7 +552,7 @@
         var youtubeLike = function() {
             const likeChart = "#youtube_like";
             var options = {
-                series: [800, 23, 62],
+                series: [jumlah_like_positif_y, jumlah_like_negatif_y, jumlah_like_netral_y],
                 chart: {
                     width: 380,
                     type: 'pie',
@@ -546,7 +577,7 @@
         var instagramLike = function() {
             const likeChart = "#ig_like";
             var options = {
-                series: [450, 73, 12],
+                series: [jumlah_like_positif, jumlah_like_negatif, jumlah_like_netral],
                 chart: {
                     width: 380,
                     type: 'pie',

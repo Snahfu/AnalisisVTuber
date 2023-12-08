@@ -65,7 +65,7 @@
         <nav>
             <div class="container">
                 <ol>
-                    <li><a href="index.html">History</a></li>
+                    <li><a href="#">History</a></li>
                 </ol>
             </div>
         </nav>

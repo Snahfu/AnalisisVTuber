@@ -59,7 +59,7 @@
             background: conic-gradient(from 0deg, transparent 50%, #9552EA 0);
         }
 
-        .circle-others {
+        .circle-pertanyaan {
             background: conic-gradient(from 0deg, transparent 50%, #FFA32F 0);
         }
 
@@ -106,7 +106,7 @@
         <nav>
             <div class="container">
                 <ol>
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="{{ (Auth::user()->role == "Manager") ? route('manager.home') : route('vtuber.home') }}">Home</a></li>
                 </ol>
             </div>
         </nav>
@@ -118,43 +118,18 @@
         <div class="container">
             <h3 class="mb-3 text-primary">Your Recent Activities</h3>
             <div class="row gy-4">
-                <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up">
-                    <div class="icon flex-shrink-0"><i class="bi bi-youtube"></i></div>
-                    <div>
-                        <h4 class="title">Elaine Celestia Ch.『 Re:Memories 』</h4>
-                        <p class="description">Hey, How are you?</p>
-                        <p class="description"><i class="bi bi-chat"></i> 100</p>
-                        <a href="service-details.html" class="readmore stretched-link"><span>Detail</span><i
-                                class="bi bi-arrow-right"></i></a>
+                @foreach ($vtuber_content as $content)
+                    <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up">
+                        <div class="icon flex-shrink-0"><i class="bi {{ ($content->sources == "Youtube") ? "bi-youtube" : "bi-instagram" }}"></i></div>
+                        <div>
+                            <h4 class="title">{{$content->creator}}</h4>
+                            <p class="description">{{$content->title}}</p>
+                            <p class="description"><i class="bi bi-chat"></i> {{$content->total_comments}}</p>
+                            <a href="#" class="readmore stretched-link"><span>Detail</span><i
+                                    class="bi bi-arrow-right"></i></a>
+                        </div>
                     </div>
-                </div>
-                <!-- End Service Item -->
-
-                <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="100">
-                    <div class="icon flex-shrink-0"><i class="bi bi-instagram"></i></div>
-                    <div>
-                        <h4 class="title">Nekoyama Sena</h4>
-                        <p class="description">NYAHOO SEMUANYA!!!! 🥰
-                            Untuk merayakan kembalinya Sena ke live stream...
-                            Hari ini....Sena bakal lanjut... namatin Only up... 💀</p>
-                        <p class="description"><i class="bi bi-chat"></i> 13</p>
-                        <a href="service-details.html" class="readmore stretched-link"><span>Detail</span><i
-                                class="bi bi-arrow-right"></i></a>
-                    </div>
-                </div>
-                <!-- End Service Item -->
-
-                <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="200">
-                    <div class="icon flex-shrink-0"><i class="bi bi-youtube"></i></div>
-                    <div>
-                        <h4 class="title">Nekoyama Sena 〘 YumeLive 〙</h4>
-                        <p class="description">🐇 Nekoyama Sena! Vtuber Kucing dari Indonesia!【YumeLive🐇】</p>
-                        <p class="description"><i class="bi bi-chat"></i> 138</p>
-                        <a href="service-details.html" class="readmore stretched-link"><span>Detail</span><i
-                                class="bi bi-arrow-right"></i></a>
-                    </div>
-                </div>
-                <!-- End Service Item -->
+                @endforeach
 
             </div>
 
@@ -168,7 +143,10 @@
                 <span>Your Sentiment Analysis Summary</span>
                 <h2>Your Sentiment Analysis Summary</h2>
             </div>
-            {{-- ['50', '35', '75', '50', '45', '25']; --}}
+            @php
+                $total_semua_sentimen = $jumlah_positif + $jumlah_positif_y + $jumlah_negatif + $jumlah_negatif_y + $jumlah_netral_y + $jumlah_netral;
+                $total_semua_kategori = $jumlah_engagement + $jumlah_engagement_y + $jumlah_feedback + $jumlah_feedback_y + $jumlah_pertanyaan + $jumlah_pertanyaan_y;
+            @endphp
             <div class="row gy-4 mb-4">
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="card">
@@ -180,19 +158,20 @@
                                 <div class="circle-graph">
                                     <div class="circle circle-positive">
                                         <div class="circle-inner">
-                                            <span id="percentage">50%</span>
+                                            <span
+                                                id="percentage">{{ (($jumlah_positif + $jumlah_positif_y) / $total_semua_sentimen) * 100 }}%</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row border-top text-center mx-0">
                                 <div class="col-6 bord er-end py-1">
-                                    <p class="card-text text-muted mb-0">Positif Data</p>
-                                    <h3 class="fw-bolder mb-0">200</h3>
+                                    <p class="card-text text-muted mb-0">Positif</p>
+                                    <h3 class="fw-bolder mb-0">{{ $jumlah_positif + $jumlah_positif_y }}</h3>
                                 </div>
                                 <div class="col-6 py-1">
                                     <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">400</h3>
+                                    <h3 class="fw-bolder mb-0">{{ $total_semua_sentimen }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -208,19 +187,20 @@
                                 <div class="circle-graph">
                                     <div class="circle circle-netral">
                                         <div class="circle-inner">
-                                            <span id="percentage">35%</span>
+                                            <span
+                                                id="percentage">{{ (($jumlah_netral + $jumlah_netral_y) / $total_semua_sentimen) * 100 }}%</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row border-top text-center mx-0">
                                 <div class="col-6 border-end py-1">
-                                    <p class="card-text text-muted mb-0">Netral Data</p>
-                                    <h3 class="fw-bolder mb-0">35</h3>
+                                    <p class="card-text text-muted mb-0">Netral</p>
+                                    <h3 class="fw-bolder mb-0">{{ $jumlah_netral + $jumlah_netral_y }}</h3>
                                 </div>
                                 <div class="col-6 py-1">
                                     <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">100</h3>
+                                    <h3 class="fw-bolder mb-0">{{ $total_semua_sentimen }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -236,19 +216,20 @@
                                 <div class="circle-graph">
                                     <div class="circle circle-negative">
                                         <div class="circle-inner">
-                                            <span id="percentage">75%</span>
+                                            <span
+                                                id="percentage">{{ (($jumlah_negatif + $jumlah_negatif_y) / $total_semua_sentimen) * 100 }}%</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row border-top text-center mx-0">
                                 <div class="col-6 border-end py-1">
-                                    <p class="card-text text-muted mb-0">Negative Data</p>
-                                    <h3 class="fw-bolder mb-0">300</h3>
+                                    <p class="card-text text-muted mb-0">Negative</p>
+                                    <h3 class="fw-bolder mb-0">{{ $jumlah_negatif + $jumlah_negatif_y }}</h3>
                                 </div>
                                 <div class="col-6 py-1">
                                     <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">400</h3>
+                                    <h3 class="fw-bolder mb-0">{{ $total_semua_sentimen }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -267,19 +248,20 @@
                                 <div class="circle-graph">
                                     <div class="circle circle-feedback">
                                         <div class="circle-inner">
-                                            <span id="percentage">50%</span>
+                                            <span
+                                                id="percentage">{{ (($jumlah_feedback + $jumlah_feedback_y) / $total_semua_kategori) * 100 }}%</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row border-top text-center mx-0">
                                 <div class="col-6 bord er-end py-1">
-                                    <p class="card-text text-muted mb-0">Feedback Comment</p>
-                                    <h3 class="fw-bolder mb-0">50</h3>
+                                    <p class="card-text text-muted mb-0">Feedback</p>
+                                    <h3 class="fw-bolder mb-0">{{ $jumlah_feedback + $jumlah_feedback_y }}</h3>
                                 </div>
                                 <div class="col-6 py-1">
                                     <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">100</h3>
+                                    <h3 class="fw-bolder mb-0">{{ $total_semua_kategori }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -295,19 +277,20 @@
                                 <div class="circle-graph">
                                     <div class="circle circle-engagement">
                                         <div class="circle-inner">
-                                            <span id="percentage">45%</span>
+                                            <span
+                                                id="percentage">{{ (($jumlah_engagement + $jumlah_engagement_y) / $total_semua_kategori) * 100 }}%</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row border-top text-center mx-0">
                                 <div class="col-6 border-end py-1">
-                                    <p class="card-text text-muted mb-0">Engagement Comment</p>
-                                    <h3 class="fw-bolder mb-0">450</h3>
+                                    <p class="card-text text-muted mb-0">Engagement</p>
+                                    <h3 class="fw-bolder mb-0">{{ $jumlah_engagement + $jumlah_engagement_y }}</h3>
                                 </div>
                                 <div class="col-6 py-1">
                                     <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">1000</h3>
+                                    <h3 class="fw-bolder mb-0">{{ $total_semua_kategori }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -316,26 +299,27 @@
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Total Other</h4>
+                            <h4 class="card-title">Total Pertanyaan</h4>
                         </div>
                         <div class="card-body p-0">
                             <div class="containerwidget">
                                 <div class="circle-graph">
-                                    <div class="circle circle-others">
+                                    <div class="circle circle-pertanyaan">
                                         <div class="circle-inner">
-                                            <span id="percentage">25%</span>
+                                            <span
+                                                id="percentage">{{ (($jumlah_pertanyaan + $jumlah_pertanyaan_y) / $total_semua_kategori) * 100 }}%</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row border-top text-center mx-0">
                                 <div class="col-6 border-end py-1">
-                                    <p class="card-text text-muted mb-0">Other Data</p>
-                                    <h3 class="fw-bolder mb-0">10</h3>
+                                    <p class="card-text text-muted mb-0">Pertanyaan</p>
+                                    <h3 class="fw-bolder mb-0">{{ $jumlah_pertanyaan + $jumlah_pertanyaan_y }}</h3>
                                 </div>
                                 <div class="col-6 py-1">
                                     <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">40</h3>
+                                    <h3 class="fw-bolder mb-0">{{ $total_semua_kategori }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -346,8 +330,34 @@
     </section>
 
     <script>
+        var jumlah_pertanyaan = @json($jumlah_pertanyaan);
+        var jumlah_feedback = @json($jumlah_feedback);
+        var jumlah_engagement = @json($jumlah_engagement);
+        var jumlah_positif = @json($jumlah_positif);
+        var jumlah_negatif = @json($jumlah_negatif);
+        var jumlah_netral = @json($jumlah_netral);
+        var jumlah_pertanyaan_y = @json($jumlah_pertanyaan_y);
+        var jumlah_feedback_y = @json($jumlah_feedback_y);
+        var jumlah_engagement_y = @json($jumlah_engagement_y);
+        var jumlah_positif_y = @json($jumlah_positif_y);
+        var jumlah_negatif_y = @json($jumlah_negatif_y);
+        var jumlah_netral_y = @json($jumlah_netral_y);
+
+        var total_semua_sentimen = jumlah_positif + jumlah_positif_y + jumlah_negatif + jumlah_negatif_y + jumlah_netral_y +
+            jumlah_netral;
+        var total_semua_kategori = jumlah_engagement + jumlah_engagement_y + jumlah_feedback + jumlah_feedback_y +
+            jumlah_pertanyaan + jumlah_pertanyaan_y;
+        var total_positif = (jumlah_positif + jumlah_positif_y) / total_semua_sentimen * 100;
+        var total_negatif = (jumlah_negatif + jumlah_negatif_y) / total_semua_sentimen * 100;
+        var total_netral = (jumlah_netral + jumlah_netral_y) / total_semua_sentimen * 100;
+        var total_pertanyaan = (jumlah_pertanyaan + jumlah_pertanyaan_y) / total_semua_kategori * 100;
+        var total_feedback = (jumlah_feedback + jumlah_feedback_y) / total_semua_kategori * 100;
+        var total_engagement = (jumlah_engagement + jumlah_engagement_y) / total_semua_kategori * 100;
+
         const circles = document.querySelectorAll('.circle');
-        const percentages = ['50', '35', '75', '50', '45', '25'];
+        const percentages = [total_positif, total_netral, total_negatif, total_feedback, total_engagement,
+        total_pertanyaan];
+
         // Loop through each circle element
         circles.forEach((circle, index) => {
             const totalScore = 100;
@@ -368,16 +378,10 @@
             } else if (circle.classList.contains('circle-engagement')) {
                 circle.style.background =
                     `conic-gradient(#9552EA 0deg, #9552EA ${0 + angle}deg, #ffffff ${0 + angle}deg)`;
-            } else if (circle.classList.contains('circle-others')) {
+            } else if (circle.classList.contains('circle-pertanyaan')) {
                 circle.style.background =
                     `conic-gradient(#FFA32F 0deg, #FFA32F ${0 + angle}deg, #ffffff ${0 + angle}deg)`;
             }
         });
     </script>
-    {{-- @php
-        $api = file_get_contents("http://api.instagram.com/oembed?url=https://www.instagram.com/p/CvhLHhIxza3/");      
-        $apiObj = json_decode($api,true);      
-        $media_id = $apiObj['media_id'];
-    @endphp
-    {{ $media_id }} --}}
 @endsection

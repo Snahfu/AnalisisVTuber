@@ -47,7 +47,7 @@
     <header id="header" class="unique-header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-            <a href="index.html" class="logo d-flex align-items-center">
+            <a href="#" class="logo d-flex align-items-center">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <img src="assets/img/logo_app.png" alt="logo">
                 {{-- <h1>Logis</h1> --}}
@@ -58,47 +58,21 @@
             <nav id="navbar" class="navbar">
                 <ul>
                     @yield('menu')
-
                     <!-- Start Profile Nav -->
                     <li class="nav-item dropdown pe-3">
                         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                             data-bs-toggle="dropdown">
-                            <img src="assets/img/profile-img.jpg" alt="Profile" width="40px" height="40px"
+                            <img src="{{ asset(Auth::user()->url_gambar) }}" alt="Profile" width="40px" height="40px"
                                 class="rounded-circle">
-                            <span class="d-none d-md-block dropdown-toggle ps-2">Reynard Blanc</span>
+                            <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }}</span>
                         </a><!-- End Profile Iamge Icon -->
 
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                             <li class="dropdown-header">
-                                <h6>Reynard Blanc</h6>
-                                <span>VTuber Re:Memories Gen 1</span>
+                                <h6>{{ Auth::user()->name }}</h6>
                             </li>
                             <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                    <i class="bi bi-person"></i>
-                                    <span>My Profile</span>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                                    <i class="bi bi-question-circle"></i>
-                                    <span>Need Help?</span>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                <a class="dropdown-item d-flex align-items-center" href="{{route('logout')}}">
                                     <i class="bi bi-box-arrow-right"></i>
                                     <span>Sign Out</span>
                                 </a>
@@ -125,7 +99,7 @@
         <div class="container">
             <div class="row gy-4">
                 <div class="col-lg-5 col-md-12 footer-info">
-                    <a href="index.html" class="logo d-flex align-items-center">
+                    <a href="#" class="logo d-flex align-items-center">
                         <span>VTuberTECH</span>
                     </a>
                     <p>Made by Hans Wirjawan</p>

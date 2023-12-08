@@ -23,7 +23,7 @@
         <nav>
             <div class="container">
                 <ol>
-                    <li><a href="#">History</a></li>
+                    <li><a href="{{ (Auth::user()->role == "Manager") ? route('manager.home') : route('vtuber.home') }}">Home</a></li>
                     <li><a href="#">Detail</a></li>
                 </ol>
             </div>

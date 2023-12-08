@@ -66,12 +66,12 @@
             <div class="col" style="margin: 0px; padding: 0px;">
                 <img src="{{ asset('assets/img/manager-background.png') }}" width="100%" height="auto"
                     alt="Deskripsi Gambar">
-                <a href="#" class="overlay-text-left fs-1">Analysis Agency</a>
+                <a href="{{ route('manager.analysis.management') }}" class="overlay-text-left fs-1">Analysis Agency</a>
             </div>
             <div class="col" style="margin: 0px; padding: 0px;">
                 <img src="{{ asset('assets/img/virtualyoutuber-backgrounds.png') }}" width="100%" height="auto"
                     alt="Deskripsi Gambar">
-                <a href="#" class="overlay-text-right fs-1">Analysis Talent VTuber</a>
+                <a href="{{ route('manager.analysis.vtuber') }}" class="overlay-text-right fs-1">Analysis Talent VTuber</a>
             </div>
         </div>
     </div>
