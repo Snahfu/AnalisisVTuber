@@ -16,14 +16,16 @@
 
 @section('content')
     <div class="breadcrumbs">
-        <div class="page-header d-flex align-items-center" style="background-image: url('assets/img/page-background.jpg');">
-
+        <div class="page-header d-flex align-items-center"
+            style="background-image: url('{{ asset('assets/img/page-background.jpg') }}');">
         </div>
 
         <nav>
             <div class="container">
                 <ol>
-                    <li><a href="{{ (Auth::user()->role == "Manager") ? route('manager.home') : route('vtuber.home') }}">Home</a></li>
+                    <li><a
+                            href="{{ Auth::user()->role == 'Manager' ? route('manager.home') : route('vtuber.home') }}">Home</a>
+                    </li>
                     <li><a href="#">Detail</a></li>
                 </ol>
             </div>
@@ -35,47 +37,24 @@
             <h4 class="card-title">Edit Data</h4>
         </div>
         <div class="card-body">
-            <form>
-                <fieldset>
-                    <div class="mb-3">
-                        <label for="judul" class="form-label">Judul</label>
-                        <input type="text" class="form-control" id="judul" aria-describedby="judulhelp" placeholder="Streaming sampai besok pagi!">
-                        {{-- <div id="judulhelp" class="form-text">We'll never share your email with anyone else.</div> --}}
-                    </div>
-                    <div class="mb-3">
-                        <label for="pencipta" class="form-label">Pencipta</label>
-                        <input type="text" class="form-control" id="pencipta" aria-describedby="penciptahelp" placeholder="HeroIsGod">
-                        {{-- <div id="penciptahelp" class="form-text">We'll never share your email with anyone else.</div> --}}
-                    </div>
-                    <div class="mb-3">
-                        <label for="tanggal" class="form-label">Tanggal Dibuat</label>
-                        <input type="text" class="form-control" id="tanggal" aria-describedby="tanggalhelp" placeholder="7 Februari 2022">
-                        {{-- <div id="tanggalhelp" class="form-text">We'll never share your email with anyone else.</div> --}}
-                    </div>
-                </fieldset>
-                {{-- <div class="row">
-                    <div class="col-6">
-                        <label for="sentiment" class="form-label">Jenis Sentiment</label>
-                        <select class="mb-3 form-select" id="sentiment" aria-label="Default select example">
-                            <option selected disabled>Ubah Sentimen</option>
-                            <option value="positif">Positif</option>
-                            <option value="negatif">Negatif</option>
-                            <option value="netral">Netral</option>
-                        </select>
-                    </div>
-                    <div class="col-6">
-                        <label for="kategoris" class="form-label">Jenis Kategori</label>
-                        <select class="mb-3 form-select" id="kategoris" aria-label="Default select example">
-                            <option selected disabled>Ubah Kategori</option>
-                            <option value="feedback">Feedback</option>
-                            <option value="engagement">Engagement</option>
-                            <option value="others">Others</option>
-                        </select>
-                    </div>
-                </div> --}}
-
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            <fieldset>
+                <div class="mb-3">
+                    <label for="title" class="form-label">Judul</label>
+                    <input type="text" class="form-control" id="title" value="{{ $content->title }}" name="title">
+                </div>
+                <div class="mb-3">
+                    <label for="creator" class="form-label">Pencipta</label>
+                    <input type="text" class="form-control" id="creator" value="{{ $content->creator }}"
+                        name="creator">
+                </div>
+                <div class="mb-3">
+                    <label for="like_count" class="form-label">Jumlah Like</label>
+                    <input type="int" class="form-control" id="like_count" value="{{ $content->like_count }}"
+                        name="like_count">
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary"
+                onclick="updateKonten({{ $content->id }}, '{{ $content->sourcesId }}')">Submit</button>
         </div>
     </div>
 
@@ -84,104 +63,252 @@
             <h4 class="card-title">Data Komentar</h4>
         </div>
         <div class="card-body bg-custom h5 text-dark">
-            <table class="table table-bordered table-striped table-light table-hover table-responsive">
+            <table class="table table-bordered table-striped table-light table-hover table-responsive" id="listkomentar">
                 <thead>
                     <tr class="text-center">
-                        <th>No.</th>
+                        <th>Id</th>
                         <th>Comments</th>
                         <th>Author</th>
                         <th>Total Like</th>
                         <th>Sentiment</th>
                         <th>Category</th>
-                        <th>Action</th>
+                        <th colspan="2">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Senaaaa imuttt bangettt sihhh>< <td>@zahraersa7969</td>
-                        <td> 2 </td>
-                        <td> Positif </td>
-                        <td> Engagement </td>
-                        <td class="text-center">
-                            <button class="btn btn-circle bg-danger text-light">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Sen Request game android Modern Warship lebih bagus dari pada World of Warship 😎</td>
-                        <td>@a.b.fbima23LEGEND</td>
-                        <td>0</td>
-                        <td>Positif</td>
-                        <td>Feedback</td>
-                        <td class="text-center">
-                            <button class="btn btn-circle bg-danger text-light">Delete</button>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Upload nya lama banget
-                        </td>
-                        <td>
-                            @muhammadnarendrapratama</td>
-                        <td>
-                            0
-                        </td>
-                        <td>Negatif</td>
-                        <td>Feedback</td>
-                        <td class="text-center">
-                            <button class="btn btn-circle bg-danger text-light">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Dame dame ~dame yo dame nanoyo, gak bakat mancing chi KSABAR crot
-                        </td>
-                        <td>@ZidanAseli</td>
-                        <td>
-                            1
-                        </td>
-                        <td>Netral</td>
-                        <td>Others</td>
-                        <td class="text-center">
-                            <button class="btn btn-circle bg-danger text-light">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Nice~! Aku ga sabar pengen lihat model barumu~ 💜
-                        </td>
-                        <td>
-                            @ArielDemonLady512</td>
-                        <td>
-                            1
-                        </td>
-                        <td>Positif</td>
-                        <td>Engagement</td>
-                        <td class="text-center">
-                            <button class="btn btn-circle bg-danger text-light">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>kak main resident evil 4
-                        </td>
-                        <td>@vividesu299</td>
-                        <td>
-                            0
-                        </td>
-                        <td>Positif</td>
-                        <td>Feedback</td>
-                        <td class="text-center">
-                            <button class="btn btn-circle bg-danger text-light">Delete</button>
-                        </td>
-                    </tr>
+                    @foreach ($content_commentar as $komentar)
+                        <tr id="tr_{{ $komentar->id }}">
+                            <td>{{ $komentar->id }}</td>
+                            <td> {{ $komentar->text }}</td>
+                            <td> {{ $komentar->author }} </td>
+                            <td> {{ $komentar->like_count }} </td>
+                            <td id="td_sentimen_{{ $komentar->id }}"> {{ $komentar->kelas_sentimen }} </td>
+                            <td id="td_kategori_{{ $komentar->id }}"> {{ $komentar->kelas_kategori }} </td>
+                            <td class="text-center">
+                                <button class="btn btn-circle bg-info text-light"
+                                    onclick="getKomenData({{ $komentar->id }})">Edit</button>
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-circle bg-danger text-light"
+                                    onclick="openModal({{ $komentar->id }})">Delete</button>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+
+    {{-- Modal Edit Begin --}}
+    <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Detail Komentar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editIsiKomentar" class="form-label">Isi Komentar</label>
+                        <textarea class="form-control" id="editIsiKomentar" row="4" disabled></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPenulisKomentar" class="form-label">Penulis Komentar</label>
+                        <input type="text" class="form-control" id="editPenulisKomentar" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSentimenKomentar" class="form-label">Sentimen</label>
+                        <input type="text" class="form-control" id="editSentimenKomentar">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editKategoriKomentar" class="form-label">Kategori</label>
+                        <input type="text" class="form-control" id="editKategoriKomentar">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="buttonPerbaruhi"
+                        onclick="updateKomentar()">Perbaruhi</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Modal Edit End --}}
+
+    {{-- Modal Alert Begin --}}
+    <div class="modal fade" id="alertModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id="alertModalTitle" class="modal-header bg-success">
+                    <h5 class="modal-title" id="alertModalLabel">Alert</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" id="responseController"></label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Oke</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Modal Alert End --}}
+
+    {{-- Modal Konfirmasi Begin --}}
+    <div class="modal fade" id="konfirmasiModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id="alertModalTitle" class="modal-header bg-danger">
+                    <h5 class="modal-title" id="alertModalLabel">Alert</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" id="pesanModal"></label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnHapus"
+                        onclick="deleteKomentar(1)">Hapus</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Modal Konfirmasi End --}}
 @endsection
 
 @section('scripts')
+    <script>
+        function alertUpdate(msg, status) {
+            var alertModalTitle = document.getElementById('alertModalTitle');
+            if (status == "success") {
+                alertModalTitle.classList.remove('bg-danger');
+                alertModalTitle.classList.add('bg-success');
+                $('#responseController').html(msg);
+                $('#alertModal').modal('show');
+            } else {
+                alertModalTitle.classList.remove('bg-success');
+                alertModalTitle.classList.add('bg-danger');
+                $('#responseController').html(msg);
+                $('#alertModal').modal('show');
+            }
+        }
+
+        function getKomenData(id) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ route('detail.comment') }}",
+                type: 'GET',
+                data: {
+                    'id': id,
+                },
+                dataType: 'json',
+                success: function(response) {
+                    document.getElementById('editIsiKomentar').value = response.data.text;
+                    document.getElementById('editPenulisKomentar').value = response.data.author;
+                    document.getElementById('editSentimenKomentar').value = response.data.kelas_sentimen;
+                    document.getElementById('editKategoriKomentar').value = response.data.kelas_kategori;
+
+                    $('#buttonPerbaruhi').attr('onclick', 'updateKomentar(' + id + ')');
+                    $('#editModal').modal('show');
+                },
+                error: function(error) {
+                    console.log('Error:', error);
+                }
+            });
+        }
+
+        function updateKomentar(id) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ route('update.comment') }}",
+                type: 'POST',
+                data: {
+                    'id': id,
+                    'kelas_sentimen': document.getElementById('editSentimenKomentar').value,
+                    'kelas_kategori': document.getElementById('editKategoriKomentar').value,
+                },
+                dataType: 'json',
+                success: function(response) {
+                    $('#editModal').modal('hide');
+                    $('#td_kategori_' + id).html(document.getElementById('editKategoriKomentar').value);
+                    $('#td_sentimen_' + id).html(document.getElementById('editSentimenKomentar').value);
+                    alertUpdate(response.msg, response.status);
+                },
+                error: function(error) {
+                    console.log('Error:', error);
+                }
+            });
+        }
+
+        function openModal(id) {
+            $('#pesanModal').html("Apakah anda yakin untuk menghapus ini?");
+            $('#konfirmasiModal').modal('show');
+            $('#btnHapus').attr('onclick', 'deleteKomentar(' + id + ')');
+        }
+
+        function deleteKomentar(id) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ route('delete.comment') }}",
+                type: 'POST',
+                data: {
+                    'id': id,
+                },
+                dataType: 'json',
+                success: function(response) {
+                    $('#konfirmasiModal').modal('hide');
+                    alertUpdate(response.msg, response.status);
+                    $("#tr_" + id).remove();
+                },
+                error: function(error) {
+                    console.log('Error:', error);
+                }
+            });
+        }
+
+        function updateKonten(id, sourcesId) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ route('update.content') }}",
+                type: 'POST',
+                data: {
+                    'id': id,
+                    'sourcesId': sourcesId,
+                    'title': document.getElementById('title').value,
+                    'creator': document.getElementById('creator').value,
+                    'like_count': document.getElementById('like_count').value,
+                },
+                dataType: 'json',
+                success: function(response) {
+                    alertUpdate(response.msg, response.status);
+                },
+                error: function(error) {
+                    console.log('Error:', error);
+                }
+            });
+        }
+    </script>
 @endsection

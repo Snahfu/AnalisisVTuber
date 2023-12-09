@@ -10,5 +10,13 @@ class Comment extends Model
     use HasFactory;
     public $timestamps = false;
     protected $table = "comments";
+    protected $fillable = [
+        'kelas_kategori',
+        'kelas_sentimen',
+    ];
 
+    public function content()
+    {
+        return $this->belongsTo(Content::class, 'contents_id', 'id');
+    }
 }

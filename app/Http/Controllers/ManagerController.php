@@ -46,14 +46,12 @@ class ManagerController extends Controller
             ->groupBy('contents.like_count')
             ->groupBy('contents.date')
             ->groupBy('contents.sources')
-            ->groupBy('contents.caption')
             ->get();
 
         $vtuber_list = User::where('role', 'VTuber')
             ->where('users.group', '=', $user_affiliation)
             ->select('users.*')
             ->get();
-        // dd($vtuber_list);
 
         return view('manager.index', [
             "user_affiliation" => $user_affiliation,
@@ -64,7 +62,18 @@ class ManagerController extends Controller
 
     public function tohistory()
     {
-        return view('manager.history');
+        $group = Auth::user()->group;
+
+        $histories = History::select('histories.*', 'contents.*')
+            ->join('contents', 'histories.contents_id', '=', 'contents.id')
+            ->join('users', 'users.id', '=', 'histories.users_id')
+            ->where('users.group', $group)
+            ->orderBy('contents.date', 'desc')
+            ->get();
+
+        return view('manager.history', [
+            "histories" => $histories,
+        ]);
     }
 
     public function tocrawling()
@@ -80,7 +89,7 @@ class ManagerController extends Controller
     public function analysismanagement()
     {
         // User Id
-        $id = 1;
+        $id = Auth::user()->id;
         // Youtube Data
         $comment_netral_y = Comment::join('contents', 'comments.contents_id', '=', 'contents.id')
             ->join('histories', 'histories.contents_id', '=', 'contents.id')
@@ -144,7 +153,7 @@ class ManagerController extends Controller
             $total_like_netral_y += $detailkomentar->like_count;
         }
 
-        $query_like_youtube = Content::join('histories', 'histories.contents_id', '=', 'contents.id')
+        $query_like_youtube = History::join('contents', 'contents.id', '=', 'histories.contents_id')
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('users.id', '=', $id)
             ->where('contents.sources', '=', 'Youtube')
@@ -176,7 +185,7 @@ class ManagerController extends Controller
             ->join('histories', 'histories.contents_id', '=', 'contents.id')
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_sentimen', '=', 'negatif')
-            ->where('users.group', '=', 'yume')
+            ->where('users.id', '=', $id)
             ->where('contents.sources', '=', 'Instagram')
             ->select('comments.*')
             ->get();
@@ -217,7 +226,7 @@ class ManagerController extends Controller
         foreach ($comment_netral as $detailkomentar) {
             $total_like_netral += $detailkomentar->like_count;
         }
-        $query_like_instagram = Content::join('histories', 'histories.contents_id', '=', 'contents.id')
+        $query_like_instagram = History::join('contents', 'contents.id', '=', 'histories.contents_id')
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('users.id', '=', $id)
             ->where('contents.sources', '=', 'Youtube')
@@ -253,6 +262,7 @@ class ManagerController extends Controller
     }
     public function analysisvtuber()
     {
+        $user_id = Auth::user()->id;
         $user_affiliation = Auth::user()->group;
         // Youtube Data
         $comment_netral_y = Comment::join('contents', 'comments.contents_id', '=', 'contents.id')
@@ -260,6 +270,7 @@ class ManagerController extends Controller
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_sentimen', '=', 'netral')
             ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Youtube')
             ->select('comments.*')
             ->get();
@@ -268,6 +279,7 @@ class ManagerController extends Controller
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_sentimen', '=', 'positif')
             ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Youtube')
             ->select('comments.*')
             ->get();
@@ -276,6 +288,7 @@ class ManagerController extends Controller
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_sentimen', '=', 'negatif')
             ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Youtube')
             ->select('comments.*')
             ->get();
@@ -284,6 +297,7 @@ class ManagerController extends Controller
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_kategori', '=', 'feedback')
             ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Youtube')
             ->select('comments.*')
             ->get();
@@ -292,6 +306,7 @@ class ManagerController extends Controller
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_kategori', '=', 'engagement')
             ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Youtube')
             ->select('comments.*')
             ->get();
@@ -300,6 +315,7 @@ class ManagerController extends Controller
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_kategori', '=', 'pertanyaan')
             ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Youtube')
             ->select('comments.*')
             ->get();
@@ -319,7 +335,8 @@ class ManagerController extends Controller
 
         $query_like_youtube = Content::join('histories', 'histories.contents_id', '=', 'contents.id')
             ->join('users', 'histories.users_id', '=', 'users.id')
-            ->where('users.id', '=', '1')
+            ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Youtube')
             ->select('contents.*')
             ->get();
@@ -334,6 +351,7 @@ class ManagerController extends Controller
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_sentimen', '=', 'netral')
             ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Instagram')
             ->select('comments.*')
             ->get();
@@ -342,6 +360,7 @@ class ManagerController extends Controller
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_sentimen', '=', 'positif')
             ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Instagram')
             ->select('comments.*')
             ->get();
@@ -350,6 +369,7 @@ class ManagerController extends Controller
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_sentimen', '=', 'negatif')
             ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Instagram')
             ->select('comments.*')
             ->get();
@@ -358,6 +378,7 @@ class ManagerController extends Controller
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_kategori', '=', 'feedback')
             ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Instagram')
             ->select('comments.*')
             ->get();
@@ -366,6 +387,7 @@ class ManagerController extends Controller
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_kategori', '=', 'engagement')
             ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Instagram')
             ->select('comments.*')
             ->get();
@@ -374,6 +396,7 @@ class ManagerController extends Controller
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_kategori', '=', 'pertanyaan')
             ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Instagram')
             ->select('comments.*')
             ->get();
@@ -392,7 +415,8 @@ class ManagerController extends Controller
         }
         $query_like_instagram = Content::join('histories', 'histories.contents_id', '=', 'contents.id')
             ->join('users', 'histories.users_id', '=', 'users.id')
-            ->where('users.id', '=', '1')
+            ->where('users.group', '=', $user_affiliation)
+            ->where('users.role', '=', "VTuber")
             ->where('contents.sources', '=', 'Youtube')
             ->select('contents.*')
             ->get();
@@ -402,7 +426,7 @@ class ManagerController extends Controller
         }
 
         $keywords_positif = $this->getKeywords($comment_positif_y);
-        // dd($keywords_positif);
+
 
         return view('manager.analysis_vtuber', [
             "jumlah_pertanyaan" => count($comment_pertanyaan),

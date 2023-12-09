@@ -18,6 +18,6 @@ class History extends Model
 
     public function content()
     {
-        return $this->belongsTo(Divisi::class, 'contents_id','contents_sourcesId');
+        return $this->belongsTo(Content::class, 'contents_id','contents_sourcesId');
     }
 }

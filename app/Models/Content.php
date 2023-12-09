@@ -10,7 +10,11 @@ class Content extends Model
     use HasFactory;
     public $timestamps = false;
     protected $table = "contents";
-
+    protected $fillable = [
+        'title',
+        'creator',
+        'like_count',
+    ];
 
     public function comments()
     {

@@ -28,7 +28,6 @@ class VtuberController extends Controller
             ->groupBy('contents.creator')
             ->groupBy('contents.like_count')
             ->groupBy('contents.date')
-            ->groupBy('contents.caption')
             ->groupBy('contents.sources')
             ->get();
 
@@ -103,7 +102,7 @@ class VtuberController extends Controller
             ->join('histories', 'histories.contents_id', '=', 'contents.id')
             ->join('users', 'histories.users_id', '=', 'users.id')
             ->where('comments.kelas_sentimen', '=', 'negatif')
-            ->where('users.group', '=', 'yume')
+            ->where('users.id', '=', $id)
             ->where('contents.sources', '=', 'Instagram')
             ->select('comments.*')
             ->get();
@@ -152,13 +151,14 @@ class VtuberController extends Controller
     public function tohistory()
     {
         $id = Auth::user()->id;
-        $histories = History::where('users_id', $id)
-            ->orderBy('crawled_date', 'desc')
-            ->select('histories.*')
+
+        $histories = History::select('histories.*', 'contents.*')
+            ->join('contents', 'histories.contents_id', '=', 'contents.id')
+            ->where('histories.users_id', $id)
+            ->orderBy('contents.date', 'desc')
             ->get();
-        
-        
-        return view('vtuber.history',[
+
+        return view('vtuber.history', [
             "histories" => $histories,
         ]);
     }
