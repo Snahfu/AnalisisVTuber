@@ -100,7 +100,6 @@
             <table class="table table-bordered table-striped table-light table-hover table-responsive">
                 <thead>
                     <tr class="text-center">
-                        <th>No.</th>
                         <th>Comments</th>
                         <th>Author</th>
                         <th>Total Like</th>
@@ -109,11 +108,9 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="isiKomentar">
                     <tr>
-                        <td>1</td>
-                        <td>Senaaaa imuttt bangettt sihhh><
-                        <td>@zahraersa7969</td>
+                        <td>Senaaaa imuttt bangettt sihhh>< <td>@zahraersa7969</td>
                         <td> 2 </td>
                         <td> Positif </td>
                         <td> Engagement </td>
@@ -137,33 +134,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>2</td>
                         <td>Sen Request game android Modern Warship lebih bagus dari pada World of Warship 😎</td>
                         <td>@a.b.fbima23LEGEND</td>
                         <td>0</td>
                         <td>Positif</td>
                         <td>Feedback</td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                    data-bs-toggle="dropdown">
-                                    <i data-feather="more-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="edit-2" class="me-50"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="trash" class="me-50"></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
                     </tr>
                     <tr>
-                        <td>3</td>
                         <td>Upload nya lama banget
                         </td>
                         <td>
@@ -193,7 +170,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>4</td>
                         <td>Dame dame ~dame yo dame nanoyo, gak bakat mancing chi KSABAR crot
                         </td>
                         <td>@ZidanAseli</td>
@@ -222,7 +198,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>5</td>
                         <td>Nice~! Aku ga sabar pengen lihat model barumu~ 💜
                         </td>
                         <td>
@@ -232,27 +207,8 @@
                         </td>
                         <td>Positif</td>
                         <td>Engagement</td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                    data-bs-toggle="dropdown">
-                                    <i data-feather="more-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="edit-2" class="me-50"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="trash" class="me-50"></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
                     </tr>
                     <tr>
-                        <td>6</td>
                         <td>kak main resident evil 4
                         </td>
                         <td>@vividesu299</td>
@@ -317,15 +273,16 @@
             chartCrawlingResult.removeAttribute('hidden');
         });
 
+        // Chart Setup
         var _demo1 = function() {
             const sentimentChart = "#chart_1";
             var options = {
-                series: [44, 55, 13, 43, 22],
+                series: [13, 43, 22],
                 chart: {
                     width: 380,
                     type: 'pie',
                 },
-                labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+                labels: ['Team C', 'Team D', 'Team E'],
                 responsive: [{
                     breakpoint: 480,
                     options: {
@@ -337,7 +294,7 @@
                         }
                     }
                 }],
-                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff']
+                colors: ['#ff0000', '#00ff00', '#0000ff']
             };
 
             var chart = new ApexCharts(document.querySelector(sentimentChart), options);
@@ -348,12 +305,12 @@
         var _demo2 = function() {
             const categoryChart = "#chart_2";
             var options = {
-                series: [44, 55, 13, 43, 22],
+                series: [13, 43, 22],
                 chart: {
                     width: 380,
                     type: 'pie',
                 },
-                labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+                labels: ['Team C', 'Team D', 'Team E'],
                 responsive: [{
                     breakpoint: 480,
                     options: {
@@ -365,7 +322,7 @@
                         }
                     }
                 }],
-                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff']
+                colors: ['#ff0000', '#00ff00', '#0000ff']
             };
 
             var chart = new ApexCharts(document.querySelector(categoryChart), options);

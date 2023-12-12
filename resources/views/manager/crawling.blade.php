@@ -55,10 +55,10 @@
 
 
     <!-- Donut Chart Starts-->
-    <div class="row" id="chart_crawling" hidden>
-        <div class="col-xl-6 col-12 mb-4">
+    <div class="row justify-content-center" id="chart_crawling" hidden>
+        <div class="col-xl-5 col-5 mb-4">
             <!--begin::Card-->
-            <div class="card card-custom gutter-b">
+            <div class="card card-custom">
                 <div class="card-header">
                     <div class="card-title">
                         <h3 class="card-label">Sentiment Chart</h3>
@@ -72,9 +72,9 @@
             </div>
             <!--end::Card-->
         </div>
-        <div class="col-xl-6 col-12 mb-4">
+        <div class="col-xl-5 col-5 mb-4">
             <!--begin::Card-->
-            <div class="card card-custom gutter-b">
+            <div class="card card-custom">
                 <div class="card-header">
                     <div class="card-title">
                         <h3 class="card-label">Category Chart</h3>
@@ -92,7 +92,7 @@
     <!-- Donut Chart Ends-->
 
     <!--begin::Card-->
-    <div class="card mx-4 mt-2 mb-5" id="table-crawling" hidden>
+    <div class="card mt-2 mb-5" id="table-crawling" hidden>
         <div class="card-header">
             <h4 class="card-title">Result Crawling</h4>
         </div>
@@ -100,7 +100,6 @@
             <table class="table table-bordered table-striped table-light table-hover table-responsive">
                 <thead>
                     <tr class="text-center">
-                        <th>No.</th>
                         <th>Comments</th>
                         <th>Author</th>
                         <th>Total Like</th>
@@ -111,7 +110,6 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>1</td>
                         <td>Senaaaa imuttt bangettt sihhh>< <td>@zahraersa7969</td>
                         <td> 2 </td>
                         <td> Positif </td>
@@ -136,7 +134,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>2</td>
                         <td>Sen Request game android Modern Warship lebih bagus dari pada World of Warship 😎</td>
                         <td>@a.b.fbima23LEGEND</td>
                         <td>0</td>
@@ -162,7 +159,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>3</td>
                         <td>Upload nya lama banget
                         </td>
                         <td>
@@ -192,7 +188,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>4</td>
                         <td>Dame dame ~dame yo dame nanoyo, gak bakat mancing chi KSABAR crot
                         </td>
                         <td>@ZidanAseli</td>
@@ -221,7 +216,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>5</td>
                         <td>Nice~! Aku ga sabar pengen lihat model barumu~ 💜
                         </td>
                         <td>
@@ -251,7 +245,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>6</td>
                         <td>kak main resident evil 4
                         </td>
                         <td>@vividesu299</td>
@@ -316,15 +309,16 @@
             chartCrawlingResult.removeAttribute('hidden');
         });
 
+        // Chart Setup
         var _demo1 = function() {
             const sentimentChart = "#chart_1";
             var options = {
-                series: [44, 55, 13, 43, 22],
+                series: [13, 43, 22],
                 chart: {
                     width: 380,
                     type: 'pie',
                 },
-                labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+                labels: ['Team C', 'Team D', 'Team E'],
                 responsive: [{
                     breakpoint: 480,
                     options: {
@@ -336,7 +330,7 @@
                         }
                     }
                 }],
-                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff']
+                colors: ['#ff0000', '#00ff00', '#0000ff']
             };
 
             var chart = new ApexCharts(document.querySelector(sentimentChart), options);
@@ -347,12 +341,12 @@
         var _demo2 = function() {
             const categoryChart = "#chart_2";
             var options = {
-                series: [44, 55, 13, 43, 22],
+                series: [13, 43, 22],
                 chart: {
                     width: 380,
                     type: 'pie',
                 },
-                labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+                labels: ['Team C', 'Team D', 'Team E'],
                 responsive: [{
                     breakpoint: 480,
                     options: {
@@ -364,7 +358,7 @@
                         }
                     }
                 }],
-                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff']
+                colors: ['#ff0000', '#00ff00', '#0000ff']
             };
 
             var chart = new ApexCharts(document.querySelector(categoryChart), options);
