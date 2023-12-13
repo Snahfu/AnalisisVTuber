@@ -29,6 +29,7 @@ class VtuberController extends Controller
             ->groupBy('contents.like_count')
             ->groupBy('contents.date')
             ->groupBy('contents.sources')
+            ->groupBy('contents.caption')
             ->get();
 
         // Youtube Data

@@ -76,7 +76,7 @@ def video_data(video_id, api_secret_key, result):
         result['like_count'].append(video_statistic['likeCount'])
         result['title'].append(video_title)
         result['caption'].append(video_caption)
-        result['comments'].append(video_published_date)
+        result['published_date'].append(video_published_date)
 
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -86,11 +86,11 @@ def youtube_crawling(youtube_id):
     api_key = 'AIzaSyCwUou2DhU3oQGKaIsi6bdS3YG-2FMO908'
 
     result = {
-        "video_id": "",
-        "title": "",
-        "caption": "",
-        "like_count": "",
-        "published_date": "",
+        "video_id": [],
+        "title": [],
+        "caption": [],
+        "like_count": [],
+        "published_date": [],
         "comments": []
     }
     result['video_id'].append(youtube_id)

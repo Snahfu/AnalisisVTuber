@@ -92,7 +92,10 @@
     <!-- Donut Chart Ends-->
 
     <!--begin::Card-->
-    <div class="card mx-4 mt-2 mb-5" id="table-crawling" hidden>
+    <div id="table-crawling" hidden>
+
+    </div>
+    <div class="card mx-5 mt-3 mb-5" >
         <div class="card-header">
             <h4 class="card-title">Result Crawling</h4>
         </div>
@@ -105,7 +108,6 @@
                         <th>Total Like</th>
                         <th>Sentiment</th>
                         <th>Category</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="isiKomentar">
@@ -114,24 +116,6 @@
                         <td> 2 </td>
                         <td> Positif </td>
                         <td> Engagement </td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                    data-bs-toggle="dropdown">
-                                    <i data-feather="more-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="edit-2" class="me-50"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="trash" class="me-50"></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
                     </tr>
                     <tr>
                         <td>Sen Request game android Modern Warship lebih bagus dari pada World of Warship 😎</td>
@@ -150,24 +134,7 @@
                         </td>
                         <td>Negatif</td>
                         <td>Feedback</td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                    data-bs-toggle="dropdown">
-                                    <i data-feather="more-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="edit-2" class="me-50"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="trash" class="me-50"></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
+                        
                     </tr>
                     <tr>
                         <td>Dame dame ~dame yo dame nanoyo, gak bakat mancing chi KSABAR crot
@@ -178,24 +145,7 @@
                         </td>
                         <td>Netral</td>
                         <td>Others</td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                    data-bs-toggle="dropdown">
-                                    <i data-feather="more-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="edit-2" class="me-50"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="trash" class="me-50"></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
+                        
                     </tr>
                     <tr>
                         <td>Nice~! Aku ga sabar pengen lihat model barumu~ 💜
@@ -217,24 +167,6 @@
                         </td>
                         <td>Positif</td>
                         <td>Feedback</td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                    data-bs-toggle="dropdown">
-                                    <i data-feather="more-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="edit-2" class="me-50"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="trash" class="me-50"></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
                     </tr>
                 </tbody>
             </table>

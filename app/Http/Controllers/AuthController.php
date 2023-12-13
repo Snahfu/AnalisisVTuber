@@ -26,7 +26,7 @@ class AuthController extends Controller
             }
         }
 
-        return redirect()->route('loginPage')->with('error', 'Login gagal. Periksa kembali email dan password.');
+        return redirect('/')->withErrors('Login gagal. Periksa kembali email dan password.');
     }
 
     public function showRegistrationForm()

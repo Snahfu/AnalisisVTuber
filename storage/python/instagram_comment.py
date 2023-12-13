@@ -135,7 +135,10 @@ def instagram_crawling(instagram_url):
 
     # Crawling Starts
     driver.get('https://www.instagram.com/p/'+instagram_url+'/?hl=en')
-    scrollableDiv = driver.find_element(By.XPATH, "//html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/section/main/div/div[1]/div/div[2]/div/div[2]")
+    # OLD
+    # scrollableDiv = driver.find_element(By.XPATH, "//html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/section/main/div/div[1]/div/div[2]/div/div[2]")
+    # NEW
+    scrollableDiv = driver.find_element(By.XPATH, "/html/body/div[2]/div/div/div[2]/div/div/div[1]/div[1]/div[2]/section/main/div/div[1]/div/div[2]/div/div[2]")
     # ITERASI PERTAMA itu 13 + (1 milik CAPTION) TOTAL 14 yg ke-15 itu Loading State + 15 berikutnya
 
     # LOOPING setidaknya 8x
@@ -162,54 +165,17 @@ def instagram_crawling(instagram_url):
     #def scrape_with_bs(driver, selector_comment, selector_author, selector_likes, selector_datetime, total_items, bs):
     results = scrape_with_bs(driver, selector_listkomentar, selector_listnama, selector_listlike, selector_listtime, banyak_komentar, data)
 
-    # Tutup Chrome Driver 
-    driver.quit()
-
-    # Return
-    return results
-
-def instagram_data(instagram_url):
-    # Open Chrome Driver 
-    service = Service(executable_path='./chromedriver.exe')
-
-    options = webdriver.ChromeOptions()
-
-    driver = webdriver.Chrome(service=service, options=options)
-    driver.maximize_window()
-
-    # Open Instagram, Login to dummy user
-    driver.implicitly_wait(1)
-    driver.get('https://www.instagram.com/')
-    time.sleep(1)
-    username_input = driver.find_element(By.XPATH, "//input[@name='username']")
-    password_input = driver.find_element(By.XPATH, "//input[@name='password']")
-    username_input.send_keys("hans_dev_testing")
-    password_input.send_keys("ubaya_20")
-    login_button = driver.find_element(By.XPATH,"//button[@type='submit']")
-    login_button.click()
-    time.sleep(5)
-    save_button = driver.find_element(By.XPATH,"//button[@type='button']")
-    save_button.click()
-    time.sleep(5)
-
-    # Crawling Starts
-    driver.get('https://www.instagram.com/p/'+instagram_url+'/?hl=en')
-
-    #MEMBUAT OBJEK BEAUTIFUL SOUP
-    html = driver.page_source
-    data = bs(html, 'html.parser')
-
-    #DATA POST
+    # Mengambil data post
     #LIKE COUNT, TIME, SOURCE, CREATOR NAME, TITLE/CAPTION
     selector_caption = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > span > div > span"
     selector_total_like = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(3) > section > div > div > span > a > span > span"
     selector_timestamp = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(3) > div:nth-of-type(2) > div > a > span > time"
-
     # def scrape_post(driver, selector_caption, selector_total_like, selector_timestamp, bs):
     posts = scrape_post(driver, selector_caption, selector_total_like, selector_timestamp, data)
-
-    # Tutup Chrome Driver
+    # Tutup Chrome Driver 
     driver.quit()
 
+    merged_data = {**results, **posts}
+    
     # Return
-    return posts
+    return merged_data

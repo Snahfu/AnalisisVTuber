@@ -46,6 +46,7 @@ class ManagerController extends Controller
             ->groupBy('contents.like_count')
             ->groupBy('contents.date')
             ->groupBy('contents.sources')
+            ->groupBy('contents.caption')
             ->get();
 
         $vtuber_list = User::where('role', 'VTuber')

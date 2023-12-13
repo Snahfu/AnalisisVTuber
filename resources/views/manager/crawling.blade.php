@@ -35,7 +35,7 @@
                     <div class="input-group mb-2">
                         <input type="text" class="form-control" placeholder="Masukan Link/URL dari video/shorts Youtube"
                             aria-describedby="buttonCrawling" id="crawlingText" />
-                        <button class="btn btn-primary" id="buttonCrawling" type="button">Crawling!</button>
+                        <button class="btn btn-primary" id="buttonCrawling" onclick="crawlingRequest()" type="button">Crawling!</button>
                     </div>
                     <div class="form-check form-check-inline mb-2">
                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioInstagram"
@@ -56,7 +56,7 @@
 
     <!-- Donut Chart Starts-->
     <div class="row justify-content-center" id="chart_crawling" hidden>
-        <div class="col-xl-5 col-5 mb-4">
+        <div class="col-xl-5 col-6 mb-4">
             <!--begin::Card-->
             <div class="card card-custom">
                 <div class="card-header">
@@ -72,7 +72,7 @@
             </div>
             <!--end::Card-->
         </div>
-        <div class="col-xl-5 col-5 mb-4">
+        <div class="col-xl-5 col-6 mb-4">
             <!--begin::Card-->
             <div class="card card-custom">
                 <div class="card-header">
@@ -92,188 +92,86 @@
     <!-- Donut Chart Ends-->
 
     <!--begin::Card-->
-    <div class="card mt-2 mb-5" id="table-crawling" hidden>
-        <div class="card-header">
-            <h4 class="card-title">Result Crawling</h4>
-        </div>
-        <div class="card-body bg-custom h5 text-dark">
-            <table class="table table-bordered table-striped table-light table-hover table-responsive">
-                <thead>
-                    <tr class="text-center">
-                        <th>Comments</th>
-                        <th>Author</th>
-                        <th>Total Like</th>
-                        <th>Sentiment</th>
-                        <th>Category</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Senaaaa imuttt bangettt sihhh>< <td>@zahraersa7969</td>
-                        <td> 2 </td>
-                        <td> Positif </td>
-                        <td> Engagement </td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                    data-bs-toggle="dropdown">
-                                    <i data-feather="more-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="edit-2" class="me-50"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="trash" class="me-50"></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Sen Request game android Modern Warship lebih bagus dari pada World of Warship 😎</td>
-                        <td>@a.b.fbima23LEGEND</td>
-                        <td>0</td>
-                        <td>Positif</td>
-                        <td>Feedback</td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                    data-bs-toggle="dropdown">
-                                    <i data-feather="more-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="edit-2" class="me-50"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="trash" class="me-50"></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Upload nya lama banget
-                        </td>
-                        <td>
-                            @muhammadnarendrapratama</td>
-                        <td>
-                            0
-                        </td>
-                        <td>Negatif</td>
-                        <td>Feedback</td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                    data-bs-toggle="dropdown">
-                                    <i data-feather="more-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="edit-2" class="me-50"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="trash" class="me-50"></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Dame dame ~dame yo dame nanoyo, gak bakat mancing chi KSABAR crot
-                        </td>
-                        <td>@ZidanAseli</td>
-                        <td>
-                            1
-                        </td>
-                        <td>Netral</td>
-                        <td>Others</td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                    data-bs-toggle="dropdown">
-                                    <i data-feather="more-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="edit-2" class="me-50"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="trash" class="me-50"></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nice~! Aku ga sabar pengen lihat model barumu~ 💜
-                        </td>
-                        <td>
-                            @ArielDemonLady512</td>
-                        <td>
-                            1
-                        </td>
-                        <td>Positif</td>
-                        <td>Engagement</td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                    data-bs-toggle="dropdown">
-                                    <i data-feather="more-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="edit-2" class="me-50"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="trash" class="me-50"></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>kak main resident evil 4
-                        </td>
-                        <td>@vividesu299</td>
-                        <td>
-                            0
-                        </td>
-                        <td>Positif</td>
-                        <td>Feedback</td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                    data-bs-toggle="dropdown">
-                                    <i data-feather="more-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="edit-2" class="me-50"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i data-feather="trash" class="me-50"></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <div id="table-crawling" hidden>
+        <div class="card mx-5 mt-2 mb-5" >
+            <div class="card-header">
+                <h4 class="card-title">Result Crawling</h4>
+            </div>
+            <div class="card-body bg-custom h5 text-dark">
+                <table class="table table-bordered table-striped table-light table-hover table-responsive">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Comments</th>
+                            <th>Author</th>
+                            <th>Total Like</th>
+                            <th>Sentiment</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Senaaaa imuttt bangettt sihhh>< 
+                            <td>@zahraersa7969</td>
+                            <td> 2 </td>
+                            <td> Positif </td>
+                            <td> Engagement </td>
+                        </tr>
+                        <tr>
+                            <td>Sen Request game android Modern Warship lebih bagus dari pada World of Warship 😎</td>
+                            <td>@a.b.fbima23LEGEND</td>
+                            <td>0</td>
+                            <td>Positif</td>
+                            <td>Feedback</td>
+                        </tr>
+                        <tr>
+                            <td>Upload nya lama banget
+                            </td>
+                            <td>
+                                @muhammadnarendrapratama</td>
+                            <td>
+                                0
+                            </td>
+                            <td>Negatif</td>
+                            <td>Feedback</td>
+                            
+                        </tr>
+                        <tr>
+                            <td>Dame dame ~dame yo dame nanoyo, gak bakat mancing chi KSABAR crot
+                            </td>
+                            <td>@ZidanAseli</td>
+                            <td>
+                                1
+                            </td>
+                            <td>Netral</td>
+                            <td>Others</td>
+                            
+                        </tr>
+                        <tr>
+                            <td>Nice~! Aku ga sabar pengen lihat model barumu~ 💜
+                            </td>
+                            <td>
+                                @ArielDemonLady512</td>
+                            <td>
+                                1
+                            </td>
+                            <td>Positif</td>
+                            <td>Engagement</td>
+                            
+                        </tr>
+                        <tr>
+                            <td>kak main resident evil 4
+                            </td>
+                            <td>@vividesu299</td>
+                            <td>
+                                0
+                            </td>
+                            <td>Positif</td>
+                            <td>Feedback</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <!--end::Card-->
@@ -310,7 +208,7 @@
         });
 
         // Chart Setup
-        var _demo1 = function() {
+        var sentimen_chart = function() {
             const sentimentChart = "#chart_1";
             var options = {
                 series: [13, 43, 22],
@@ -338,7 +236,7 @@
 
         }
 
-        var _demo2 = function() {
+        var kategori_chart = function() {
             const categoryChart = "#chart_2";
             var options = {
                 series: [13, 43, 22],
@@ -367,8 +265,51 @@
         }
 
         $(document).ready(function() {
-            _demo1();
-            _demo2();
+            sentimen_chart();
+            kategori_chart();
         });
+
+        function crawlingRequest() {
+            var data = {
+                "sumber": $('input[name="inlineRadioOptions"]:checked').val(),
+                "url": document.getElementById('crawlingText').value,
+            };
+
+            $.ajax({
+                url: 'http://localhost:5000/crawling',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    console.log('Crawling Request Result:', response);
+
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+
+                }
+            });
+        }
+
+        function trainModelRequest() {
+            var data = {
+                "ArrayKomentar": ["Komentar 1", "Komentar 2", "Komentar 3"]
+            };
+
+            $.ajax({
+                url: 'http://localhost:5000/train-model', 
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    console.log('Train Model Request Result:', response);
+
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+
+                }
+            });
+        }
     </script>
 @endsection
