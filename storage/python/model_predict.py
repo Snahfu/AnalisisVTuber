@@ -54,7 +54,7 @@ def predict_kategori(list_komentar):
     return result
 
 def predict_komentar(data_komentar):
-    komentar_kategori, komentar_sentimen = preprocessing_step(data_komentar, "prediksi")
+    komentar_kategori, komentar_sentimen = preprocessing_step(data_komentar)
     hasil_kategori = predict_kategori(komentar_kategori)
     hasil_sentimen = predict_sentimen(komentar_sentimen)
 

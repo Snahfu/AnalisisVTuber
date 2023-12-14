@@ -207,7 +207,7 @@ def clean_stopwords(text):
 
     return " ".join([word for word in str(text).split() if word not in stopword_preprocessing])
 
-def preprocessing_step(train_dataframe):
+def preprocessing_traindataset(train_dataframe):
     # Remove html tag
     # Convert Emoji -> Sentimen
     # SLANG Conversion
@@ -221,26 +221,32 @@ def preprocessing_step(train_dataframe):
     nltk.download('wordnet')
     nltk.download('omw-1.4')
     nltk.download('stopwords')
-    train_dataframe = train_dataframe['komentar'].astype(str)
-    train_dataframe = train_dataframe.apply(remove_html_tag)
-    train_dataframe = train_dataframe.apply(emoji_converter)
-    train_dataframe = train_dataframe.apply(replace_slang)
-    train_dataframe = train_dataframe.str.lower()
-    train_dataframe = train_dataframe.apply(remove_emoji)
-    train_dataframe = train_dataframe.apply(cleaning_process)
-    train_dataframe = train_dataframe.apply(remove_usermention)
+    train_dataframe = train_dataframe.drop_duplicates(subset='comments', keep='first')
+    train_dataframe['comments'] = train_dataframe['comments'].apply(remove_html_tag)
+    train_dataframe['comments'] = train_dataframe['comments'].apply(emoji_converter)
+    train_dataframe['comments'] = train_dataframe['comments'].apply(replace_slang)
+    train_dataframe['comments'] = train_dataframe['comments'].str.lower()
+    train_dataframe['comments'] = train_dataframe['comments'].apply(remove_emoji)
+    train_dataframe['comments'] = train_dataframe['comments'].apply(cleaning_process)
+    train_dataframe['comments'] = train_dataframe['comments'].apply(remove_usermention)
 
     punctuations_to_remove = '!"#$%&\*+,-.(:;)/<=>?@[\\]^_`{|}~'
 
-    train_dataframe = train_dataframe.str.replace(f'[{re.escape(punctuations_to_remove)}]', ' ')
+    train_dataframe['comments'] = train_dataframe['comments'].str.replace(f'[{re.escape(punctuations_to_remove)}]', ' ')
 
     punctuations_to_remove2 = '!"#$%&\'*+,-.(:;)/<=>?@[\\]^_`{|}~'
-    train_dataframe = train_dataframe.str.replace(f'[{re.escape(punctuations_to_remove2)}]', '')
+    train_dataframe['comments'] = train_dataframe['comments'].str.replace(f'[{re.escape(punctuations_to_remove2)}]', '')
     
-    train_kategori = train_sentimen = train_dataframe.copy()
-    train_sentimen = train_sentimen.apply(stem_text)
-    train_sentimen = train_sentimen.apply(clean_stopwords)
+    train_dataframe = train_dataframe.drop_duplicates(subset='comments', keep='first')
 
+    train_kategori = train_dataframe[['comments', 'kategori']].copy()
+    train_sentimen = train_dataframe[['comments', 'sentimen']].copy()
+    train_sentimen['comments'] = train_sentimen['comments'].apply(stem_text)
+    train_sentimen['comments'] = train_sentimen['comments'].apply(clean_stopwords)
+
+    train_kategori = train_kategori[train_kategori['comments'].str.strip() != '']
+    train_sentimen = train_sentimen[train_sentimen['comments'].str.strip() != '']
+    print("check sampai processing selesai")
     return train_kategori, train_sentimen
     
 

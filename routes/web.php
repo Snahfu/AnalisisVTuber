@@ -37,6 +37,7 @@ Route::get('/detail-comment', [App\Http\Controllers\CommentController::class, 's
 Route::post('/update-comment', [App\Http\Controllers\CommentController::class, 'update'])->name('update.comment');
 Route::post('/delete-comment', [App\Http\Controllers\CommentController::class, 'delete'])->name('delete.comment');
 Route::post('/insert-comment', [App\Http\Controllers\CommentController::class, 'store'])->name('insert.comment');
+Route::post('/semua-comment', [App\Http\Controllers\CommentController::class, 'semuaKomentar'])->name('semua.comment');
 
 
 // Authenthication

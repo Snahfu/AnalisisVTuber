@@ -8,7 +8,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
-{
+{   
+    public function semuaKomentar(Request $request){
+        $status = "success";
+        $msg = "Berhasil mengambil data";
+        $listKomentar = Comment::select('comments.text', 'comments.kelas_sentimen', 'comments.kelas_kategori')->get();
+
+        return response()->json(array(
+            'status' => $status,
+            'msg' => $msg,
+            'listKomentar' => $listKomentar,
+        ), 200);
+    }
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

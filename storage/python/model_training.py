@@ -21,29 +21,30 @@ from transformers import AutoTokenizer, AutoModel
 def train_model(dataset_kategori, dataset_sentimen):
     # 2 Untuk Kategori
     # 1 Untuk Sentimen
+
     category_encoder = LabelEncoder()
     y_category_labels = category_encoder.fit_transform(dataset_kategori['kategori'])
     y_category_labels = tf.keras.utils.to_categorical(y_category_labels, 3)
 
     sentiment_encoder = LabelEncoder()
     y_sentiment_label = sentiment_encoder.fit_transform(dataset_sentimen['sentimen'])
-    y_sentiment_label = tf.keras.utils.to_categorical(y_category_labels, 3)
+    y_sentiment_label = tf.keras.utils.to_categorical(y_sentiment_label, 3)
 
-    X_train2, X_test2, y_train2, y_test2 = train_test_split(dataset_kategori['comments'], y_category_labels, test_size=0.2, random_state = 42)
+    print("selesai encoding")
     X_train, X_test, y_train, y_test = train_test_split(dataset_sentimen['comments'], y_sentiment_label, test_size=0.2, random_state = 42)
-
-    longestSentence2 = 0
-    for x in X_train2:
-        if (len(x) > longestSentence2):
-            longestSentence2 = len(x)
-    
-    max_length2 = longestSentence2
+    X_train2, X_test2, y_train2, y_test2 = train_test_split(dataset_kategori['comments'], y_category_labels, test_size=0.2, random_state = 42)
 
     longestSentence = 0
     for x in X_train:
         if (len(x) > longestSentence):
             longestSentence = len(x)
     max_length = longestSentence
+
+    longestSentence2 = 0
+    for x in X_train2:
+        if (len(x) > longestSentence2):
+            longestSentence2 = len(x)
+    max_length2 = longestSentence2
 
     # Menggunakan Indobert
     auto_tokenizer = AutoTokenizer.from_pretrained("indolem/indobertweet-base-uncased")
@@ -81,7 +82,7 @@ def train_model(dataset_kategori, dataset_sentimen):
         return_tensors="tf",
         max_length=max_length
     )
-
+    print("Check tokenizer done")
     # Menggunakan Indobert sebagai embedding layer sehingga mengambil matrixnya untuk digunakan sbg weights
     def get_bert_embed_matrix():
         bert = AutoModel.from_pretrained("indolem/indobertweet-base-uncased")
@@ -115,7 +116,7 @@ def train_model(dataset_kategori, dataset_sentimen):
     model2.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     stop_early = EarlyStopping(patience=10, verbose=1, restore_best_weights=True)
-    train_model2 = model2.fit(tokenized_data_train2['input_ids'], y_train2, epochs=100, batch_size=64, validation_data=(tokenized_data_test2['input_ids'], y_test2), callbacks=[stop_early])
+    trained_model2 = model2.fit(tokenized_data_train2['input_ids'], y_train2, epochs=100, batch_size=32, validation_data=(tokenized_data_test2['input_ids'], y_test2), callbacks=[stop_early])
 
 
     model = Sequential()
@@ -138,12 +139,12 @@ def train_model(dataset_kategori, dataset_sentimen):
     model.summary()
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-    train_model = model.fit(tokenized_data_train['input_ids'], y_train, epochs=100, batch_size=64, validation_data=(tokenized_data_test['input_ids'], y_test), callbacks=[stop_early])
+    trained_model = model.fit(tokenized_data_train['input_ids'], y_train, epochs=100, batch_size=32, validation_data=(tokenized_data_test['input_ids'], y_test), callbacks=[stop_early])
     # Save Model ke lokasi ...
     model.save("model_terbaik_sentimen.h5")
     model2.save("model_terbaik_kategori.h5")
-
-    return "Selesai"
+    print("Check model berhasil disimpan")
+    return "Sukses Melakukan Train Ulang"
 
     
 

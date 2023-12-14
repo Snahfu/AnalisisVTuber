@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from instagram_comment import instagram_crawling
 from youtube_comment import youtube_crawling
 from model_predict import predict_komentar
+from preprocessing_train import preprocessing_traindataset
+from model_training import train_model
 from flask_cors import CORS, cross_origin
 from urllib.parse import urlparse, parse_qs
 import pandas as pd
@@ -114,18 +116,26 @@ def crawling():
         )
 
 @app.route("/train-model", methods=["POST"])
-def train_model():
+def build_new_model():
     data = request.get_json()
     
-    result = []
+    result = "Training Model Gagal"
     msg = ""
-    status = "success"
+    status = "failed"
 
     if 'ArrayKomentar' in data and isinstance(data['ArrayKomentar'], list):
         array_komentar = data['ArrayKomentar']
-
         try:
-            result = "Model trained successfully."
+            df_dataset = pd.DataFrame(array_komentar)
+            df_dataset = df_dataset.rename(columns={'text': 'comments'})
+            df_dataset = df_dataset.rename(columns={'kelas_sentimen': 'sentimen'})
+            df_dataset = df_dataset.rename(columns={'kelas_kategori': 'kategori'})
+            data = pd.read_csv('validasi_dataset_validated.csv')
+            df_train_dataset = pd.concat([data, df_dataset], ignore_index=True)
+            dataset_kategori, dataset_sentimen = preprocessing_traindataset(df_train_dataset)
+
+            result = train_model(dataset_kategori, dataset_sentimen)
+            status = "success"
         except Exception as e:
             msg = str(e)
             status = "error"
