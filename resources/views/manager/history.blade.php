@@ -129,5 +129,25 @@
         $(document).ready(function() {
             $('#historyTable').DataTable();
         });
+
+        function trainModelRequest() {
+            var data = {
+                "ArrayKomentar": ["Komentar 1", "Komentar 2", "Komentar 3"]
+            };
+            $.ajax({
+                url: 'http://localhost:5000/train-model',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    console.log('Train Model Request Result:', response);
+
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+
+                }
+            });
+        }
     </script>
 @endsection

@@ -14,6 +14,11 @@ class Content extends Model
         'title',
         'creator',
         'like_count',
+        'sourcesId',
+        'sources',
+        'id',
+        'date',
+        'caption',
     ];
 
     public function comments()

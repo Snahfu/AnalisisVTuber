@@ -163,6 +163,7 @@
     <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
 
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     {{-- Additional JS From Each Pages --}}
     @yield('scripts')
 </body>

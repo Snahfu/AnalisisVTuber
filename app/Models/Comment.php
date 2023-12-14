@@ -13,6 +13,13 @@ class Comment extends Model
     protected $fillable = [
         'kelas_kategori',
         'kelas_sentimen',
+        'id',
+        'contents_id',
+        'contents_sourcesId',
+        'text',
+        'author',
+        'like_count',
+        'published',
     ];
 
     public function content()

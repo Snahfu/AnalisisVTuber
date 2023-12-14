@@ -62,8 +62,8 @@
         <div class="card-header">
             <h4 class="card-title">Data Komentar</h4>
         </div>
-        <div class="card-body bg-custom h5 text-dark">
-            <table class="table table-bordered table-striped table-light table-hover table-responsive" id="listkomentar">
+        <div class="card-body bg-custom h5 text-dark table-responsive">
+            <table class="table table-bordered table-striped table-light table-hover" id="listkomentar">
                 <thead>
                     <tr class="text-center">
                         <th>Id</th>
@@ -96,6 +96,14 @@
                     @endforeach
                 </tbody>
             </table>
+            
+            <div class="pagination">
+                <a href="{{ $content_commentar->previousPageUrl() }}" class="{{ ($content_commentar->onFirstPage()) ? 'disabled' : '' }}">Previous</a>
+                
+                <span>&nbsp; Page {{ $content_commentar->currentPage() }} of {{ $content_commentar->lastPage() }} &nbsp;</span>
+        
+                <a href="{{ $content_commentar->nextPageUrl() }}" class="{{ ($content_commentar->hasMorePages()) ? '' : 'disabled' }}">Next</a>
+            </div>
         </div>
     </div>
 

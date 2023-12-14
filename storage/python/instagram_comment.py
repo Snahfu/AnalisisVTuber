@@ -7,13 +7,14 @@ from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup as bs
 from bs4 import Tag
 import time
+from datetime import datetime
 import pandas as pd
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 # FUNCTION BUAT AMBIL DATA POST/VIDEO
-def scrape_post(driver, selector_caption, selector_total_like, selector_timestamp, bs):
-    scraped_data = {"captions": [], "total_like": [], "timestamp": []}
+def scrape_post(driver, selector_caption, selector_total_like, selector_timestamp, selector_creator, bs):
+    scraped_data = {"captions": [], "total_like": [], "timestamp": [], "creator": []}
     try:
         # Tunggu hingga elemen muncul
         element_caption = WebDriverWait(driver, 1).until(
@@ -25,23 +26,36 @@ def scrape_post(driver, selector_caption, selector_total_like, selector_timestam
         element_timestamp = WebDriverWait(driver, 1).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, selector_timestamp))
         )
+        element_creator = WebDriverWait(driver, 1).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, selector_creator))
+        )
         
         # Temukan elemen target
         target_element_caption = bs.select_one(selector_caption)
         target_element_total_like = bs.select_one(selector_total_like)
         target_element_timestamp = bs.select_one(selector_timestamp)
+        target_element_creator = bs.select_one(selector_creator)
         
         # Ambil teks dari elemen target
-        text_caption = target_element_caption.get_text(strip=True) if target_element_caption else "tidak ditemukan"
+        text_caption = target_element_caption.get_text(strip=True) if target_element_caption else " "
+        text_creator = target_element_creator.get_text(strip=True) if target_element_creator else " "
         text_total_like = target_element_total_like.get_text(strip=True) if target_element_total_like else "0 likes"
-        text_timestamp = target_element_timestamp.get('datetime') if target_element_timestamp else "tidak ditemukan"
-    
+        if(target_element_timestamp):
+            text_timestamp = target_element_timestamp.get('datetime')
+            # Step ubah datetime ke format database
+            text_timestamp = datetime.fromisoformat(text_timestamp.replace("Z", "+00:00"))
+            database_timestamp = text_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            database_timestamp = "tidak ditemukan"
+
         scraped_data["captions"].append(text_caption)
+        scraped_data["creator"].append(text_creator)
         scraped_data["total_like"].append(text_total_like+" likes")
-        scraped_data["timestamp"].append(text_timestamp)
+        scraped_data["timestamp"].append(database_timestamp)
         
     except Exception as e:
         scraped_data["captions"].append("error")
+        scraped_data["creator"].append("error")
         scraped_data["total_like"].append("0 likes")
         scraped_data["timestamp"].append("error")
 
@@ -86,14 +100,19 @@ def scrape_with_bs(driver, selector_comment, selector_author, selector_likes, se
             text_likes = target_element_likes.get_text(strip=True) if target_element_likes else "ini gambar"
             if(target_element_likes.get_text(strip=True) == "Reply"):
                 text_likes = "0 likes"
-            text_datetime = target_element_datetime.get('datetime') if target_element_datetime else "ini gambar"
+            if(target_element_datetime):
+                text_datetime = target_element_datetime.get('datetime')
+                # Step ubah datetime ke format database
+                text_datetime = datetime.fromisoformat(text_datetime.replace("Z", "+00:00"))
+                database_timestamp = text_datetime.strftime("%Y-%m-%d %H:%M:%S")
+            else:
+                database_timestamp = "ini gambar"
 
             # Tambahkan ke dalam list
             scraped_texts["comments"].append(text_comment)
             scraped_texts["authors"].append(text_author)
             scraped_texts["likes"].append(text_likes)
-            scraped_texts["datetimes"].append(text_datetime)
-            
+            scraped_texts["datetimes"].append(database_timestamp)
 
         except Exception as e:
             # Handle exception jika ada masalah saat scraping
@@ -153,25 +172,26 @@ def instagram_crawling(instagram_url):
     data = bs(html, 'html.parser')
 
     # Menghitung banyaknya komentar setelah melakukan scroll sampai bawah
-    selector = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div"
+    selector = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div"
     elements = data.select(selector)
     banyak_komentar = len(elements)
 
     # Mengambil data dan menyimpan di results
-    selector_listkomentar = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(N) > div > div > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(2) > span"
-    selector_listnama = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(N) > div > div > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(1) > span > div > a > div > div > span"
-    selector_listlike = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(N) > div > div > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > span > span"
-    selector_listtime = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(N) > div > div > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > a > time"
+    selector_listkomentar = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(N) > div > div > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(2) > span"
+    selector_listnama = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(N) > div > div > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(1) > span > div > a > div > div > span"
+    selector_listlike = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(N) > div > div > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > span > span"
+    selector_listtime = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(N) > div > div > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > a > time"
     #def scrape_with_bs(driver, selector_comment, selector_author, selector_likes, selector_datetime, total_items, bs):
     results = scrape_with_bs(driver, selector_listkomentar, selector_listnama, selector_listlike, selector_listtime, banyak_komentar, data)
 
     # Mengambil data post
     #LIKE COUNT, TIME, SOURCE, CREATOR NAME, TITLE/CAPTION
-    selector_caption = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > span > div > span"
-    selector_total_like = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(3) > section > div > div > span > a > span > span"
-    selector_timestamp = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(3) > div:nth-of-type(2) > div > a > span > time"
-    # def scrape_post(driver, selector_caption, selector_total_like, selector_timestamp, bs):
-    posts = scrape_post(driver, selector_caption, selector_total_like, selector_timestamp, data)
+    selector_caption = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > span > div > span"
+    selector_total_like = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(3) > section > div > div > span > a > span > span"
+    selector_timestamp = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(3) > div:nth-of-type(2) > div > a > span > time"
+    selector_creator = "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > section > main > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div > span > div > div > span:nth-of-type(1) > div > a > div > div > span"
+    # def scrape_post(driver, selector_caption, selector_total_like, selector_timestamp,selector_creator, bs):
+    posts = scrape_post(driver, selector_caption, selector_total_like, selector_timestamp, selector_creator, data)
     # Tutup Chrome Driver 
     driver.quit()
 

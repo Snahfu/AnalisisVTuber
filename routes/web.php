@@ -31,11 +31,12 @@ Route::get('/analysis-vtuber', [App\Http\Controllers\VtuberController::class, 't
 // Common
 Route::get('/detail-content/{id}/{sourcesId}', [App\Http\Controllers\ContentController::class, 'detailcontent'])->name('detail.content');
 Route::post('/update-content', [App\Http\Controllers\ContentController::class, 'update'])->name('update.content');
-Route::post('/delete-content', [App\Http\Controllers\ContentController::class, 'delete'])->name('delete.content');
+Route::post('/insert-content', [App\Http\Controllers\ContentController::class, 'store'])->name('insert.content');
 
 Route::get('/detail-comment', [App\Http\Controllers\CommentController::class, 'show'])->name('detail.comment');
 Route::post('/update-comment', [App\Http\Controllers\CommentController::class, 'update'])->name('update.comment');
 Route::post('/delete-comment', [App\Http\Controllers\CommentController::class, 'delete'])->name('delete.comment');
+Route::post('/insert-comment', [App\Http\Controllers\CommentController::class, 'store'])->name('insert.comment');
 
 
 // Authenthication

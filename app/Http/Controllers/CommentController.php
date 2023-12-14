@@ -12,14 +12,9 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'contents_id' => 'required|int',
-            'contents_sourcesId' => 'required|string',
-            'text' => 'required|string',
-            'like_count' => 'required|int',
-            'published' => 'required|date',
-            'author' => 'required|string',
-            'kelas_sentimen' => 'required|string',
-            'kelas_kategori' => 'required|string',
+            'listKomentar' => 'required',
+            'id' => 'required',
+            'sourcesId' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -30,16 +25,25 @@ class CommentController extends Controller
                 'msg' => $msg,
             ], 200);
         }
-
-        $comment = Comment::create($request->all());
-        $dataId = $comment->id;
-
+        $listKomentar = $request['listKomentar'];
+        foreach ($listKomentar as $komentar) {
+            $comment = new Comment;
+            $comment->contents_id = $request["id"];
+            $comment->contents_sourcesId = $request["sourcesId"];
+            $comment->text = $komentar["komentar"];
+            $comment->like_count = $komentar["likes"];
+            $comment->author = $komentar["authors"];
+            $comment->published = $komentar["datetimes"];
+            $comment->kelas_kategori = $komentar["Kategori"];
+            $comment->kelas_sentimen = $komentar["Sentimen"];
+            $comment->save();
+        }
+        
         $status = "success";
         $msg = "Berhasil menambahkan data";
         return response()->json(array(
             'status' => $status,
             'msg' => $msg,
-            'data' => $dataId,
         ), 200);
     }
 

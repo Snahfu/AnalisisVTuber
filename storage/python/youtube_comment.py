@@ -1,4 +1,5 @@
 from googleapiclient.discovery import build
+from datetime import datetime
 
 def video_comments(video_id, api_secret_key, result):
     youtube = build('youtube', 'v3',developerKey=api_secret_key)
@@ -15,38 +16,31 @@ def video_comments(video_id, api_secret_key, result):
                 comments_data = {}
                 replies_data = {}
 
-                # Ambil comments
-                comments_data['textDisplay'] = item['snippet']['topLevelComment']['snippet']['textDisplay']
+                temporary_datetime = item['snippet']['topLevelComment']['snippet']['publishedAt']
+                text_timestamp = datetime.fromisoformat(temporary_datetime.replace("Z", "+00:00"))
+                database_timestamp = text_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                comments_data['publishedAt'] = database_timestamp
 
-                # Ambil author name
-                comments_data['authorDisplayName'] = item['snippet']['topLevelComment']['snippet']['authorDisplayName']
-
-                # Ambil like
-                comments_data['likeCount'] = item['snippet']['topLevelComment']['snippet']['likeCount']
-
-                # Ambil datetime
-                comments_data['publishedAt'] = item['snippet']['topLevelComment']['snippet']['publishedAt']
-
-                result['comments'].append(comments_data)
+                result['comments'].append(item['snippet']['topLevelComment']['snippet']['textDisplay'])
+                result['comments_like'].append(item['snippet']['topLevelComment']['snippet']['likeCount'])
+                result['comments_author'].append(item['snippet']['topLevelComment']['snippet']['authorDisplayName'])
+                result['comments_date'].append(comments_data['publishedAt'])
 
                 ### CEK APAKAH ADA REPLY?
                 replycount = item['snippet']['totalReplyCount']
 
                 if replycount>0:
                     for reply in item['replies']['comments']:
-                        # Ambil reply
-                        replies_data['textDisplay'] = reply['snippet']['textDisplay']
+                        
+                        datetime_reply = reply['snippet']['publishedAt']
+                        text_timestamp = datetime.fromisoformat(datetime_reply.replace("Z", "+00:00"))
+                        database_timestamp = text_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                        replies_data['publishedAt'] = database_timestamp
 
-                        # Ambil author
-                        replies_data['authorDisplayName'] = reply['snippet']['authorDisplayName']
-
-                        # Ambil like
-                        replies_data['likeCount'] = reply['snippet']['likeCount']
-
-                        # Ambil datetime
-                        replies_data['publishedAt'] = reply['snippet']['publishedAt']
-
-                        result['comments'].append(replies_data)
+                        result['comments'].append(reply['snippet']['textDisplay'])
+                        result['comments_like'].append(reply['snippet']['likeCount'])
+                        result['comments_author'].append(reply['snippet']['authorDisplayName'])
+                        result['comments_date'].append(comments_data['publishedAt'])
 
             # Komentar dari API Youtube dibuat dalam page jadi perlu di loop lagi kalau lebih dari 50
             if 'nextPageToken' in video_response:
@@ -70,10 +64,14 @@ def video_data(video_id, api_secret_key, result):
         video_statistic = video_response['items'][0]['statistics']
 
         video_title = video_info['title']
+        video_creator = video_info['channelTitle']
         video_caption = video_info['description']
-        video_published_date = video_info['publishedAt']
+        temporary_datetime = video_info['publishedAt']
+        text_timestamp = datetime.fromisoformat(temporary_datetime.replace("Z", "+00:00"))
+        video_published_date = text_timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
         result['like_count'].append(video_statistic['likeCount'])
+        result['creator'].append(video_creator)
         result['title'].append(video_title)
         result['caption'].append(video_caption)
         result['published_date'].append(video_published_date)
@@ -88,10 +86,14 @@ def youtube_crawling(youtube_id):
     result = {
         "video_id": [],
         "title": [],
+        "creator": [],
         "caption": [],
         "like_count": [],
         "published_date": [],
-        "comments": []
+        "comments": [],
+        "comments_like": [],
+        "comments_date": [],
+        "comments_author": [],
     }
     result['video_id'].append(youtube_id)
 

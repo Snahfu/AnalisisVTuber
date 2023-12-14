@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from instagram_comment import instagram_crawling
 from youtube_comment import youtube_crawling
-from flask_cors import CORS
+from model_predict import predict_komentar
+from flask_cors import CORS, cross_origin
 from urllib.parse import urlparse, parse_qs
+import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
@@ -12,39 +14,109 @@ def index():
     return "Hello World!"
 
 @app.route("/crawling", methods=["POST"])
+@cross_origin()
 def crawling():
     data = request.get_json()
     
     result = []
-    msg = ""
+    msg = "berhasil melakukan crawling"
     status = "success"
+    final_result = "gagal"
+    sentiment_chart = ""
+    category_chart = ""
+    kode_unik = ""
+    title = ""
+    caption = ""
+    creator = ""
+    tanggal = ""
+    jumlah_like = ""
 
     if 'sumber' in data and 'url' in data:
         sumber = data['sumber']
         url = data['url']
         
         try:
-            if (sumber == "instagram"):
+            if (sumber == "Instagram"):
                 kode_unik = extract_instagram_post_id(url)
                 result = instagram_crawling(kode_unik)
+                
+                comments_list = result["comments"] #Sudah dalam bentuk List Komentar
+                comments_date_list = result["datetimes"]
+                comments_author_list = result["authors"]
+                comments_like_list = result["likes"]
+                title = result["captions"]
+                caption = [""]
+                creator = result["creator"]
+                tanggal = result["timestamp"]
+                jumlah_like = result["total_like"]
+
+                df_dataset = pd.DataFrame(comments_list, columns=["komentar"])
+                hasil_kategori, hasil_sentimen = predict_komentar(df_dataset)
             else :
                 kode_unik = extract_youtube_video_id(url)
                 result = youtube_crawling(kode_unik)
+
+                comments_list = result["comments"] #Sudah dalam bentuk List Komentar
+                comments_date_list = result["comments_date"]
+                comments_author_list = result["comments_author"]
+                comments_like_list = result["comments_like"]
+                title = result["title"]
+                caption = result["caption"]
+                creator = result["creator"]
+                tanggal = result["published_date"]
+                jumlah_like = result["like_count"]
+
+                df_dataset = pd.DataFrame(comments_list, columns=["komentar"])
+                hasil_kategori, hasil_sentimen = predict_komentar(df_dataset)
+            
+            df_date = pd.DataFrame(comments_date_list, columns=["datetimes"])
+            df_author = pd.DataFrame(comments_author_list, columns=["authors"])
+            df_like = pd.DataFrame(comments_like_list, columns=["likes"])
+            df_result = pd.concat([df_dataset, df_date, df_author, df_like, hasil_kategori, hasil_sentimen], axis=1)
+            
+            df_result = df_result[df_result['Comment_Kategori'].str.strip() != '']
+            df_result = df_result[df_result['Comment_Sentimen'].str.strip() != '']
+            
+            final_result = df_result.to_dict(orient='records')
+            sentiment_index = ['Positif', 'Negatif', 'Netral']
+            category_index = ['Engagement', 'Feedback', 'Pertanyaan']
+            count_sentiment = df_result['Sentimen'].value_counts()
+            count_category = df_result['Kategori'].value_counts()
+
+            sentiment_chart = count_sentiment.reindex(sentiment_index, fill_value=0)
+            category_chart = count_category.reindex(category_index, fill_value=0)
+            sentiment_chart = sentiment_chart.to_dict()
+            category_chart = category_chart.to_dict()
+
+
         except Exception as e:
             msg = str(e)
             status = "error"
+
     else:
         msg = "Tidak ditemukan 'sumber' dan 'url' sebagai parameter"
         status = "error"
 
-    # Kembalikan hasil, pesan, dan status
-    return jsonify({"result": result, "msg": msg, "status": status, "data": data})
+    return jsonify(
+            {
+                "result": final_result,
+                "msg": msg,
+                "status": status, 
+                "sentiment_chart": sentiment_chart, 
+                "category_chart": category_chart,
+                "title": title,
+                "caption": caption,
+                "creator": creator,
+                "sourcesId": kode_unik,
+                "date": tanggal,
+                "like_count": jumlah_like,
+            }
+        )
 
 @app.route("/train-model", methods=["POST"])
 def train_model():
     data = request.get_json()
     
-
     result = []
     msg = ""
     status = "success"
@@ -96,4 +168,7 @@ def extract_instagram_post_id(url):
         return None
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    try:
+        app.run(debug=True)
+    except Exception as e:
+        print(f"Error: {e}")

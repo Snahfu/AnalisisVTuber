@@ -9,13 +9,14 @@ from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 def remove_html_tag(text):
     if text is None:
         return text
+    
     soup = BeautifulSoup(text, 'html.parser')
     return soup.get_text(separator=' ', strip=True)
 
 def emoji_converter(text):
     if text is None:
         return text
-
+    
     converted_text = text
     sentiment_dictionary = {
         '😁': ' senang ',
@@ -63,6 +64,9 @@ def emoji_converter(text):
     return converted_text
 
 def replace_slang(text):
+    if text is None:
+        return text
+    
     slang_dict = {
         'plis': 'please',
         'cb': 'coba',
@@ -144,6 +148,9 @@ def replace_slang(text):
     return ' '.join(slang_dict.get(word, word) for word in text.split())
 
 def remove_emoji(text):
+    if text is None:
+        return text
+
     emoji_pattern = re.compile("["
                                u"\U0001F600-\U0001F64F"  # emoticons
                                u"\U0001F300-\U0001F5FF"  # simbol & piktogram
@@ -162,7 +169,7 @@ def remove_emoji(text):
 def cleaning_process(text):
     if text is None:
         return text
-
+    
     result = re.sub(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', ' ', text)#link url
     result = re.sub('[0-9]+', ' ', result)#angka
     return result.strip()
@@ -170,6 +177,7 @@ def cleaning_process(text):
 def remove_usermention(text):
     if text is None:
         return text
+    
     pattern = r'@[a-zA-Z0-9_.]+'
 
     result = re.sub(pattern, ' ', text)
@@ -177,15 +185,18 @@ def remove_usermention(text):
     return result.strip()
 
 def stem_text(text):
+    if text is None:
+        return text
     # Create a Sastrawi stemmer
     factory = StemmerFactory()
     stemmer = factory.create_stemmer()
-    if text is None:
-        return text
     return stemmer.stem(text)
 
 #DEFINE STOPWORDS FUNCTION
 def clean_stopwords(text):
+    if text is None:
+        return text
+    
     # DEFINE STOPWORDS
     stop_words = set(stopwords.words('indonesian'))
     tambahan_stopwords = {
@@ -194,11 +205,9 @@ def clean_stopwords(text):
     stop_words.update(tambahan_stopwords)
     stopword_preprocessing = set(stop_words)
 
-    if text is None:
-        return text
     return " ".join([word for word in str(text).split() if word not in stopword_preprocessing])
 
-def preprocessing_step(train_dataframe):
+def preprocessing_step(train_dataframe, tujuan):
     # Remove html tag
     # Convert Emoji -> Sentimen
     # SLANG Conversion
@@ -212,7 +221,7 @@ def preprocessing_step(train_dataframe):
     nltk.download('wordnet')
     nltk.download('omw-1.4')
     nltk.download('stopwords')
-
+    train_dataframe = train_dataframe['komentar'].astype(str)
     train_dataframe = train_dataframe.apply(remove_html_tag)
     train_dataframe = train_dataframe.apply(emoji_converter)
     train_dataframe = train_dataframe.apply(replace_slang)
@@ -227,13 +236,14 @@ def preprocessing_step(train_dataframe):
 
     punctuations_to_remove2 = '!"#$%&\'*+,-.(:;)/<=>?@[\\]^_`{|}~'
     train_dataframe = train_dataframe.str.replace(f'[{re.escape(punctuations_to_remove2)}]', '')
-
-    train_kategori = train_sentimen = train_dataframe[['comments', 'kategori']].copy()
+    
+    train_kategori = train_sentimen = train_dataframe.copy()
     train_sentimen = train_sentimen.apply(stem_text)
     train_sentimen = train_sentimen.apply(clean_stopwords)
 
-    train_kategori = train_kategori[train_kategori['comments'].str.strip() != '']
-    train_sentimen = train_sentimen[train_sentimen['comments'].str.strip() != '']
+    if(tujuan == "train"):
+        train_kategori = train_kategori[train_kategori.str.strip() != '']
+        train_sentimen = train_sentimen[train_sentimen.str.strip() != '']
 
     return train_kategori, train_sentimen
     

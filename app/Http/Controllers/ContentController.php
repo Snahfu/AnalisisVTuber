@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Content;
+use App\Models\History;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ContentController extends Controller
@@ -17,7 +19,7 @@ class ContentController extends Controller
 
         $content_commentar = Comment::where('contents_id', $content->id)
             ->where('contents_sourcesId', $content->sourcesId)
-            ->get();
+            ->paginate(10);
 
         return view('detailcontent', [
             "content" => $content,
@@ -80,6 +82,7 @@ class ContentController extends Controller
             'like_count' => 'required|int',
             'date' => 'required|date',
             'sources' => 'required|string',
+            'sourcesId' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -93,18 +96,22 @@ class ContentController extends Controller
 
         $content = Content::create($request->all());
         $dataId = $content->id;
+        $dataSourceId = $content->sourcesId;
+
+        $user_login = Auth::user()->id;
+        $history = new History;
+        $history->contents_id = $dataId;
+        $history->contents_sourcesId = $dataSourceId;
+        $history->users_id = $user_login;
+        $history->save();
 
         $status = "success";
         $msg = "Berhasil menambahkan data";
         return response()->json(array(
             'status' => $status,
             'msg' => $msg,
-            'data' => $dataId,
+            'dataId' => $dataId,
+            'dataSourceId' => $dataSourceId,
         ), 200);
-    }
-
-    public function delete(Request $request)
-    {
-        
     }
 }
