@@ -232,6 +232,7 @@
                 },
                 error: function(error) {
                     console.log('Error:', error);
+                    alertUpdate("Terdapat Kesalahan Pada Sistem", "error")
                 }
             });
         }
@@ -259,6 +260,7 @@
                 },
                 error: function(error) {
                     console.log('Error:', error);
+                    alertUpdate("Terdapat Kesalahan Pada Sistem", "error")
                 }
             });
         }
@@ -289,6 +291,7 @@
                 },
                 error: function(error) {
                     console.log('Error:', error);
+                    alertUpdate("Terdapat Kesalahan Pada Sistem", "error")
                 }
             });
         }
@@ -315,6 +318,7 @@
                 },
                 error: function(error) {
                     console.log('Error:', error);
+                    alertUpdate("Terdapat Kesalahan Pada Sistem", "error")
                 }
             });
         }
