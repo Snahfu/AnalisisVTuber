@@ -49,6 +49,17 @@
                             <div id="overall_sentiment" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
                         </div>
+                        <div class="card-footer">
+                            <div>Keyword Positif:</div>
+                            <span> {{implode(", ",$keywords_positif)}}, </span>
+                            <span> {{implode(", ",$keywords_positif_y)}} </span>
+                            <div>Keyword Negatif:</div>
+                            <span> {{implode(", ",$keywords_negatif)}}, </span>
+                            <span> {{implode(", ",$keywords_negatif_y)}} </span>
+                            <div>Keyword Netral:</div>
+                            <span> {{implode(", ",$keywords_netral)}}, </span>
+                            <span> {{implode(", ",$keywords_netral_y)}} </span>
+                        </div>
                     </div>
                     <!--end::Card-->
                 </div>
@@ -57,17 +68,27 @@
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Like Analysis</h3>
+                                <h3 class="card-label">Category Chart</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div id="overall_like" class="d-flex justify-content-center"></div>
+                            <div id="overall_category" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
+                        </div>
+                        <div class="card-footer">
+                            <div>Keyword Feedback:</div>
+                            <span> {{implode(", ",$keywords_feedback)}}, </span>
+                            <span> {{implode(", ",$keywords_feedback_y)}} </span>
+                            <div>Keyword Pertanyaan:</div>
+                            <span> {{implode(", ",$keywords_pertanyaan)}}, </span>
+                            <span> {{implode(", ",$keywords_pertanyaan_y)}} </span>
+                            <div>Keyword Engagement:</div>
+                            <span> {{implode(", ",$keywords_engagement)}}, </span>
+                            <span> {{implode(", ",$keywords_engagement_y)}} </span>
                         </div>
                     </div>
                     <!--end::Card-->
-
                 </div>
             </div>
             <div class="row">
@@ -87,21 +108,23 @@
                     </div>
                     <!--end::Card-->
                 </div>
+                
                 <div class="col-xl-6 col-12 mb-4">
                     <!--begin::Card-->
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Category Chart</h3>
+                                <h3 class="card-label">Like Analysis</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div id="overall_category" class="d-flex justify-content-center"></div>
+                            <div id="overall_like" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
                         </div>
                     </div>
                     <!--end::Card-->
+
                 </div>
             </div>
         </div>
@@ -126,6 +149,14 @@
                             <div id="youtube_sentiment" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
                         </div>
+                        <div class="card-footer">
+                            <div>Keyword Positif:</div>
+                            <span> {{implode(", ",$keywords_positif_y)}} </span>
+                            <div>Keyword Negatif:</div>
+                            <span> {{implode(", ",$keywords_negatif_y)}} </span>
+                            <div>Keyword Netral:</div>
+                            <span> {{implode(", ",$keywords_netral_y)}} </span>
+                        </div>
                     </div>
                     <!--end::Card-->
                 </div>
@@ -134,13 +165,21 @@
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Like Analysis</h3>
+                                <h3 class="card-label">Category Chart</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div id="youtube_like" class="d-flex justify-content-center"></div>
+                            <div id="youtube_category" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
+                        </div>
+                        <div class="card-footer">
+                            <div>Keyword Feedback:</div>
+                            <span> {{implode(", ",$keywords_feedback_y)}} </span>
+                            <div>Keyword Pertanyaan:</div>
+                            <span> {{implode(", ",$keywords_pertanyaan_y)}} </span>
+                            <div>Keyword Engagement:</div>
+                            <span> {{implode(", ",$keywords_engagement_y)}} </span>
                         </div>
                     </div>
                     <!--end::Card-->
@@ -164,22 +203,22 @@
                     <!--end::Card-->
                 </div>
                 <div class="col-xl-6 col-12 mb-4">
-
                     <!--begin::Card-->
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Category Chart</h3>
+                                <h3 class="card-label">Like Analysis</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div id="youtube_category" class="d-flex justify-content-center"></div>
+                            <div id="youtube_like" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
                         </div>
                     </div>
                     <!--end::Card-->
                 </div>
+                
             </div>
         </div>
     </div>
@@ -203,21 +242,38 @@
                             <div id="ig_sentiment" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
                         </div>
+                        <div class="card-footer">
+                            <div>Keyword Positif:</div>
+                            <span> {{implode(", ",$keywords_positif)}}, </span>
+                            <div>Keyword Negatif:</div>
+                            <span> {{implode(", ",$keywords_negatif)}}, </span>
+                            <div>Keyword Netral:</div>
+                            <span> {{implode(", ",$keywords_netral)}}, </span>
+                        </div>
                     </div>
                     <!--end::Card-->
                 </div>
                 <div class="col-xl-6 col-12 mb-4">
+                    
                     <!--begin::Card-->
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Like Analysis</h3>
+                                <h3 class="card-label">Category Chart</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div id="ig_like" class="d-flex justify-content-center"></div>
+                            <div id="ig_category" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
+                        </div>
+                        <div class="card-footer">
+                            <div>Keyword Feedback:</div>
+                            <span> {{implode(", ",$keywords_feedback)}}, </span>
+                            <div>Keyword Pertanyaan:</div>
+                            <span> {{implode(", ",$keywords_pertanyaan)}}, </span>
+                            <div>Keyword Engagement:</div>
+                            <span> {{implode(", ",$keywords_engagement)}}, </span>
                         </div>
                     </div>
                     <!--end::Card-->
@@ -241,22 +297,22 @@
                     <!--end::Card-->
                 </div>
                 <div class="col-xl-6 col-12 mb-4">
-                    
                     <!--begin::Card-->
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Category Chart</h3>
+                                <h3 class="card-label">Like Analysis</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div id="ig_category" class="d-flex justify-content-center"></div>
+                            <div id="ig_like" class="d-flex justify-content-center"></div>
                             <!--end::Chart-->
                         </div>
                     </div>
                     <!--end::Card-->
                 </div>
+                
             </div>
         </div>
     </div>
@@ -372,7 +428,7 @@
                     jumlah_pertanyaan + jumlah_pertanyaan_y
                 ],
                 chart: {
-                    width: 380,
+                    width: 410,
                     type: 'pie',
                 },
                 labels: ['Feedback', 'Engagement', 'Pertanyaan'],
@@ -397,7 +453,7 @@
             var options = {
                 series: [jumlah_feedback_y, jumlah_engagement_y, jumlah_pertanyaan_y],
                 chart: {
-                    width: 380,
+                    width: 410,
                     type: 'pie',
                 },
                 labels: ['Feedback', 'Engagement', 'Pertanyaan'],
@@ -422,7 +478,7 @@
             var options = {
                 series: [jumlah_feedback, jumlah_engagement, jumlah_pertanyaan],
                 chart: {
-                    width: 380,
+                    width: 410,
                     type: 'pie',
                 },
                 labels: ['Feedback', 'Engagement', 'Pertanyaan'],
@@ -451,7 +507,7 @@
                     jumlah_like_netral + jumlah_like_netral_y + jumlah_like_positif + jumlah_like_positif_y
                 ],
                 chart: {
-                    width: 380,
+                    width: 410,
                     type: 'pie',
                 },
                 labels: ['Content Like', 'Comment Like'],
@@ -476,7 +532,7 @@
             var options = {
                 series: [jumlah_like_y, jumlah_like_negatif_y + jumlah_like_netral_y + jumlah_like_positif_y],
                 chart: {
-                    width: 380,
+                    width: 410,
                     type: 'pie',
                 },
                 labels: ['Content Like', 'Comment Like'],
@@ -501,7 +557,7 @@
             var options = {
                 series: [jumlah_like_ig, jumlah_like_negatif + jumlah_like_netral + jumlah_like_positif],
                 chart: {
-                    width: 380,
+                    width: 410,
                     type: 'pie',
                 },
                 labels: ['Content Like', 'Comment Like'],

@@ -131,6 +131,7 @@ class VtuberController extends Controller
             ->where('contents.sources', '=', 'Instagram')
             ->select('comments.*')
             ->get();
+            
 
         return view('vtuber.index', [
             "jumlah_pertanyaan" => count($comment_pertanyaan),
@@ -322,6 +323,20 @@ class VtuberController extends Controller
             $total_like_instagram += $detail->like_count;
         }
 
+        $keywords_positif_y = $this->getKeywords($comment_positif_y);
+        $keywords_negatif_y = $this->getKeywords($comment_negatif_y);
+        $keywords_netral_y = $this->getKeywords($comment_netral_y);
+        $keywords_positif = $this->getKeywords($comment_positif);
+        $keywords_negatif = $this->getKeywords($comment_negatif);
+        $keywords_netral = $this->getKeywords($comment_netral);
+
+        $keywords_feedback_y = $this->getKeywords($comment_feedback_y);
+        $keywords_engagement_y = $this->getKeywords($comment_engagement_y);
+        $keywords_pertanyaan_y = $this->getKeywords($comment_pertanyaan_y);
+        $keywords_feedback = $this->getKeywords($comment_feedback);
+        $keywords_engagement = $this->getKeywords($comment_engagement);
+        $keywords_pertanyaan = $this->getKeywords($comment_pertanyaan);
+
         return view('vtuber.analysis', [
             "jumlah_pertanyaan" => count($comment_pertanyaan),
             "jumlah_feedback" => count($comment_feedback),
@@ -343,6 +358,18 @@ class VtuberController extends Controller
             "jumlah_like_netral_y" => $total_like_netral_y,
             "jumlah_like_negatif" => $total_like_negatif,
             "jumlah_like_negatif_y" => $total_like_negatif_y,
+            "keywords_positif_y" => $keywords_positif_y,
+            "keywords_negatif_y" => $keywords_negatif_y,
+            "keywords_netral_y" => $keywords_netral_y,
+            "keywords_positif" => $keywords_positif,
+            "keywords_negatif" => $keywords_negatif,
+            "keywords_netral" => $keywords_netral,
+            "keywords_feedback_y" => $keywords_feedback_y,
+            "keywords_engagement_y" => $keywords_engagement_y,
+            "keywords_pertanyaan_y" => $keywords_pertanyaan_y,
+            "keywords_feedback" => $keywords_feedback,
+            "keywords_engagement" => $keywords_engagement,
+            "keywords_pertanyaan" => $keywords_pertanyaan,
         ]);
     }
 }
