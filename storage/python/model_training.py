@@ -4,8 +4,6 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import LabelEncoder
-import logging
-import random
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
@@ -82,7 +80,6 @@ def train_model(dataset_kategori, dataset_sentimen):
         return_tensors="tf",
         max_length=max_length
     )
-    print("Check tokenizer done")
     # Menggunakan Indobert sebagai embedding layer sehingga mengambil matrixnya untuk digunakan sbg weights
     def get_bert_embed_matrix():
         bert = AutoModel.from_pretrained("indolem/indobertweet-base-uncased")
@@ -116,7 +113,7 @@ def train_model(dataset_kategori, dataset_sentimen):
     model2.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     stop_early = EarlyStopping(patience=10, verbose=1, restore_best_weights=True)
-    trained_model2 = model2.fit(tokenized_data_train2['input_ids'], y_train2, epochs=100, batch_size=32, validation_data=(tokenized_data_test2['input_ids'], y_test2), callbacks=[stop_early])
+    trained_model2 = model2.fit(tokenized_data_train2['input_ids'], y_train2, epochs=100, batch_size=64, validation_data=(tokenized_data_test2['input_ids'], y_test2), callbacks=[stop_early])
 
 
     model = Sequential()
@@ -139,11 +136,11 @@ def train_model(dataset_kategori, dataset_sentimen):
     model.summary()
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-    trained_model = model.fit(tokenized_data_train['input_ids'], y_train, epochs=100, batch_size=32, validation_data=(tokenized_data_test['input_ids'], y_test), callbacks=[stop_early])
+    trained_model = model.fit(tokenized_data_train['input_ids'], y_train, epochs=100, batch_size=64, validation_data=(tokenized_data_test['input_ids'], y_test), callbacks=[stop_early])
     # Save Model ke lokasi ...
     model.save("model_terbaik_sentimen.h5")
     model2.save("model_terbaik_kategori.h5")
-    print("Check model berhasil disimpan")
+    
     return "Sukses Melakukan Train Ulang"
 
     

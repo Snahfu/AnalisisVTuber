@@ -39,7 +39,6 @@ Route::post('/delete-comment', [App\Http\Controllers\CommentController::class, '
 Route::post('/insert-comment', [App\Http\Controllers\CommentController::class, 'store'])->name('insert.comment');
 Route::post('/semua-comment', [App\Http\Controllers\CommentController::class, 'semuaKomentar'])->name('semua.comment');
 
-
 // Authenthication
 Route::get('/', [App\Http\Controllers\AuthController::class, 'showLoginForm'])->name('loginPage');
 Route::post('/loginAkun', [App\Http\Controllers\AuthController::class, 'login'])->name('masuk');

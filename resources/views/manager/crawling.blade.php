@@ -228,7 +228,7 @@
             var options = {
                 series: [engagement, feedback, pertanyaan],
                 chart: {
-                    width: 380,
+                    width: 410,
                     type: 'pie',
                 },
                 labels: ['Engagement', 'Feedback', 'Pertanyaan'],
@@ -287,12 +287,13 @@
                             sentimen_chart(dataChartSentimen.Positif, dataChartSentimen.Negatif,
                                 dataChartSentimen
                                 .Netral)
+                            alert(response.caption[0])
                             // Masukan Konten ke Database
                             masukanKonten(response.title[0], response.caption[0], response.creator[0], response
                                 .like_count[0],
                                 response.date[0], sumber, response.sourcesId, response.result)
                         } else {
-                            alertUpdate("Terdapat Kesalahan Pada API", response.status)
+                            alertUpdate(response.msg, response.status)
                         }
                         console.log('Crawling Request Result:', response);
                         $('#loadingModal').modal('hide');

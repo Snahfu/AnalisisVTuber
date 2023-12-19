@@ -159,7 +159,7 @@
                                     <div class="circle circle-positive">
                                         <div class="circle-inner">
                                             <span
-                                                id="percentage">{{ (($jumlah_positif + $jumlah_positif_y) / $total_semua_sentimen) * 100 }}%</span>
+                                                id="percentage">{{ round((($jumlah_positif + $jumlah_positif_y) / $total_semua_sentimen) * 100,2) }}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -188,7 +188,7 @@
                                     <div class="circle circle-netral">
                                         <div class="circle-inner">
                                             <span
-                                                id="percentage">{{ (($jumlah_netral + $jumlah_netral_y) / $total_semua_sentimen) * 100 }}%</span>
+                                                id="percentage">{{ round((($jumlah_netral + $jumlah_netral_y) / $total_semua_sentimen) * 100,2) }}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -217,7 +217,7 @@
                                     <div class="circle circle-negative">
                                         <div class="circle-inner">
                                             <span
-                                                id="percentage">{{ (($jumlah_negatif + $jumlah_negatif_y) / $total_semua_sentimen) * 100 }}%</span>
+                                                id="percentage">{{ round((($jumlah_negatif + $jumlah_negatif_y) / $total_semua_sentimen) * 100,2) }}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -249,7 +249,7 @@
                                     <div class="circle circle-feedback">
                                         <div class="circle-inner">
                                             <span
-                                                id="percentage">{{ (($jumlah_feedback + $jumlah_feedback_y) / $total_semua_kategori) * 100 }}%</span>
+                                                id="percentage">{{ round((($jumlah_feedback + $jumlah_feedback_y) / $total_semua_kategori) * 100,2) }}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -278,7 +278,7 @@
                                     <div class="circle circle-engagement">
                                         <div class="circle-inner">
                                             <span
-                                                id="percentage">{{ (($jumlah_engagement + $jumlah_engagement_y) / $total_semua_kategori) * 100 }}%</span>
+                                                id="percentage">{{ round((($jumlah_engagement + $jumlah_engagement_y) / $total_semua_kategori) * 100,2) }}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -307,7 +307,7 @@
                                     <div class="circle circle-pertanyaan">
                                         <div class="circle-inner">
                                             <span
-                                                id="percentage">{{ (($jumlah_pertanyaan + $jumlah_pertanyaan_y) / $total_semua_kategori) * 100 }}%</span>
+                                                id="percentage">{{ round((($jumlah_pertanyaan + $jumlah_pertanyaan_y) / $total_semua_kategori) * 100,2) }}%</span>
                                         </div>
                                     </div>
                                 </div>

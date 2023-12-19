@@ -229,7 +229,7 @@
             var options = {
                 series: [engagement, feedback, pertanyaan],
                 chart: {
-                    width: 380,
+                    width: 410,
                     type: 'pie',
                 },
                 labels: ['Engagement', 'Feedback', 'Pertanyaan'],
@@ -293,7 +293,7 @@
                                 .like_count[0],
                                 response.date[0], sumber, response.sourcesId, response.result)
                         } else {
-                            alertUpdate("Terdapat Kesalahan Pada API", response.status)
+                            alertUpdate(response.msg, response.status)
                         }
                         console.log('Crawling Request Result:', response);
                         $('#loadingModal').modal('hide');

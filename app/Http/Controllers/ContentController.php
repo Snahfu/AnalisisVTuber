@@ -76,13 +76,12 @@ class ContentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string',
-            'caption' => 'required|string',
-            'creator' => 'required|string',
-            'like_count' => 'required|int',
-            'date' => 'required|date',
-            'sources' => 'required|string',
-            'sourcesId' => 'required|string',
+            'title' => 'required',
+            'creator' => 'required',
+            'like_count' => 'required',
+            'date' => 'required',
+            'sources' => 'required',
+            'sourcesId' => 'required',
         ]);
 
         if ($validator->fails()) {

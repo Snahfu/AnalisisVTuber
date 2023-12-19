@@ -122,7 +122,7 @@
                 </table>
                 <!--end: Datatable-->
             </div>
-            <button type="button" class="btn btn-info" onclick="getAllKomentar()">Train Model Baru</button>
+            <button type="button" class="btn btn-info" onclick="getAllKomentar()">Train Model Ulang</button>
         </div>
         <!--end::Card-->
     </div>

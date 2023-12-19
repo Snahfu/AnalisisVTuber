@@ -40,6 +40,13 @@ def crawling():
         try:
             if (sumber == "Instagram"):
                 kode_unik = extract_instagram_post_id(url)
+                if(kode_unik == "Format URL yang dimasukan salah!"):
+                    return jsonify(
+                        {
+                            "msg": kode_unik,
+                            "status": "failed", 
+                        }
+                    )
                 result = instagram_crawling(kode_unik)
                 
                 comments_list = result["comments"] #Sudah dalam bentuk List Komentar
@@ -47,7 +54,7 @@ def crawling():
                 comments_author_list = result["authors"]
                 comments_like_list = result["likes"]
                 title = result["captions"]
-                caption = [""]
+                caption = [" "]
                 creator = result["creator"]
                 tanggal = result["timestamp"]
                 jumlah_like = result["total_like"]
@@ -56,6 +63,13 @@ def crawling():
                 hasil_kategori, hasil_sentimen = predict_komentar(df_dataset)
             else :
                 kode_unik = extract_youtube_video_id(url)
+                if(kode_unik == "Format URL yang dimasukan salah!"):
+                    return jsonify(
+                        {
+                            "msg": kode_unik,
+                            "status": "failed", 
+                        }
+                    )
                 result = youtube_crawling(kode_unik)
 
                 comments_list = result["comments"] #Sudah dalam bentuk List Komentar
@@ -69,6 +83,7 @@ def crawling():
                 jumlah_like = result["like_count"]
 
                 df_dataset = pd.DataFrame(comments_list, columns=["komentar"])
+                
                 hasil_kategori, hasil_sentimen = predict_komentar(df_dataset)
             
             df_date = pd.DataFrame(comments_date_list, columns=["datetimes"])
@@ -130,9 +145,9 @@ def build_new_model():
             df_dataset = df_dataset.rename(columns={'text': 'comments'})
             df_dataset = df_dataset.rename(columns={'kelas_sentimen': 'sentimen'})
             df_dataset = df_dataset.rename(columns={'kelas_kategori': 'kategori'})
-            data = pd.read_csv('validasi_dataset_validated.csv')
-            df_train_dataset = pd.concat([data, df_dataset], ignore_index=True)
-            dataset_kategori, dataset_sentimen = preprocessing_traindataset(df_train_dataset)
+            # data = pd.read_csv('validasi_dataset_validated.csv')
+            # df_train_dataset = pd.concat([data, df_dataset], ignore_index=True)
+            dataset_kategori, dataset_sentimen = preprocessing_traindataset(df_dataset)
 
             result = train_model(dataset_kategori, dataset_sentimen)
             status = "success"
@@ -153,7 +168,7 @@ def extract_youtube_video_id(url):
         video_id = query_params.get('v', [None])[0]
         return video_id
     else:
-        return None
+        return "Format URL yang dimasukan salah!"
 
 # def extract_youtube_video_id(url):
 #     parsed_url = urlparse(url)
@@ -175,7 +190,7 @@ def extract_instagram_post_id(url):
         post_id = parsed_url.path.split('/')[2]
         return post_id
     else:
-        return None
+        return "Format URL yang dimasukan salah!"
 
 if __name__ == "__main__":
     try:

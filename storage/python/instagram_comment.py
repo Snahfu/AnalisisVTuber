@@ -1,14 +1,12 @@
-#Import Important Library for Chrome
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup as bs
-from bs4 import Tag
 import time
 from datetime import datetime
-import pandas as pd
+import re
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -48,17 +46,20 @@ def scrape_post(driver, selector_caption, selector_total_like, selector_timestam
         else:
             database_timestamp = "tidak ditemukan"
 
+        text_total_like = text_total_like.replace(",", "")
+        text_total_like = re.sub(r'\b(?:likes|like)\b', '', text_total_like).strip()
+        
         scraped_data["captions"].append(text_caption)
         scraped_data["creator"].append(text_creator)
-        scraped_data["total_like"].append(text_total_like+" likes")
+        scraped_data["total_like"].append(text_total_like)
         scraped_data["timestamp"].append(database_timestamp)
         
     except Exception as e:
         scraped_data["captions"].append("error")
         scraped_data["creator"].append("error")
-        scraped_data["total_like"].append("0 likes")
+        scraped_data["total_like"].append("0")
         scraped_data["timestamp"].append("error")
-
+    
     return scraped_data
 
 # FUNCTION BUAT AMBIL DATA KOMENTAR
@@ -94,33 +95,48 @@ def scrape_with_bs(driver, selector_comment, selector_author, selector_likes, se
             target_element_likes = bs.select_one(current_selector_likes)
             target_element_datetime = bs.select_one(current_selector_datetime)
 
-            # Ambil teks dari elemen target
-            text_comment = target_element_comment.get_text(strip=True) if target_element_comment else "ini gambar"
-            text_author = target_element_author.get_text(strip=True) if target_element_author else "ini gambar"
-            text_likes = target_element_likes.get_text(strip=True) if target_element_likes else "ini gambar"
-            if(target_element_likes.get_text(strip=True) == "Reply"):
-                text_likes = "0 likes"
+            # Cek Element ditemukan atau tidak jika iya masukan
+            if(target_element_author):
+                text_author = target_element_author.get_text(strip=True)
+                print(text_author)
+                scraped_texts["authors"].append(text_author)
+
+
+            if(target_element_comment):
+                text_comment = target_element_comment.get_text(strip=True)
+                scraped_texts["comments"].append(text_comment)
+
+
+            if(target_element_likes):
+                text_likes = target_element_likes.get_text(strip=True)
+                # Jika like tidak muncul saat crawling ubah menjadi 0
+                if(text_likes == "Reply"):
+                    text_likes = "0"
+                
+                text_likes = text_likes.replace(",", "")
+                text_likes = re.sub(r'\b(?:likes|like)\b', '', text_likes).strip()
+                scraped_texts["likes"].append(text_likes)
+            
+
             if(target_element_datetime):
                 text_datetime = target_element_datetime.get('datetime')
                 # Step ubah datetime ke format database
                 text_datetime = datetime.fromisoformat(text_datetime.replace("Z", "+00:00"))
                 database_timestamp = text_datetime.strftime("%Y-%m-%d %H:%M:%S")
-            else:
-                database_timestamp = "ini gambar"
-
-            # Tambahkan ke dalam list
-            scraped_texts["comments"].append(text_comment)
-            scraped_texts["authors"].append(text_author)
-            scraped_texts["likes"].append(text_likes)
-            scraped_texts["datetimes"].append(database_timestamp)
+                scraped_texts["datetimes"].append(database_timestamp)
 
         except Exception as e:
             # Handle exception jika ada masalah saat scraping
-            scraped_texts["comments"].append("ini gambar")
-            scraped_texts["authors"].append("ini gambar")
-            scraped_texts["likes"].append("0 likes")
-            scraped_texts["datetimes"].append("ini gambar")
+            scraped_texts["comments"].append("error")
+            scraped_texts["authors"].append("error")
+            scraped_texts["likes"].append("0")
+            scraped_texts["datetimes"].append("error")
 
+    # Menghapus data yang tidak sesuai atau error
+    indeks_error = [i for i, val in enumerate(scraped_texts["datetimes"]) if val == "error"]
+    for key in scraped_texts:
+        scraped_texts[key] = [val for i, val in enumerate(scraped_texts[key]) if i not in indeks_error]
+    
     return scraped_texts
 
 #Function buat scroll down
@@ -154,14 +170,12 @@ def instagram_crawling(instagram_url):
 
     # Crawling Starts
     driver.get('https://www.instagram.com/p/'+instagram_url+'/?hl=en')
-    # OLD
-    # scrollableDiv = driver.find_element(By.XPATH, "//html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/section/main/div/div[1]/div/div[2]/div/div[2]")
-    # NEW
+    time.sleep(1)
     scrollableDiv = driver.find_element(By.XPATH, "/html/body/div[2]/div/div/div[2]/div/div/div[1]/div[1]/div[2]/section/main/div/div[1]/div/div[2]/div/div[2]")
-    # ITERASI PERTAMA itu 13 + (1 milik CAPTION) TOTAL 14 yg ke-15 itu Loading State + 15 berikutnya
+    # ITERASI PERTAMA itu 13 + (1 milik CAPTION) TOTAL 14 yg ke-15 itu Loading State + 15 berikutnya (N-1)*15+14
 
     # LOOPING setidaknya 8x
-    for _nothing in range (12):
+    for _nothing in range (1):
         #Jalankan function
         scroll_down(scrollableDiv, driver)
         #Sleep 3 detik
