@@ -219,7 +219,7 @@
                     $('#loadingModal').modal('hide');
                     console.log('Train Model Request Result:', response);
                     
-                    alertUpdate(response.result, "success")
+                    alertUpdate(response.result, response.status)
                 },
                 error: function(error) {
                     $('#loadingModal').modal('hide');

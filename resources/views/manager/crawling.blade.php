@@ -287,7 +287,6 @@
                             sentimen_chart(dataChartSentimen.Positif, dataChartSentimen.Negatif,
                                 dataChartSentimen
                                 .Netral)
-                            alert(response.caption[0])
                             // Masukan Konten ke Database
                             masukanKonten(response.title[0], response.caption[0], response.creator[0], response
                                 .like_count[0],
