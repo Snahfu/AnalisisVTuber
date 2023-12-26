@@ -22,7 +22,7 @@
             <div class="container position-relative">
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-6 text-center">
-                        <h2>Welcome! Reynard Blanc</h2>
+                        <h2>Welcome {{(Auth::user()->role == "Manager") ? "Manager!" : "!" }} {{ Auth::user()->name }}</h2>
                         <p>Here VTuberTECH will help you to perform Sentiment Analysis about your VTubers content in
                             Youtube and Instagram. Hope this program helps your job to help your VTubers.
                         </p>
@@ -46,20 +46,29 @@
     <!-- ======= Featured Services Section ======= -->
     <section id="featured-services" class="featured-services">
         <div class="container">
-            <h3 class="mb-3 text-primary">Your Recent Activities</h3>
+            <h3 class="mb-3 text-primary">Aktivitas Terbaru</h3>
             <div class="row gy-4">
-                @foreach ($vtuber_content as $content)
-                    <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up">
-                        <div class="icon flex-shrink-0"><i class="bi bi-youtube"></i></div>
-                        <div>
-                            <h4 class="title">{{ $content->creator }}</h4>
-                            <p class="description">{{ $content->title }}</p>
-                            <p class="description"><i class="bi bi-chat"></i> {{ $content->total_comments }}</p>
-                            <a href="#" class="readmore stretched-link"><span>Detail</span><i
-                                    class="bi bi-arrow-right"></i></a>
+                @if (!$vtuber_content)
+                    @foreach ($vtuber_content as $content)
+                        <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up">
+                            <div class="icon flex-shrink-0"><i class="bi bi-youtube"></i></div>
+                            <div>
+                                <h4 class="title">{{ $content->creator }}</h4>
+                                <p class="description">{{ $content->title }}</p>
+                                <p class="description"><i class="bi bi-chat"></i> {{ $content->total_comments }}</p>
+                                <a href="#" class="readmore stretched-link"><span>Detail</span><i
+                                        class="bi bi-arrow-right"></i></a>
+                            </div>
                         </div>
+                    @endforeach
+                @else
+                    <div class="col-lg-12 col-md-12 service-item d-flex justify-content-center align-items-center"
+                        data-aos="fade-up">
+                        <h4 class="text-center text-warning"> <!-- Ganti warna sesuai keinginanmu -->
+                            Tidak ada Aktivitas yang dilakukan
+                        </h4>
                     </div>
-                @endforeach
+                @endif
             </div>
 
         </div>
@@ -75,22 +84,31 @@
                 <h2>Your VTubers</h2>
             </div>
             <div class="row gy-4">
-                @foreach ($vtuber_list as $vtuber)
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                        <div class="card">
-                            <div class="card-img">
-                                <img src="{{ asset($vtuber->url_gambar) }}" alt="not found" class="img-fluid" width="700px"
-                                    height="700px">
+                @if (!$vtuber_list)
+                    @foreach ($vtuber_list as $vtuber)
+                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="card">
+                                <div class="card-img">
+                                    <img src="{{ asset($vtuber->url_gambar) }}" alt="not found" class="img-fluid"
+                                        width="700px" height="700px">
+                                </div>
+                                <h3><a href="#" class="stretched-link">{{ $vtuber->name }}</a></h3>
+                                <p><i
+                                        class="bi bi-youtube"></i>{{ $vtuber->instagram_link == '' ? '' : $vtuber->instagram_link }}
+                                </p>
+                                <p><i class="bi bi-instagram"></i>
+                                    {{ $vtuber->youtube_link == '' ? '' : $vtuber->youtube_link }} </p>
                             </div>
-                            <h3><a href="#" class="stretched-link">{{ $vtuber->name }}</a></h3>
-                            <p><i
-                                    class="bi bi-youtube"></i>{{ $vtuber->instagram_link == '' ? '' : $vtuber->instagram_link }}
-                            </p>
-                            <p><i class="bi bi-instagram"></i>
-                                {{ $vtuber->youtube_link == '' ? '' : $vtuber->youtube_link }} </p>
                         </div>
+                    @endforeach
+                @else
+                    <div class="col-lg-12 col-md-12 service-item d-flex justify-content-center align-items-center"
+                        data-aos="fade-up">
+                        <h4 class="text-center text-warning"> <!-- Ganti warna sesuai keinginanmu -->
+                            Belum Ada VTuber Yang Kamu Manage
+                        </h4>
                     </div>
-                @endforeach
+                @endif
             </div>
         </div>
     </section><!-- End Services Section -->

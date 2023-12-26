@@ -54,7 +54,7 @@
                 </div>
             </fieldset>
             <button type="submit" class="btn btn-primary"
-                onclick="updateKonten({{ $content->id }}, '{{ $content->sourcesId }}')">Submit</button>
+                onclick="updateKonten({{ $content->id }}, '{{ $content->sourcesId }}')">Perbaruhi</button>
         </div>
     </div>
 
@@ -127,11 +127,19 @@
                     </div>
                     <div class="mb-3">
                         <label for="editSentimenKomentar" class="form-label">Sentimen</label>
-                        <input type="text" class="form-control" id="editSentimenKomentar">
+                        <select type="text" class="form-select" id="editSentimenKomentar">
+                            <option value="Positif">Positif</option>
+                            <option value="Negatif">Negatif</option>
+                            <option value="Netral">Netral</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="editKategoriKomentar" class="form-label">Kategori</label>
-                        <input type="text" class="form-control" id="editKategoriKomentar">
+                        <select type="text" class="form-select" id="editKategoriKomentar">
+                            <option value="Feedback">Feedback</option>
+                            <option value="Pertanyaan">Pertanyaan</option>
+                            <option value="Engagement">Engagement</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -238,6 +246,12 @@
         }
 
         function updateKomentar(id) {
+            var selectElement = document.getElementById('editKategoriKomentar');
+            var selectedIndex = selectElement.selectedIndex;
+            var value = selectElement.options[selectedIndex].value;
+            var selectElement2 = document.getElementById('editSentimenKomentar');
+            var selectedIndex2 = selectElement2.selectedIndex;
+            var value2 = selectElement2.options[selectedIndex2].value;
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -248,14 +262,14 @@
                 type: 'POST',
                 data: {
                     'id': id,
-                    'kelas_sentimen': document.getElementById('editSentimenKomentar').value,
-                    'kelas_kategori': document.getElementById('editKategoriKomentar').value,
+                    'kelas_sentimen': value2,
+                    'kelas_kategori': value,
                 },
                 dataType: 'json',
                 success: function(response) {
                     $('#editModal').modal('hide');
-                    $('#td_kategori_' + id).html(document.getElementById('editKategoriKomentar').value);
-                    $('#td_sentimen_' + id).html(document.getElementById('editSentimenKomentar').value);
+                    $('#td_kategori_' + id).html(value);
+                    $('#td_sentimen_' + id).html(value2);
                     alertUpdate(response.msg, response.status);
                 },
                 error: function(error) {

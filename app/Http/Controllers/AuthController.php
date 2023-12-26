@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -58,17 +59,16 @@ class AuthController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
-        $user = \App\Models\User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'group' => $request->input('group'),
-            'url_gambar' => $savedPath,
-            'role' => $request->input('role'),
-            'instagram_link' => $request->input('instagram_link'),
-            'youtube_link' => $request->input('youtube_link'),
-            'password' =>  Hash::make($request->input('password')),
-        ]);
+        $user = new User;
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->group = $request->input('group');
+        $user->url_gambar = $savedPath;
+        $user->role = $request->input('role');
+        $user->instagram_link = $request->input('instagram_link');
+        $user->youtube_link = $request->input('youtube_link');
+        $user->password = Hash::make($request->input('password'));
+        $user->save();
 
         Auth::login($user);
         if ($request->input('role') == "Manager") {

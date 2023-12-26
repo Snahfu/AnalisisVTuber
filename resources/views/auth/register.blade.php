@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Form</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <style>
         .blue {
             background-color: #0e1d34;
@@ -37,13 +37,13 @@
                             <div class="form-outline mb-1">
                                 <label class="form-label white" for="email">Email</label>
                                 <input type="email" id="email" class="form-control form-control-sm"
-                                    placeholder="Masukan Email" name="email" required/>
+                                    placeholder="Masukan Email" name="email" required />
                             </div>
 
                             <div class="form-outline mb-1">
                                 <label class="form-label white" for="name">Nama</label>
                                 <input type="text" id="name" class="form-control form-control-sm"
-                                    placeholder="Masukan Nama" name="name" required/>
+                                    placeholder="Masukan Nama" name="name" required />
                             </div>
 
                             <div class="row">
@@ -51,14 +51,16 @@
                                     <div class="form-outline mb-1">
                                         <label class="form-label white" for="group">Group</label>
                                         <input type="text" id="group" class="form-control form-control-sm"
-                                            placeholder="YumeLive / Re:Memories" name="group" required/>
+                                            placeholder="YumeLive / Re:Memories" name="group" required />
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-outline mb-1">
                                         <label class="form-label white" for="role">Role</label>
-                                        <input type="text" id="role" class="form-control form-control-sm"
-                                            placeholder="Manager / VTuber" name="role" required/>
+                                        <select type="text" class="form-select" id="role" name="role">
+                                            <option value="Manager">Manager</option>
+                                            <option value="VTuber">VTuber</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -75,20 +77,22 @@
                                     <div class="form-outline mb-1">
                                         <label class="form-label white" for="instagram">Instagram Link</label>
                                         <input type="text" id="instagram" class="form-control form-control-sm"
-                                            placeholder="https://www.instagram.com/somebody/?hl=en" name="instagram_link"/>
+                                            placeholder="https://www.instagram.com/somebody/?hl=en"
+                                            name="instagram_link" />
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-outline mb-1">
                                 <label class="form-label white" for="url_gambar">Profile Picture</label>
-                                <input id="url_gambar" type="file" class="form-control form-control-sm" name="url_gambar" required>
+                                <input id="url_gambar" type="file" class="form-control form-control-sm"
+                                    name="url_gambar" required>
                             </div>
 
                             <div class="form-outline mb-1">
                                 <label class="form-label white" for="password">Password</label>
-                                <input type="password" id="password" name="password" class="form-control form-control-sm"
-                                    placeholder="Masukan password" />
+                                <input type="password" id="password" name="password"
+                                    class="form-control form-control-sm" placeholder="Masukan password" />
                             </div>
 
                             @if ($errors->any())
@@ -103,7 +107,7 @@
 
                             <div class="text-center text-lg-start mt-2 pt-2">
                                 <button type="submit" class="btn btn-primary btn-sm"
-                                    style="padding-left: 2.5rem; padding-right: 2.5rem;" >Register</button>
+                                    style="padding-left: 2.5rem; padding-right: 2.5rem;">Register</button>
                                 <p class="small fw-bold mt-1 pt-1 mb-0 white">Sudah punya akun? <a
                                         href="{{ route('loginPage') }}" class="link-warning">Login</a></p>
                             </div>

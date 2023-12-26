@@ -90,7 +90,7 @@
             <div class="container position-relative">
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-6 text-center">
-                        <h2>Welcome! Reynard Blanc</h2>
+                        <h2>Welcome {{ Auth::user()->role == 'Manager' ? 'Manager!' : '!' }} {{ Auth::user()->name }}</h2>
                         {{-- <p>Here VTuberTECH will help you to perform Sentiment Analysis about your content in 
                             Youtube and Instagram. Hope this program helps your career as Virtual Youtuber in 
                             Digital Entertainment Industry of Indonesia.
@@ -106,7 +106,9 @@
         <nav>
             <div class="container">
                 <ol>
-                    <li><a href="{{ (Auth::user()->role == "Manager") ? route('manager.home') : route('vtuber.home') }}">Home</a></li>
+                    <li><a
+                            href="{{ Auth::user()->role == 'Manager' ? route('manager.home') : route('vtuber.home') }}">Home</a>
+                    </li>
                 </ol>
             </div>
         </nav>
@@ -118,19 +120,27 @@
         <div class="container">
             <h3 class="mb-3 text-primary">Your Recent Activities</h3>
             <div class="row gy-4">
-                @foreach ($vtuber_content as $content)
-                    <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up">
-                        <div class="icon flex-shrink-0"><i class="bi {{ ($content->sources == "Youtube") ? "bi-youtube" : "bi-instagram" }}"></i></div>
-                        <div>
-                            <h4 class="title">{{$content->creator}}</h4>
-                            <p class="description">{{$content->title}}</p>
-                            <p class="description"><i class="bi bi-chat"></i> {{$content->total_comments}}</p>
-                            <a href="#" class="readmore stretched-link"><span>Detail</span><i
-                                    class="bi bi-arrow-right"></i></a>
+                @if (!$vtuber_content)
+                    @foreach ($vtuber_content as $content)
+                        <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up">
+                            <div class="icon flex-shrink-0"><i class="bi bi-youtube"></i></div>
+                            <div>
+                                <h4 class="title">{{ $content->creator }}</h4>
+                                <p class="description">{{ $content->title }}</p>
+                                <p class="description"><i class="bi bi-chat"></i> {{ $content->total_comments }}</p>
+                                <a href="#" class="readmore stretched-link"><span>Detail</span><i
+                                        class="bi bi-arrow-right"></i></a>
+                            </div>
                         </div>
+                    @endforeach
+                @else
+                    <div class="col-lg-12 col-md-12 service-item d-flex justify-content-center align-items-center"
+                        data-aos="fade-up">
+                        <h4 class="text-center text-warning">
+                            Tidak ada Aktivitas yang dilakukan
+                        </h4>
                     </div>
-                @endforeach
-
+                @endif
             </div>
 
         </div>
@@ -143,189 +153,198 @@
                 <span>Your Sentiment Analysis Summary</span>
                 <h2>Your Sentiment Analysis Summary</h2>
             </div>
-            @php
-                $total_semua_sentimen = $jumlah_positif + $jumlah_positif_y + $jumlah_negatif + $jumlah_negatif_y + $jumlah_netral_y + $jumlah_netral;
-                $total_semua_kategori = $jumlah_engagement + $jumlah_engagement_y + $jumlah_feedback + $jumlah_feedback_y + $jumlah_pertanyaan + $jumlah_pertanyaan_y;
-            @endphp
-            <div class="row gy-4 mb-4">
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Total Positive</h4>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="containerwidget">
-                                <div class="circle-graph">
-                                    <div class="circle circle-positive">
-                                        <div class="circle-inner">
-                                            <span
-                                                id="percentage">{{ round((($jumlah_positif + $jumlah_positif_y) / $total_semua_sentimen) * 100,2) }}%</span>
+            @if (!$vtuber_content)
+                @php
+                    $total_semua_sentimen = $jumlah_positif + $jumlah_positif_y + $jumlah_negatif + $jumlah_negatif_y + $jumlah_netral_y + $jumlah_netral;
+                    $total_semua_kategori = $jumlah_engagement + $jumlah_engagement_y + $jumlah_feedback + $jumlah_feedback_y + $jumlah_pertanyaan + $jumlah_pertanyaan_y;
+                @endphp
+                <div class="row gy-4 mb-4">
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4 class="card-title">Total Positive</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="containerwidget">
+                                    <div class="circle-graph">
+                                        <div class="circle circle-positive">
+                                            <div class="circle-inner">
+                                                <span
+                                                    id="percentage">{{ round((($jumlah_positif + $jumlah_positif_y) / $total_semua_sentimen) * 100, 2) }}%</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row border-top text-center mx-0">
-                                <div class="col-6 bord er-end py-1">
-                                    <p class="card-text text-muted mb-0">Positif</p>
-                                    <h3 class="fw-bolder mb-0">{{ $jumlah_positif + $jumlah_positif_y }}</h3>
+                                <div class="row border-top text-center mx-0">
+                                    <div class="col-6 bord er-end py-1">
+                                        <p class="card-text text-muted mb-0">Positif</p>
+                                        <h3 class="fw-bolder mb-0">{{ $jumlah_positif + $jumlah_positif_y }}</h3>
+                                    </div>
+                                    <div class="col-6 py-1">
+                                        <p class="card-text text-muted mb-0">Total Data</p>
+                                        <h3 class="fw-bolder mb-0">{{ $total_semua_sentimen }}</h3>
+                                    </div>
                                 </div>
-                                <div class="col-6 py-1">
-                                    <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">{{ $total_semua_sentimen }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4 class="card-title">Total Netral</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="containerwidget">
+                                    <div class="circle-graph">
+                                        <div class="circle circle-netral">
+                                            <div class="circle-inner">
+                                                <span
+                                                    id="percentage">{{ round((($jumlah_netral + $jumlah_netral_y) / $total_semua_sentimen) * 100, 2) }}%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row border-top text-center mx-0">
+                                    <div class="col-6 border-end py-1">
+                                        <p class="card-text text-muted mb-0">Netral</p>
+                                        <h3 class="fw-bolder mb-0">{{ $jumlah_netral + $jumlah_netral_y }}</h3>
+                                    </div>
+                                    <div class="col-6 py-1">
+                                        <p class="card-text text-muted mb-0">Total Data</p>
+                                        <h3 class="fw-bolder mb-0">{{ $total_semua_sentimen }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4 class="card-title">Total Negative</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="containerwidget">
+                                    <div class="circle-graph">
+                                        <div class="circle circle-negative">
+                                            <div class="circle-inner">
+                                                <span
+                                                    id="percentage">{{ round((($jumlah_negatif + $jumlah_negatif_y) / $total_semua_sentimen) * 100, 2) }}%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row border-top text-center mx-0">
+                                    <div class="col-6 border-end py-1">
+                                        <p class="card-text text-muted mb-0">Negative</p>
+                                        <h3 class="fw-bolder mb-0">{{ $jumlah_negatif + $jumlah_negatif_y }}</h3>
+                                    </div>
+                                    <div class="col-6 py-1">
+                                        <p class="card-text text-muted mb-0">Total Data</p>
+                                        <h3 class="fw-bolder mb-0">{{ $total_semua_sentimen }}</h3>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Total Netral</h4>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="containerwidget">
-                                <div class="circle-graph">
-                                    <div class="circle circle-netral">
-                                        <div class="circle-inner">
-                                            <span
-                                                id="percentage">{{ round((($jumlah_netral + $jumlah_netral_y) / $total_semua_sentimen) * 100,2) }}%</span>
+                {{-- Section Kategory --}}
+                <div class="row gy-4 mb-4">
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4 class="card-title">Total Feedback</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="containerwidget">
+                                    <div class="circle-graph">
+                                        <div class="circle circle-feedback">
+                                            <div class="circle-inner">
+                                                <span
+                                                    id="percentage">{{ round((($jumlah_feedback + $jumlah_feedback_y) / $total_semua_kategori) * 100, 2) }}%</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row border-top text-center mx-0">
-                                <div class="col-6 border-end py-1">
-                                    <p class="card-text text-muted mb-0">Netral</p>
-                                    <h3 class="fw-bolder mb-0">{{ $jumlah_netral + $jumlah_netral_y }}</h3>
+                                <div class="row border-top text-center mx-0">
+                                    <div class="col-6 bord er-end py-1">
+                                        <p class="card-text text-muted mb-0">Feedback</p>
+                                        <h3 class="fw-bolder mb-0">{{ $jumlah_feedback + $jumlah_feedback_y }}</h3>
+                                    </div>
+                                    <div class="col-6 py-1">
+                                        <p class="card-text text-muted mb-0">Total Data</p>
+                                        <h3 class="fw-bolder mb-0">{{ $total_semua_kategori }}</h3>
+                                    </div>
                                 </div>
-                                <div class="col-6 py-1">
-                                    <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">{{ $total_semua_sentimen }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4 class="card-title">Total Engagement</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="containerwidget">
+                                    <div class="circle-graph">
+                                        <div class="circle circle-engagement">
+                                            <div class="circle-inner">
+                                                <span
+                                                    id="percentage">{{ round((($jumlah_engagement + $jumlah_engagement_y) / $total_semua_kategori) * 100, 2) }}%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row border-top text-center mx-0">
+                                    <div class="col-6 border-end py-1">
+                                        <p class="card-text text-muted mb-0">Engagement</p>
+                                        <h3 class="fw-bolder mb-0">{{ $jumlah_engagement + $jumlah_engagement_y }}</h3>
+                                    </div>
+                                    <div class="col-6 py-1">
+                                        <p class="card-text text-muted mb-0">Total Data</p>
+                                        <h3 class="fw-bolder mb-0">{{ $total_semua_kategori }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4 class="card-title">Total Pertanyaan</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="containerwidget">
+                                    <div class="circle-graph">
+                                        <div class="circle circle-pertanyaan">
+                                            <div class="circle-inner">
+                                                <span
+                                                    id="percentage">{{ round((($jumlah_pertanyaan + $jumlah_pertanyaan_y) / $total_semua_kategori) * 100, 2) }}%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row border-top text-center mx-0">
+                                    <div class="col-6 border-end py-1">
+                                        <p class="card-text text-muted mb-0">Pertanyaan</p>
+                                        <h3 class="fw-bolder mb-0">{{ $jumlah_pertanyaan + $jumlah_pertanyaan_y }}</h3>
+                                    </div>
+                                    <div class="col-6 py-1">
+                                        <p class="card-text text-muted mb-0">Total Data</p>
+                                        <h3 class="fw-bolder mb-0">{{ $total_semua_kategori }}</h3>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Total Negative</h4>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="containerwidget">
-                                <div class="circle-graph">
-                                    <div class="circle circle-negative">
-                                        <div class="circle-inner">
-                                            <span
-                                                id="percentage">{{ round((($jumlah_negatif + $jumlah_negatif_y) / $total_semua_sentimen) * 100,2) }}%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row border-top text-center mx-0">
-                                <div class="col-6 border-end py-1">
-                                    <p class="card-text text-muted mb-0">Negative</p>
-                                    <h3 class="fw-bolder mb-0">{{ $jumlah_negatif + $jumlah_negatif_y }}</h3>
-                                </div>
-                                <div class="col-6 py-1">
-                                    <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">{{ $total_semua_sentimen }}</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            @else
+                <div class="col-lg-12 col-md-12 service-item d-flex justify-content-center align-items-center"
+                    data-aos="fade-up">
+                    <h4 class="text-center text-warning">
+                        Tidak Ada Data Untuk Memberikan Summary
+                    </h4>
                 </div>
-            </div>
-            {{-- Section Kategory --}}
-            <div class="row gy-4 mb-4">
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Total Feedback</h4>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="containerwidget">
-                                <div class="circle-graph">
-                                    <div class="circle circle-feedback">
-                                        <div class="circle-inner">
-                                            <span
-                                                id="percentage">{{ round((($jumlah_feedback + $jumlah_feedback_y) / $total_semua_kategori) * 100,2) }}%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row border-top text-center mx-0">
-                                <div class="col-6 bord er-end py-1">
-                                    <p class="card-text text-muted mb-0">Feedback</p>
-                                    <h3 class="fw-bolder mb-0">{{ $jumlah_feedback + $jumlah_feedback_y }}</h3>
-                                </div>
-                                <div class="col-6 py-1">
-                                    <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">{{ $total_semua_kategori }}</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Total Engagement</h4>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="containerwidget">
-                                <div class="circle-graph">
-                                    <div class="circle circle-engagement">
-                                        <div class="circle-inner">
-                                            <span
-                                                id="percentage">{{ round((($jumlah_engagement + $jumlah_engagement_y) / $total_semua_kategori) * 100,2) }}%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row border-top text-center mx-0">
-                                <div class="col-6 border-end py-1">
-                                    <p class="card-text text-muted mb-0">Engagement</p>
-                                    <h3 class="fw-bolder mb-0">{{ $jumlah_engagement + $jumlah_engagement_y }}</h3>
-                                </div>
-                                <div class="col-6 py-1">
-                                    <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">{{ $total_semua_kategori }}</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Total Pertanyaan</h4>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="containerwidget">
-                                <div class="circle-graph">
-                                    <div class="circle circle-pertanyaan">
-                                        <div class="circle-inner">
-                                            <span
-                                                id="percentage">{{ round((($jumlah_pertanyaan + $jumlah_pertanyaan_y) / $total_semua_kategori) * 100,2) }}%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row border-top text-center mx-0">
-                                <div class="col-6 border-end py-1">
-                                    <p class="card-text text-muted mb-0">Pertanyaan</p>
-                                    <h3 class="fw-bolder mb-0">{{ $jumlah_pertanyaan + $jumlah_pertanyaan_y }}</h3>
-                                </div>
-                                <div class="col-6 py-1">
-                                    <p class="card-text text-muted mb-0">Total Data</p>
-                                    <h3 class="fw-bolder mb-0">{{ $total_semua_kategori }}</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endif
         </div>
     </section>
 
@@ -356,7 +375,8 @@
 
         const circles = document.querySelectorAll('.circle');
         const percentages = [total_positif, total_netral, total_negatif, total_feedback, total_engagement,
-        total_pertanyaan];
+            total_pertanyaan
+        ];
 
         // Loop through each circle element
         circles.forEach((circle, index) => {

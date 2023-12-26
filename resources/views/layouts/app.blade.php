@@ -63,7 +63,7 @@
                             data-bs-toggle="dropdown">
                             <img src="{{ asset(Auth::user()->url_gambar) }}" alt="Profile" width="40px"
                                 height="40px" class="rounded-circle">
-                            <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }}</span>
+                            <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->group }} | {{ Auth::user()->name }}</span>
                         </a><!-- End Profile Iamge Icon -->
 
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">

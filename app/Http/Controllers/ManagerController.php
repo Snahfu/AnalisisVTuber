@@ -31,6 +31,9 @@ class ManagerController extends Controller
     public function index()
     {
         $user = Auth::user();
+        if($user->role != "Manager"){
+            return view('error',["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        }
         $user_affiliation = $user->group;
         $vtuber_content = Content::join('histories', 'histories.contents_id', '=', 'contents.id')
             ->join('users', 'histories.users_id', '=', 'users.id')
@@ -63,7 +66,11 @@ class ManagerController extends Controller
 
     public function tohistory()
     {
-        $group = Auth::user()->group;
+        $user = Auth::user();
+        if($user->role != "Manager"){
+            return view('error',["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        }
+        $group = $user->group;
 
         $histories = History::select('histories.*', 'contents.*')
             ->join('contents', 'histories.contents_id', '=', 'contents.id')
@@ -79,18 +86,30 @@ class ManagerController extends Controller
 
     public function tocrawling()
     {
+        $user = Auth::user();
+        if($user->role != "Manager"){
+            return view('error',["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        }
         return view('manager.crawling');
     }
 
     public function toanalysis()
     {
+        $user = Auth::user();
+        if($user->role != "Manager"){
+            return view('error',["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        }
         return view('manager.analysis');
     }
 
     public function analysismanagement()
     {
         // User Id
-        $id = Auth::user()->id;
+        $user = Auth::user();
+        if($user->role != "Manager"){
+            return view('error',["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        }
+        $id = $user->id;
         // Youtube Data
         $comment_netral_y = Comment::join('contents', 'comments.contents_id', '=', 'contents.id')
             ->join('histories', 'histories.contents_id', '=', 'contents.id')
@@ -289,8 +308,12 @@ class ManagerController extends Controller
     }
     public function analysisvtuber()
     {
-        $user_id = Auth::user()->id;
-        $user_affiliation = Auth::user()->group;
+        $user = Auth::user();
+        if($user->role != "Manager"){
+            return view('error',["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        }
+        $user_id = $user->id;
+        $user_affiliation = $user->group;
         // Youtube Data
         $comment_netral_y = Comment::join('contents', 'comments.contents_id', '=', 'contents.id')
             ->join('histories', 'histories.contents_id', '=', 'contents.id')

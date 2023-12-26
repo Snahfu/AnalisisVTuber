@@ -14,6 +14,9 @@ class VtuberController extends Controller
     public function index()
     {
         $user = Auth::user();
+        if ($user->role != "VTuber") {
+            return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        }
         $id = $user->id;
         $vtuber_content = Content::join('histories', 'histories.contents_id', '=', 'contents.id')
             ->join('users', 'histories.users_id', '=', 'users.id')
@@ -131,7 +134,7 @@ class VtuberController extends Controller
             ->where('contents.sources', '=', 'Instagram')
             ->select('comments.*')
             ->get();
-            
+
 
         return view('vtuber.index', [
             "jumlah_pertanyaan" => count($comment_pertanyaan),
@@ -152,7 +155,11 @@ class VtuberController extends Controller
 
     public function tohistory()
     {
-        $id = Auth::user()->id;
+        $user = Auth::user();
+        if ($user->role != "VTuber") {
+            return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        }
+        $id = $user->id;
 
         $histories = History::select('histories.*', 'contents.*')
             ->join('contents', 'histories.contents_id', '=', 'contents.id')
@@ -167,13 +174,38 @@ class VtuberController extends Controller
 
     public function tocrawling()
     {
+        $user = Auth::user();
+        if ($user->role != "VTuber") {
+            return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        }
         return view('vtuber.crawling');
     }
 
     public function toanalysis()
     {
         // User Id
-        $id = Auth::user()->id;
+        $user = Auth::user();
+        if ($user->role != "VTuber") {
+            return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        }
+        $id = $user->id;
+
+        $vtuber_content = Content::join('histories', 'histories.contents_id', '=', 'contents.id')
+            ->join('users', 'histories.users_id', '=', 'users.id')
+            ->join('comments', 'comments.contents_id', '=', 'contents.id')
+            ->where('users.id', '=', $id)
+            ->orderBy('histories.crawled_date', 'desc')
+            ->take(3)
+            ->selectRaw('contents.*, count(comments.id) as total_comments')
+            ->groupBy('contents.id')
+            ->groupBy('contents.sourcesId')
+            ->groupBy('contents.title')
+            ->groupBy('contents.creator')
+            ->groupBy('contents.like_count')
+            ->groupBy('contents.date')
+            ->groupBy('contents.sources')
+            ->groupBy('contents.caption')
+            ->get();
 
         // Youtube Data
         $comment_netral_y = Comment::join('contents', 'comments.contents_id', '=', 'contents.id')
@@ -323,19 +355,35 @@ class VtuberController extends Controller
             $total_like_instagram += $detail->like_count;
         }
 
-        $keywords_positif_y = $this->getKeywords($comment_positif_y);
-        $keywords_negatif_y = $this->getKeywords($comment_negatif_y);
-        $keywords_netral_y = $this->getKeywords($comment_netral_y);
-        $keywords_positif = $this->getKeywords($comment_positif);
-        $keywords_negatif = $this->getKeywords($comment_negatif);
-        $keywords_netral = $this->getKeywords($comment_netral);
+        $keywords_positif_y = "";
+        $keywords_negatif_y = "";
+        $keywords_netral_y = "";
+        $keywords_positif = "";
+        $keywords_negatif = "";
+        $keywords_netral = "";
 
-        $keywords_feedback_y = $this->getKeywords($comment_feedback_y);
-        $keywords_engagement_y = $this->getKeywords($comment_engagement_y);
-        $keywords_pertanyaan_y = $this->getKeywords($comment_pertanyaan_y);
-        $keywords_feedback = $this->getKeywords($comment_feedback);
-        $keywords_engagement = $this->getKeywords($comment_engagement);
-        $keywords_pertanyaan = $this->getKeywords($comment_pertanyaan);
+        $keywords_feedback_y = "";
+        $keywords_engagement_y = "";
+        $keywords_pertanyaan_y = "";
+        $keywords_feedback = "";
+        $keywords_engagement = "";
+        $keywords_pertanyaan = "";
+
+        if (!$vtuber_content) {
+            $keywords_positif_y = $this->getKeywords($comment_positif_y);
+            $keywords_negatif_y = $this->getKeywords($comment_negatif_y);
+            $keywords_netral_y = $this->getKeywords($comment_netral_y);
+            $keywords_positif = $this->getKeywords($comment_positif);
+            $keywords_negatif = $this->getKeywords($comment_negatif);
+            $keywords_netral = $this->getKeywords($comment_netral);
+
+            $keywords_feedback_y = $this->getKeywords($comment_feedback_y);
+            $keywords_engagement_y = $this->getKeywords($comment_engagement_y);
+            $keywords_pertanyaan_y = $this->getKeywords($comment_pertanyaan_y);
+            $keywords_feedback = $this->getKeywords($comment_feedback);
+            $keywords_engagement = $this->getKeywords($comment_engagement);
+            $keywords_pertanyaan = $this->getKeywords($comment_pertanyaan);
+        }
 
         return view('vtuber.analysis', [
             "jumlah_pertanyaan" => count($comment_pertanyaan),
@@ -370,6 +418,7 @@ class VtuberController extends Controller
             "keywords_feedback" => $keywords_feedback,
             "keywords_engagement" => $keywords_engagement,
             "keywords_pertanyaan" => $keywords_pertanyaan,
+            "vtuber_content" => $vtuber_content,
         ]);
     }
 }
