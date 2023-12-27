@@ -15,20 +15,20 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <link href="assets/css/datatable.css" rel="stylesheet">
     <style>
-        .bg-instagram {
+        .bg-instagram2 {
             background-color: #C13584;
         }
 
-        .bg-custom {
+        .bg-custom2 {
             background-color: #cfe2ff;
         }
 
-        .dropdown {
+        .dropdown2 {
             position: relative;
             display: inline-block;
         }
 
-        .dropdown-content {
+        .dropdown2-content {
             display: none;
             position: absolute;
             background-color: #c8defe;
@@ -37,24 +37,25 @@
             z-index: 1;
         }
 
-        .dropdown:hover .dropdown-content {
+        .dropdown2:hover .dropdown2-content {
             display: block;
         }
 
-        .dropdown-content a {
+        .dropdown2-content a {
             padding: 12px 16px;
             text-decoration: none;
             display: block;
             color: black;
         }
 
-        .dropdown-content a:hover {
+        .dropdown2-content a:hover {
             background-color: #b9b9b9;
         }
 
-        .settings-icon {
+        .settings-icon2 {
             margin-right: 8px;
         }
+
         .centered {
             display: flex;
             align-items: center;
@@ -77,55 +78,70 @@
             </div>
         </nav>
     </div>
-    <div class="container mb-5 mt-5">
-        <!--begin::Card-->
-        <div class="card card-custom">
-            <div class="card-body bg-custom h5 text-dark">
-                <!--begin: Datatable-->
-                <table class="table caption-top table-bordered table-striped table-primary table-hover table-responsive"
-                    id="historyTable">
-                    <caption class="text-dark h6"> Crawling Histories </caption>
-                    <thead>
-                        <tr>
-                            <th>Data ID</th>
-                            <th>Judul</th>
-                            <th>Pencipta</th>
-                            <th>Tanggal Konten</th>
-                            <th>Sumber</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($histories as $history)
-                            <tr id="tr_{{ $history->contents_id }}_{{ $history->contents_sourcesId }}">
-                                <td>{{ $history->contents_id }}</td>
-                                <td>{{ $history->title }}</td>
-                                <td>{{ $history->creator }}</td>
-                                <td>{{ $history->date }}</td>
-                                <td class="text-center"><span
-                                        class="badge rounded-pill {{ $history->sources == 'Youtube' ? 'bg-danger' : 'bg-instagram' }}">{{ $history->sources }}</span>
-                                </td>
-                                <td class="text-center">
-                                    <div class="dropdown">
-                                        <span class="settings-icon"><i class="fas fa-cog"></i></span>
-                                        <div class="dropdown-content">
-                                            <a
-                                                href="{{ $history->sources == 'Youtube' ? 'https://www.youtube.com/watch?v' . $history->sourcesId : 'https://www.instagram.com/p/' . $history->sourcesId }}">Link</a>
-                                            <a
-                                                href="{{ route('detail.content', ['id' => $history->contents_id, 'sourcesId' => $history->contents_sourcesId]) }}">Detail</a>
-                                        </div>
-                                    </div>
-                                </td>
+    @if (!$histories)
+        <div class="container mb-5 mt-5">
+            <!--begin::Card-->
+            <div class="card card-custom">
+                <div class="card-body bg-custom2 h5 text-dark">
+                    <!--begin: Datatable-->
+                    <table class="table caption-top table-bordered table-striped table-primary table-hover table-responsive"
+                        id="historyTable">
+                        <caption class="text-dark h6"> Crawling Histories </caption>
+                        <thead>
+                            <tr>
+                                <th>Data ID</th>
+                                <th>Judul</th>
+                                <th>Pencipta</th>
+                                <th>Tanggal Konten</th>
+                                <th>Sumber</th>
+                                <th>Action</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <!--end: Datatable-->
+                        </thead>
+                        <tbody>
+                            @foreach ($histories as $history)
+                                <tr id="tr_{{ $history->contents_id }}_{{ $history->contents_sourcesId }}">
+                                    <td>{{ $history->contents_id }}</td>
+                                    <td>{{ $history->title }}</td>
+                                    <td>{{ $history->creator }}</td>
+                                    <td>{{ $history->date }}</td>
+                                    <td class="text-center"><span
+                                            class="badge rounded-pill {{ $history->sources == 'Youtube' ? 'bg-danger' : 'bg-instagram2' }}">{{ $history->sources }}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="dropdown2">
+                                            <span class="settings-icon2"><i class="fas fa-cog"></i></span>
+                                            <div class="dropdown2-content">
+                                                <a
+                                                    href="{{ $history->sources == 'Youtube' ? 'https://www.youtube.com/watch?v' . $history->sourcesId : 'https://www.instagram.com/p/' . $history->sourcesId }}">Link</a>
+                                                <a
+                                                    href="{{ route('detail.content', ['id' => $history->contents_id, 'sourcesId' => $history->contents_sourcesId]) }}">Detail</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <!--end: Datatable-->
+                </div>
+                <button type="button" class="btn btn-info" onclick="getAllKomentar()">Train Model Ulang</button>
             </div>
-            <button type="button" class="btn btn-info" onclick="getAllKomentar()">Train Model Ulang</button>
+            <!--end::Card-->
         </div>
-        <!--end::Card-->
-    </div>
+    @else
+        <section id="featured-services" class="featured-services">
+            <div class="container">
+                <div class="row gy-4">
+                    <div class="col-lg-12 col-md-12 service-item d-flex justify-content-center align-items-center"
+                        data-aos="fade-up">
+                        <h4 class="text-center text-warning">
+                            Tidak Ada Data yang Ditampilkan
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
 
     {{-- Modal Loading Begin --}}
     <div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -200,7 +216,7 @@
                 error: function(error) {
                     $('#loadingModal').modal('hide');
                     console.log('Error:', error);
-                    
+
                     alertUpdate("Terdapat Kesalahan Pada Sistem", "error")
                 }
             });
@@ -218,7 +234,7 @@
                 success: function(response) {
                     $('#loadingModal').modal('hide');
                     console.log('Train Model Request Result:', response);
-                    
+
                     alertUpdate(response.result, response.status)
                 },
                 error: function(error) {

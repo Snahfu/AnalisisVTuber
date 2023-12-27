@@ -31,8 +31,11 @@ class ManagerController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if($user->role != "Manager"){
-            return view('error',["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        if (!$user) {
+            return view('error', ["code" => 402, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini. Silahkan Login Dulu!"]);
+        }
+        if ($user->role != "Manager") {
+            return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
         }
         $user_affiliation = $user->group;
         $vtuber_content = Content::join('histories', 'histories.contents_id', '=', 'contents.id')
@@ -67,8 +70,11 @@ class ManagerController extends Controller
     public function tohistory()
     {
         $user = Auth::user();
-        if($user->role != "Manager"){
-            return view('error',["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        if (!$user) {
+            return view('error', ["code" => 402, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini. Silahkan Login Dulu!"]);
+        }
+        if ($user->role != "Manager") {
+            return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
         }
         $group = $user->group;
 
@@ -87,8 +93,11 @@ class ManagerController extends Controller
     public function tocrawling()
     {
         $user = Auth::user();
-        if($user->role != "Manager"){
-            return view('error',["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        if (!$user) {
+            return view('error', ["code" => 402, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini. Silahkan Login Dulu!"]);
+        }
+        if ($user->role != "Manager") {
+            return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
         }
         return view('manager.crawling');
     }
@@ -96,8 +105,11 @@ class ManagerController extends Controller
     public function toanalysis()
     {
         $user = Auth::user();
-        if($user->role != "Manager"){
-            return view('error',["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        if (!$user) {
+            return view('error', ["code" => 402, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini. Silahkan Login Dulu!"]);
+        }
+        if ($user->role != "Manager") {
+            return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
         }
         return view('manager.analysis');
     }
@@ -106,10 +118,31 @@ class ManagerController extends Controller
     {
         // User Id
         $user = Auth::user();
-        if($user->role != "Manager"){
-            return view('error',["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        if (!$user) {
+            return view('error', ["code" => 402, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini. Silahkan Login Dulu!"]);
+        }
+        if ($user->role != "Manager") {
+            return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
         }
         $id = $user->id;
+
+        $vtuber_content = Content::join('histories', 'histories.contents_id', '=', 'contents.id')
+            ->join('users', 'histories.users_id', '=', 'users.id')
+            ->join('comments', 'comments.contents_id', '=', 'contents.id')
+            ->where('users.group', '=', $user->group)
+            ->orderBy('histories.crawled_date', 'desc')
+            ->take(3)
+            ->selectRaw('contents.*, count(comments.id) as total_comments')
+            ->groupBy('contents.id')
+            ->groupBy('contents.sourcesId')
+            ->groupBy('contents.title')
+            ->groupBy('contents.creator')
+            ->groupBy('contents.like_count')
+            ->groupBy('contents.date')
+            ->groupBy('contents.sources')
+            ->groupBy('contents.caption')
+            ->get();
+
         // Youtube Data
         $comment_netral_y = Comment::join('contents', 'comments.contents_id', '=', 'contents.id')
             ->join('histories', 'histories.contents_id', '=', 'contents.id')
@@ -257,19 +290,35 @@ class ManagerController extends Controller
             $total_like_instagram += $detail->like_count;
         }
 
-        $keywords_positif_y = $this->getKeywords($comment_positif_y);
-        $keywords_negatif_y = $this->getKeywords($comment_negatif_y);
-        $keywords_netral_y = $this->getKeywords($comment_netral_y);
-        $keywords_positif = $this->getKeywords($comment_positif);
-        $keywords_negatif = $this->getKeywords($comment_negatif);
-        $keywords_netral = $this->getKeywords($comment_netral);
+        $keywords_positif_y = "";
+        $keywords_negatif_y = "";
+        $keywords_netral_y = "";
+        $keywords_positif = "";
+        $keywords_negatif = "";
+        $keywords_netral = "";
 
-        $keywords_feedback_y = $this->getKeywords($comment_feedback_y);
-        $keywords_engagement_y = $this->getKeywords($comment_engagement_y);
-        $keywords_pertanyaan_y = $this->getKeywords($comment_pertanyaan_y);
-        $keywords_feedback = $this->getKeywords($comment_feedback);
-        $keywords_engagement = $this->getKeywords($comment_engagement);
-        $keywords_pertanyaan = $this->getKeywords($comment_pertanyaan);
+        $keywords_feedback_y = "";
+        $keywords_engagement_y = "";
+        $keywords_pertanyaan_y = "";
+        $keywords_feedback = "";
+        $keywords_engagement = "";
+        $keywords_pertanyaan = "";
+
+        if (!$vtuber_content) {
+            $keywords_positif_y = $this->getKeywords($comment_positif_y);
+            $keywords_negatif_y = $this->getKeywords($comment_negatif_y);
+            $keywords_netral_y = $this->getKeywords($comment_netral_y);
+            $keywords_positif = $this->getKeywords($comment_positif);
+            $keywords_negatif = $this->getKeywords($comment_negatif);
+            $keywords_netral = $this->getKeywords($comment_netral);
+
+            $keywords_feedback_y = $this->getKeywords($comment_feedback_y);
+            $keywords_engagement_y = $this->getKeywords($comment_engagement_y);
+            $keywords_pertanyaan_y = $this->getKeywords($comment_pertanyaan_y);
+            $keywords_feedback = $this->getKeywords($comment_feedback);
+            $keywords_engagement = $this->getKeywords($comment_engagement);
+            $keywords_pertanyaan = $this->getKeywords($comment_pertanyaan);
+        }
 
         return view('manager.analysis_agency', [
             "jumlah_pertanyaan" => count($comment_pertanyaan),
@@ -304,16 +353,37 @@ class ManagerController extends Controller
             "keywords_feedback" => $keywords_feedback,
             "keywords_engagement" => $keywords_engagement,
             "keywords_pertanyaan" => $keywords_pertanyaan,
+            "vtuber_content" => $vtuber_content,
         ]);
     }
     public function analysisvtuber()
     {
         $user = Auth::user();
-        if($user->role != "Manager"){
-            return view('error',["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
+        if (!$user) {
+            return view('error', ["code" => 402, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini. Silahkan Login Dulu!"]);
+        }
+        if ($user->role != "Manager") {
+            return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
         }
         $user_id = $user->id;
         $user_affiliation = $user->group;
+
+        $vtuber_content = Content::join('histories', 'histories.contents_id', '=', 'contents.id')
+            ->join('users', 'histories.users_id', '=', 'users.id')
+            ->join('comments', 'comments.contents_id', '=', 'contents.id')
+            ->where('users.id', '=', $user_id)
+            ->orderBy('histories.crawled_date', 'desc')
+            ->take(3)
+            ->selectRaw('contents.*, count(comments.id) as total_comments')
+            ->groupBy('contents.id')
+            ->groupBy('contents.sourcesId')
+            ->groupBy('contents.title')
+            ->groupBy('contents.creator')
+            ->groupBy('contents.like_count')
+            ->groupBy('contents.date')
+            ->groupBy('contents.sources')
+            ->groupBy('contents.caption')
+            ->get();
         // Youtube Data
         $comment_netral_y = Comment::join('contents', 'comments.contents_id', '=', 'contents.id')
             ->join('histories', 'histories.contents_id', '=', 'contents.id')
@@ -475,20 +545,35 @@ class ManagerController extends Controller
             $total_like_instagram += $detail->like_count;
         }
 
-        $keywords_positif_y = $this->getKeywords($comment_positif_y);
-        $keywords_negatif_y = $this->getKeywords($comment_negatif_y);
-        $keywords_netral_y = $this->getKeywords($comment_netral_y);
-        $keywords_positif = $this->getKeywords($comment_positif);
-        $keywords_negatif = $this->getKeywords($comment_negatif);
-        $keywords_netral = $this->getKeywords($comment_netral);
+        $keywords_positif_y = "";
+        $keywords_negatif_y = "";
+        $keywords_netral_y = "";
+        $keywords_positif = "";
+        $keywords_negatif = "";
+        $keywords_netral = "";
 
-        $keywords_feedback_y = $this->getKeywords($comment_feedback_y);
-        $keywords_engagement_y = $this->getKeywords($comment_engagement_y);
-        $keywords_pertanyaan_y = $this->getKeywords($comment_pertanyaan_y);
-        $keywords_feedback = $this->getKeywords($comment_feedback);
-        $keywords_engagement = $this->getKeywords($comment_engagement);
-        $keywords_pertanyaan = $this->getKeywords($comment_pertanyaan);
+        $keywords_feedback_y = "";
+        $keywords_engagement_y = "";
+        $keywords_pertanyaan_y = "";
+        $keywords_feedback = "";
+        $keywords_engagement = "";
+        $keywords_pertanyaan = "";
 
+        if (!$vtuber_content) {
+            $keywords_positif_y = $this->getKeywords($comment_positif_y);
+            $keywords_negatif_y = $this->getKeywords($comment_negatif_y);
+            $keywords_netral_y = $this->getKeywords($comment_netral_y);
+            $keywords_positif = $this->getKeywords($comment_positif);
+            $keywords_negatif = $this->getKeywords($comment_negatif);
+            $keywords_netral = $this->getKeywords($comment_netral);
+
+            $keywords_feedback_y = $this->getKeywords($comment_feedback_y);
+            $keywords_engagement_y = $this->getKeywords($comment_engagement_y);
+            $keywords_pertanyaan_y = $this->getKeywords($comment_pertanyaan_y);
+            $keywords_feedback = $this->getKeywords($comment_feedback);
+            $keywords_engagement = $this->getKeywords($comment_engagement);
+            $keywords_pertanyaan = $this->getKeywords($comment_pertanyaan);
+        }
 
         return view('manager.analysis_vtuber', [
             "jumlah_pertanyaan" => count($comment_pertanyaan),
@@ -523,6 +608,7 @@ class ManagerController extends Controller
             "keywords_feedback" => $keywords_feedback,
             "keywords_engagement" => $keywords_engagement,
             "keywords_pertanyaan" => $keywords_pertanyaan,
+            "vtuber_content" => $vtuber_content,
         ]);
     }
 }

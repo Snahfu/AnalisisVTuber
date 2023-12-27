@@ -15,20 +15,20 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <link href="assets/css/datatable.css" rel="stylesheet">
     <style>
-        .bg-instagram {
+        .bg-instagram2 {
             background-color: #C13584;
         }
 
-        .bg-custom {
+        .bg-custom2 {
             background-color: #cfe2ff;
         }
 
-        .dropdown {
+        .dropdown2 {
             position: relative;
             display: inline-block;
         }
 
-        .dropdown-content {
+        .dropdown2-content {
             display: none;
             position: absolute;
             background-color: #c8defe;
@@ -37,22 +37,22 @@
             z-index: 1;
         }
 
-        .dropdown:hover .dropdown-content {
+        .dropdown2:hover .dropdown2-content {
             display: block;
         }
 
-        .dropdown-content a {
+        .dropdown2-content a {
             padding: 12px 16px;
             text-decoration: none;
             display: block;
             color: black;
         }
 
-        .dropdown-content a:hover {
+        .dropdown2-content a:hover {
             background-color: #b9b9b9;
         }
 
-        .settings-icon {
+        .settings-icon2 {
             margin-right: 8px;
         }
 
@@ -82,7 +82,7 @@
         <div class="container mb-5 mt-5">
             <!--begin::Card-->
             <div class="card card-custom">
-                <div class="card-body bg-custom h5 text-dark">
+                <div class="card-body bg-custom2 h5 text-dark">
                     <!--begin: Datatable-->
                     <table class="table caption-top table-bordered table-striped table-primary table-hover table-responsive"
                         id="historyTable">
@@ -105,12 +105,12 @@
                                     <td>{{ $history->creator }}</td>
                                     <td>{{ $history->date }}</td>
                                     <td class="text-center"><span
-                                            class="badge rounded-pill {{ $history->sources == 'Youtube' ? 'bg-danger' : 'bg-instagram' }}">{{ $history->sources }}</span>
+                                            class="badge rounded-pill {{ $history->sources == 'Youtube' ? 'bg-danger' : 'bg-instagram2' }}">{{ $history->sources }}</span>
                                     </td>
                                     <td class="text-center">
-                                        <div class="dropdown">
-                                            <span class="settings-icon"><i class="fas fa-cog"></i></span>
-                                            <div class="dropdown-content">
+                                        <div class="dropdown2">
+                                            <span class="settings-icon2"><i class="fas fa-cog"></i></span>
+                                            <div class="dropdown2-content">
                                                 <a
                                                     href="{{ $history->sources == 'Youtube' ? 'https://www.youtube.com/watch?v' . $history->sourcesId : 'https://www.instagram.com/p/' . $history->sourcesId }}">Link</a>
                                                 <a

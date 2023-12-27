@@ -14,6 +14,9 @@ class VtuberController extends Controller
     public function index()
     {
         $user = Auth::user();
+        if (!$user) {
+            return view('error', ["code" => 402, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini. Silahkan Login Dulu!"]);
+        }
         if ($user->role != "VTuber") {
             return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
         }
@@ -156,6 +159,9 @@ class VtuberController extends Controller
     public function tohistory()
     {
         $user = Auth::user();
+        if (!$user) {
+            return view('error', ["code" => 402, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini. Silahkan Login Dulu!"]);
+        }
         if ($user->role != "VTuber") {
             return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
         }
@@ -175,6 +181,9 @@ class VtuberController extends Controller
     public function tocrawling()
     {
         $user = Auth::user();
+        if (!$user) {
+            return view('error', ["code" => 402, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini. Silahkan Login Dulu!"]);
+        }
         if ($user->role != "VTuber") {
             return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
         }
@@ -185,6 +194,9 @@ class VtuberController extends Controller
     {
         // User Id
         $user = Auth::user();
+        if (!$user) {
+            return view('error', ["code" => 402, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini. Silahkan Login Dulu!"]);
+        }
         if ($user->role != "VTuber") {
             return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
         }
