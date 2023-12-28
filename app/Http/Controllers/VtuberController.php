@@ -37,7 +37,7 @@ class VtuberController extends Controller
             ->groupBy('contents.sources')
             ->groupBy('contents.caption')
             ->get();
-
+            
         // Youtube Data
         $comment_netral_y = Comment::join('contents', 'comments.contents_id', '=', 'contents.id')
             ->join('histories', 'histories.contents_id', '=', 'contents.id')

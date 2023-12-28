@@ -126,6 +126,7 @@
             </div>
             <div class="card-footer">
                 <a href="#" id="btn_detail_konten" class="btn btn-primary btn-small">Detail</a>
+                <button onclick="refresh()" class="btn btn-primary btn-small">Next Crawling</button>
             </div>
         </div>
     </div>
@@ -309,7 +310,8 @@
                 alertUpdate("Silahkan pilih radio button yang tepat", "error")
             }
 
-
+            document.getElementById('buttonCrawling').disabled = true;
+            document.getElementById('crawlingText').disabled = true;
         }
 
         function updateTabel(length, result) {
@@ -426,6 +428,10 @@
                 $('#responseController').html(msg);
                 $('#alertModal').modal('show');
             }
+        }
+
+        function refresh(){
+            location.reload();
         }
     </script>
 @endsection

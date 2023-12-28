@@ -78,7 +78,7 @@
             </div>
         </nav>
     </div>
-    @if (!$histories)
+    @if (!$histories->isEmpty())
         <div class="container mb-5 mt-5">
             <!--begin::Card-->
             <div class="card card-custom">

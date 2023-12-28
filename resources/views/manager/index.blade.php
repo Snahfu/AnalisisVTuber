@@ -48,7 +48,7 @@
         <div class="container">
             <h3 class="mb-3 text-primary">Aktivitas Terbaru</h3>
             <div class="row gy-4">
-                @if (!$vtuber_content)
+                @if (!$vtuber_content->isEmpty())
                     @foreach ($vtuber_content as $content)
                         <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up">
                             <div class="icon flex-shrink-0"><i class="bi bi-youtube"></i></div>

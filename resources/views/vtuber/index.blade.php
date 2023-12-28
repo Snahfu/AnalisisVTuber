@@ -120,7 +120,7 @@
         <div class="container">
             <h3 class="mb-3 text-primary">Your Recent Activities</h3>
             <div class="row gy-4">
-                @if (!$vtuber_content)
+                @if (!$vtuber_content->isEmpty())
                     @foreach ($vtuber_content as $content)
                         <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up">
                             <div class="icon flex-shrink-0"><i class="bi bi-youtube"></i></div>
@@ -153,7 +153,7 @@
                 <span>Your Sentiment Analysis Summary</span>
                 <h2>Your Sentiment Analysis Summary</h2>
             </div>
-            @if (!$vtuber_content)
+            @if (!$vtuber_content->isEmpty())
                 @php
                     $total_semua_sentimen = $jumlah_positif + $jumlah_positif_y + $jumlah_negatif + $jumlah_negatif_y + $jumlah_netral_y + $jumlah_netral;
                     $total_semua_kategori = $jumlah_engagement + $jumlah_engagement_y + $jumlah_feedback + $jumlah_feedback_y + $jumlah_pertanyaan + $jumlah_pertanyaan_y;

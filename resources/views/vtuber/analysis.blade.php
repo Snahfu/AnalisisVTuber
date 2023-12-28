@@ -29,7 +29,7 @@
         </nav>
     </div>
 
-    @if (!$vtuber_content)
+    @if (!$vtuber_content->isEmpty())
         <div class="card mt-3 mx-3 mb-3">
             <div class="card-header">
                 <h4 class="card-title">Overall Analysis</h4>
