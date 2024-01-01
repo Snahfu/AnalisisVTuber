@@ -304,7 +304,7 @@ class ManagerController extends Controller
         $keywords_engagement = "";
         $keywords_pertanyaan = "";
 
-        if (!$vtuber_content) {
+        if (!$vtuber_content->isEmpty()) {
             $keywords_positif_y = $this->getKeywords($comment_positif_y);
             $keywords_negatif_y = $this->getKeywords($comment_negatif_y);
             $keywords_netral_y = $this->getKeywords($comment_netral_y);
@@ -559,7 +559,7 @@ class ManagerController extends Controller
         $keywords_engagement = "";
         $keywords_pertanyaan = "";
 
-        if (!$vtuber_content) {
+        if (!$vtuber_content->isEmpty()) {
             $keywords_positif_y = $this->getKeywords($comment_positif_y);
             $keywords_negatif_y = $this->getKeywords($comment_negatif_y);
             $keywords_netral_y = $this->getKeywords($comment_netral_y);

@@ -37,7 +37,7 @@ class VtuberController extends Controller
             ->groupBy('contents.sources')
             ->groupBy('contents.caption')
             ->get();
-            
+
         // Youtube Data
         $comment_netral_y = Comment::join('contents', 'comments.contents_id', '=', 'contents.id')
             ->join('histories', 'histories.contents_id', '=', 'contents.id')
@@ -381,7 +381,7 @@ class VtuberController extends Controller
         $keywords_engagement = "";
         $keywords_pertanyaan = "";
 
-        if (!$vtuber_content) {
+        if (!$vtuber_content->isEmpty()) {
             $keywords_positif_y = $this->getKeywords($comment_positif_y);
             $keywords_negatif_y = $this->getKeywords($comment_negatif_y);
             $keywords_netral_y = $this->getKeywords($comment_netral_y);
