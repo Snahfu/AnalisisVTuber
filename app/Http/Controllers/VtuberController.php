@@ -187,6 +187,7 @@ class VtuberController extends Controller
         if ($user->role != "VTuber") {
             return view('error', ["code" => 403, "msg" => "Anda tidak memiliki hak akses untuk mengakses halaman ini"]);
         }
+        
         return view('vtuber.crawling');
     }
 

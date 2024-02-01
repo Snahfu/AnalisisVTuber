@@ -306,12 +306,12 @@
                         alertUpdate("Terdapat Kesalahan Pada Sistem", "error")
                     }
                 });
+                document.getElementById('buttonCrawling').disabled = true;
+                document.getElementById('crawlingText').disabled = true;
             } else {
                 alertUpdate("Silahkan pilih radio button yang tepat", "error")
             }
 
-            document.getElementById('buttonCrawling').disabled = true;
-            document.getElementById('crawlingText').disabled = true;
         }
 
         function updateTabel(length, result) {

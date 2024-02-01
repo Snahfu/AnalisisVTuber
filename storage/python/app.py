@@ -145,9 +145,9 @@ def build_new_model():
             df_dataset = df_dataset.rename(columns={'text': 'comments'})
             df_dataset = df_dataset.rename(columns={'kelas_sentimen': 'sentimen'})
             df_dataset = df_dataset.rename(columns={'kelas_kategori': 'kategori'})
-            # data = pd.read_csv('validasi_dataset_validated.csv')
-            # df_train_dataset = pd.concat([data, df_dataset], ignore_index=True)
-            dataset_kategori, dataset_sentimen = preprocessing_traindataset(df_dataset)
+            data = pd.read_csv('validasi_dataset_validated.csv')
+            df_train_dataset = pd.concat([data, df_dataset], ignore_index=True)
+            dataset_kategori, dataset_sentimen = preprocessing_traindataset(df_train_dataset)
 
             result = train_model(dataset_kategori, dataset_sentimen)
             status = "success"

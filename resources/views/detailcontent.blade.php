@@ -72,7 +72,9 @@
                         <th>Total Like</th>
                         <th>Sentiment</th>
                         <th>Category</th>
-                        <th colspan="2">Action</th>
+                        @if (Auth::user()->role == 'Manager')
+                            <th colspan="2">Action</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -84,25 +86,30 @@
                             <td> {{ $komentar->like_count }} </td>
                             <td id="td_sentimen_{{ $komentar->id }}"> {{ $komentar->kelas_sentimen }} </td>
                             <td id="td_kategori_{{ $komentar->id }}"> {{ $komentar->kelas_kategori }} </td>
-                            <td class="text-center">
-                                <button class="btn btn-circle bg-info text-light"
-                                    onclick="getKomenData({{ $komentar->id }})">Edit</button>
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-circle bg-danger text-light"
-                                    onclick="openModal({{ $komentar->id }})">Delete</button>
-                            </td>
+                            @if (Auth::user()->role == 'Manager')
+                                <td class="text-center">
+                                    <button class="btn btn-circle bg-info text-light"
+                                        onclick="getKomenData({{ $komentar->id }})">Edit</button>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-circle bg-danger text-light"
+                                        onclick="openModal({{ $komentar->id }})">Delete</button>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            
+
             <div class="pagination">
-                <a href="{{ $content_commentar->previousPageUrl() }}" class="{{ ($content_commentar->onFirstPage()) ? 'disabled' : '' }}">Previous</a>
-                
-                <span>&nbsp; Page {{ $content_commentar->currentPage() }} of {{ $content_commentar->lastPage() }} &nbsp;</span>
-        
-                <a href="{{ $content_commentar->nextPageUrl() }}" class="{{ ($content_commentar->hasMorePages()) ? '' : 'disabled' }}">Next</a>
+                <a href="{{ $content_commentar->previousPageUrl() }}"
+                    class="{{ $content_commentar->onFirstPage() ? 'disabled' : '' }}">Previous</a>
+
+                <span>&nbsp; Page {{ $content_commentar->currentPage() }} of {{ $content_commentar->lastPage() }}
+                    &nbsp;</span>
+
+                <a href="{{ $content_commentar->nextPageUrl() }}"
+                    class="{{ $content_commentar->hasMorePages() ? '' : 'disabled' }}">Next</a>
             </div>
         </div>
     </div>

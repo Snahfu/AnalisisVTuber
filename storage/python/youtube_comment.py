@@ -16,31 +16,55 @@ def video_comments(video_id, api_secret_key, result):
                 comments_data = {}
                 replies_data = {}
 
-                temporary_datetime = item['snippet']['topLevelComment']['snippet']['publishedAt']
-                text_timestamp = datetime.fromisoformat(temporary_datetime.replace("Z", "+00:00"))
-                database_timestamp = text_timestamp.strftime("%Y-%m-%d %H:%M:%S")
-                comments_data['publishedAt'] = database_timestamp
+                if(
+                    item['snippet']['topLevelComment']['snippet']['publishedAt'] is None or 
+                    item['snippet']['topLevelComment']['snippet']['textDisplay'] == "" or 
+                    item['snippet']['topLevelComment']['snippet']['likeCount'] == "" or 
+                    item['snippet']['topLevelComment']['snippet']['authorDisplayName'] == ""
+                    ):
+                    print("Ada Error!")
+                    result['comments'].append("ERROR123")
+                    result['comments_like'].append("ERROR123")
+                    result['comments_author'].append("ERROR123")
+                    result['comments_date'].append("ERROR123")
+                else:
+                    # INPUT DATA
+                    temporary_datetime = item['snippet']['topLevelComment']['snippet']['publishedAt']
+                    text_timestamp = datetime.fromisoformat(temporary_datetime.replace("Z", "+00:00"))
+                    database_timestamp = text_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                    comments_data['publishedAt'] = database_timestamp
 
-                result['comments'].append(item['snippet']['topLevelComment']['snippet']['textDisplay'])
-                result['comments_like'].append(item['snippet']['topLevelComment']['snippet']['likeCount'])
-                result['comments_author'].append(item['snippet']['topLevelComment']['snippet']['authorDisplayName'])
-                result['comments_date'].append(comments_data['publishedAt'])
+                    result['comments'].append(item['snippet']['topLevelComment']['snippet']['textDisplay'])
+                    result['comments_like'].append(item['snippet']['topLevelComment']['snippet']['likeCount'])
+                    result['comments_author'].append(item['snippet']['topLevelComment']['snippet']['authorDisplayName'])
+                    result['comments_date'].append(comments_data['publishedAt'])
 
                 ### CEK APAKAH ADA REPLY?
                 replycount = item['snippet']['totalReplyCount']
 
-                if replycount>0:
+                if replycount > 0:
                     for reply in item['replies']['comments']:
-                        
-                        datetime_reply = reply['snippet']['publishedAt']
-                        text_timestamp = datetime.fromisoformat(datetime_reply.replace("Z", "+00:00"))
-                        database_timestamp = text_timestamp.strftime("%Y-%m-%d %H:%M:%S")
-                        replies_data['publishedAt'] = database_timestamp
+                        if(
+                            reply['snippet']['textDisplay'] == "" or 
+                            reply['snippet']['likeCount'] == "" or 
+                            reply['snippet']['authorDisplayName'] == "" or 
+                            reply['snippet']['publishedAt'] is None
+                        ):
+                            print("Ada Error!")
+                            result['comments'].append("ERROR123")
+                            result['comments_like'].append("ERROR123")
+                            result['comments_author'].append("ERROR123")
+                            result['comments_date'].append("ERROR123")
+                        else:
+                            datetime_reply = reply['snippet']['publishedAt']
+                            text_timestamp = datetime.fromisoformat(datetime_reply.replace("Z", "+00:00"))
+                            database_timestamp = text_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                            replies_data['publishedAt'] = database_timestamp
 
-                        result['comments'].append(reply['snippet']['textDisplay'])
-                        result['comments_like'].append(reply['snippet']['likeCount'])
-                        result['comments_author'].append(reply['snippet']['authorDisplayName'])
-                        result['comments_date'].append(comments_data['publishedAt'])
+                            result['comments'].append(reply['snippet']['textDisplay'])
+                            result['comments_like'].append(reply['snippet']['likeCount'])
+                            result['comments_author'].append(reply['snippet']['authorDisplayName'])
+                            result['comments_date'].append(replies_data['publishedAt'])
 
             # Komentar dari API Youtube dibuat dalam page jadi perlu di loop lagi kalau lebih dari 50
             if 'nextPageToken' in video_response:
@@ -50,6 +74,7 @@ def video_comments(video_id, api_secret_key, result):
 
     except Exception as e:
         print(f"Error: {e}")
+        
 
 
 def video_data(video_id, api_secret_key, result):
@@ -100,6 +125,14 @@ def youtube_crawling(youtube_id):
     video_comments(youtube_id, api_key, result)
 
     video_data(youtube_id, api_key, result)
+    # Mendapatkan indeks elemen yang akan dihapus dari comments
+    indexes_to_remove = [i for i, comment in enumerate(result["comments"]) if comment == "ERROR123"]
+
+    # Menghapus elemen-elemen yang sesuai dengan indeks dari setiap list
+    for key in result.keys():
+        if key != "video_id" and key != "title" and key != "creator" and key != "caption" and key != "like_count" and key != "published_date":
+            result[key] = [elem for i, elem in enumerate(result[key]) if i not in indexes_to_remove]
+
 
     return result
 
